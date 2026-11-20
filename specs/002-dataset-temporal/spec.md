@@ -39,7 +39,8 @@ Convertir las curvas PDCSAP de Q1–Q17 de cada estrella en las entradas de las 
 ### Rama 2 · tránsitos
 
 - **RF-11** Para cada tránsito *n* con centro `t0 + n·P` dentro de los datos: ventana de ±2,5 duraciones, interpolada linealmente a 61 puntos equiespaciados.
-- **RF-12** El tránsito es válido si: (a) tiene ≥ 70 % de las cadencias esperadas en la ventana; (b) tiene ≥ 2 cadencias con `|t − centro| < 0,5 · duración`; (c) su ventana no se solapa con la máscara de otro KOI de la estrella.
+- **RF-12** Las cadencias que caen en el tránsito de **otro KOI** de la estrella se **ocultan** (no se usan en la profundidad, las vistas ni las ventanas) y se interpola sobre el hueco. No se ocultan los KOIs con el mismo periodo (±1 %), que suelen ser el eclipse secundario catalogado aparte. El tránsito es válido si: (a) tiene ≥ 70 % de las cadencias esperadas en la ventana; (b) tiene ≥ 2 cadencias con `|t − centro| < 0,5 · duración`; (c) tras ocultar, conserva ≥ 50 % de las cadencias esperadas y el centro. *(Cambiado el 20-nov: la regla original descartaba toda ventana que tocara a otro KOI, y con datos reales dejaba sin tránsitos a 37 ejemplos.)*
+- **RF-12b** Las ventanas se dividen por `max(escala, σ por punto)`: la señal vale −1 si domina y el ruido tiene desviación 1 si domina él. Sin esto, los ejemplos sin señal y los planetas pequeños saturan el recorte.
 - **RF-13** Selección determinista de hasta 32: hasta 16 pares y 16 impares, eligiendo en cada paridad índices equiespaciados sobre la lista de válidos ordenada por tiempo; si una paridad tiene menos de 16, la otra completa hasta 32. Resultado en orden cronológico.
 - **RF-14** `transitos` (32, 61), `mascara_transitos` (32,), `paridad_transitos` (32,; 0 par, 1 impar, −1 vacío), `n_transitos_validos` (total antes de seleccionar).
 - **RF-15** `consistencia` (4,), calculada con **todos** los tránsitos válidos (no solo los 32):
@@ -58,7 +59,7 @@ Convertir las curvas PDCSAP de Q1–Q17 de cada estrella en las entradas de las 
 
 ### Clase `sin_senal`
 
-- **RF-19** Mismo proceso con época `t0 + 0,25 · P`. Se guarda `aviso_sin_senal` = 1 si su `snr_medido > 5`. No se eliminan; el conteo va al manifiesto y al informe.
+- **RF-19** Mismo proceso con época `t0 + 0,25 · P`, con la señal real del KOI **oculta** como si fuera otro KOI. Si la duración supera cerca de un quinto del periodo no existe una época limpia y el ejemplo queda no disponible (9 casos reales). Se guarda `aviso_sin_senal` = 1 si su `snr_medido > 5`. No se eliminan; el conteo va al manifiesto y al informe.
 
 ### Salida
 

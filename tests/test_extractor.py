@@ -90,9 +90,29 @@ def test_sin_senal():
     assert ej["escalares"][3] < 3 and ej["aviso_sin_senal"] == 0          # SNR medido bajo
     assert abs(ej["vista_local"][95:106, 0].mean()) < 0.5                  # el ruido no se infla a −1
     assert np.abs(ej["vista_local"]).max() <= CFG["recorte_relativo"]
-    for x in curvas.ventanas_por_transito(t, f, s, desplazada, [EF], CFG):
-        if x.valida:
-            assert abs(curvas.fase(np.array([x.centro]), EF)[0]) > 1.0     # ninguna toca el tránsito real
+    # la señal real queda oculta: ninguna ventana válida usa cadencias del tránsito real
+    assert ej["disponible_transitos"] == 1 and ej["mascara_transitos"].sum() == 32
+    assert np.abs(np.median(ej["transitos"][:, 20:41])) < 0.5
+
+
+def test_sin_senal_con_duracion_larga_respecto_al_periodo():
+    # Caso real (20-nov): con duración/periodo > 1/13 la ventana desplazada toca el tránsito real.
+    ef = Efemerides(periodo=1.3, t0=133.0, duracion=4.0 / 24)
+    desplazada = Efemerides(ef.periodo, ef.t0 + 0.25 * ef.periodo, ef.duracion)
+    ej, _ = ejemplo(ef=ef, epoca=desplazada, otras=[ef], profundidad=5000e-6)
+    assert ej["disponible_transitos"] == 1 and ej["disponible_vistas"] == 1
+    # sin rastro de la señal real: con 5000 ppm, cualquier resto saturaría el recorte en −5
+    assert ej["escalares"][3] < 5 and (ej["vista_local"][:, 0] <= -4.99).sum() == 0
+    assert (ej["transitos"] <= -4.99).mean() < 0.01
+
+
+def test_companero_de_periodo_muy_corto_no_anula_la_rama():
+    # Caso real K00191.01: un compañero con periodo de 0,7 d cae dentro de todas las ventanas.
+    otro = Efemerides(periodo=0.7, t0=133.2, duracion=1.5 / 24)
+    ef = Efemerides(periodo=15.36, t0=133.0, duracion=4.1 / 24)
+    ej, _ = ejemplo(ef=ef, otras=[otro], efs_estrella=[ef, otro], otro=(otro, 300e-6))
+    assert ej["disponible_transitos"] == 1 and ej["n_transitos_validos"] > 50
+    assert ej["escalares"][2] == pytest.approx(1000, rel=0.15)
 
 
 def test_seleccion_es_determinista_y_cronologica():

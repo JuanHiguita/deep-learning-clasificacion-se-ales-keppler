@@ -147,39 +147,45 @@ def vista_plegada(fase_d: np.ndarray, valor: np.ndarray, semiancho: float, n_pun
 
 def ventanas_por_transito(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efemerides,
                           otras: list[Efemerides], cfg: dict) -> list[Ventana]:
-    """Una ventana por tránsito observado, con su validez (RF-11 y RF-12)."""
+    """Una ventana por tránsito observado, con su validez (RF-11 y RF-12).
+
+    Las cadencias que caen en el tránsito de OTRO KOI de la estrella se ocultan (no se usan) y la
+    ventana se interpola sobre el hueco. La ventana solo se descarta ("otro_koi") si, tras ocultar,
+    queda menos de la fracción mínima visible o se pierde el centro del tránsito.
+    """
     n_puntos = cfg["transito_puntos"]
     semi = min(cfg["transito_semiancho_duraciones"] * ef.duracion, ef.periodo / 2)
     rejilla = np.linspace(-semi, semi, n_puntos)
     esperadas = 2 * semi / CADENCIA_D
     if len(t) == 0:
         return []
+    visible = ~mascara_transitos(t, otras, cfg["mascara_transito_duraciones"]) if otras else np.ones(len(t), bool)
+    tv, fv, sv = t[visible], f[visible], sigma[visible]
     n_min, n_max = int(np.ceil((t[0] - ef.t0) / ef.periodo)), int(np.floor((t[-1] - ef.t0) / ef.periodo))
     ventanas = []
     for n in range(n_min, n_max + 1):
         tc = ef.t0 + n * ef.periodo
-        a, b = np.searchsorted(t, [tc - semi, tc + semi])
-        dt, y = t[a:b] - tc, f[a:b] - 1.0
-        nucleo = np.abs(dt) < 0.25 * ef.duracion
-        if nucleo.sum() < 1:
-            nucleo = np.abs(dt) < 0.5 * ef.duracion
+        a0, b0 = np.searchsorted(t, [tc - semi, tc + semi])      # todas las cadencias observadas
+        a, b = np.searchsorted(tv, [tc - semi, tc + semi])       # solo las visibles
+        dt, y = tv[a:b] - tc, fv[a:b] - 1.0
+        en_centro_total = (np.abs(t[a0:b0] - tc) < 0.5 * ef.duracion).sum()
+        en_centro = (np.abs(dt) < 0.5 * ef.duracion).sum()
         motivo = ""
-        if (b - a) < cfg["min_fraccion_cadencias"] * esperadas:
+        if (b0 - a0) < cfg["min_fraccion_cadencias"] * esperadas:
             motivo = "cadencias"
-        elif (np.abs(dt) < 0.5 * ef.duracion).sum() < cfg["min_cadencias_en_transito"]:
+        elif en_centro_total < cfg["min_cadencias_en_transito"]:
             motivo = "en_transito"
-        else:
-            for o in otras:
-                margen = semi + cfg["mascara_transito_duraciones"] * o.duracion / 2
-                if abs(fase(np.array([tc]), o)[0]) < margen:
-                    motivo = "otro_koi"
-                    break
+        elif (b - a) < cfg["min_fraccion_visible"] * esperadas or en_centro < cfg["min_cadencias_en_transito"]:
+            motivo = "otro_koi"
         if motivo:
             ventanas.append(Ventana(n, tc, np.zeros(n_puntos), float("nan"), float("nan"), False, motivo))
             continue
+        nucleo = np.abs(dt) < 0.25 * ef.duracion
+        if nucleo.sum() < 1:
+            nucleo = np.abs(dt) < 0.5 * ef.duracion
         serie = np.interp(rejilla, dt, y)
         prof = float(-np.mean(y[nucleo]))
-        err = float(np.mean(sigma[a:b][nucleo]) / np.sqrt(nucleo.sum()))
+        err = float(np.mean(sv[a:b][nucleo]) / np.sqrt(nucleo.sum()))
         ventanas.append(Ventana(n, tc, serie, prof, err, True, ""))
     return ventanas
 
@@ -238,8 +244,9 @@ def construir_ejemplo(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efeme
                       ) -> dict:
     """Todas las entradas de un ejemplo (ramas 1, 2 y 4) a partir de la curva ya preparada.
 
+    `otras` son los demás KOIs de la estrella: sus cadencias en tránsito se ocultan.
     Para el ejemplo 'sin_senal' se llama con la época desplazada, `otras` debe incluir la
-    efeméride real del KOI y `centroide` se deja en NaN (RF-18 y RF-19).
+    efeméride real del KOI (así la señal real queda oculta) y `centroide` se deja en NaN.
     """
     ng, nl, nt, mx = cfg["vista_global_puntos"], cfg["vista_local_puntos"], cfg["transito_puntos"], cfg["max_transitos"]
     recorte = cfg["recorte_relativo"]
@@ -251,6 +258,10 @@ def construir_ejemplo(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efeme
         "faltantes": np.ones(7, np.float32), "disponible_vistas": 0, "disponible_transitos": 0,
         "aviso_sin_senal": 0, "descartes": {"cadencias": 0, "en_transito": 0, "otro_koi": 0},
     }
+    t_todo, f_todo, sigma_todo = t, f, sigma
+    if len(t) and otras:   # las cadencias de otros KOIs no entran a la profundidad ni a las vistas
+        visible = ~mascara_transitos(t, otras, cfg["mascara_transito_duraciones"])
+        t, f, sigma = t[visible], f[visible], sigma[visible]
     prof, sig_local, n_centro = medir_profundidad(t, f, sigma, ef) if len(t) else (np.nan, np.nan, 0)
     if n_centro < 3 or not np.isfinite(sig_local) or sig_local <= 0:
         return ej
@@ -274,15 +285,19 @@ def construir_ejemplo(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efeme
         ej["disponible_vistas"] = 1
 
     # ---- rama 2: tránsitos uno por uno ----
-    ventanas = ventanas_por_transito(t, f, sigma, ef, otras, cfg)
+    ventanas = ventanas_por_transito(t_todo, f_todo, sigma_todo, ef, otras, cfg)
     for v in ventanas:
         if not v.valida:
             ej["descartes"][v.motivo] += 1
     validas = [v for v in ventanas if v.valida]
     ej["n_transitos_validos"] = len(validas)
     if len(validas) >= cfg["min_transitos_para_rama"]:
+        # En un tránsito individual el ruido por punto puede superar a la profundidad (planetas
+        # pequeños, ejemplos sin señal). La escala de las ventanas es el mayor de los dos: la señal
+        # vale −1 si domina, y el ruido tiene desviación 1 si domina él. Sin esto, satura el recorte.
+        escala_ventanas = max(escala, float(np.median(sigma)))
         for i, v in enumerate(seleccionar_transitos(ventanas, mx)):
-            ej["transitos"][i] = np.clip(v.serie / escala, -recorte, recorte)
+            ej["transitos"][i] = np.clip(v.serie / escala_ventanas, -recorte, recorte)
             ej["mascara_transitos"][i] = 1.0
             ej["paridad_transitos"][i] = v.indice % 2
         ej["consistencia"] = estadisticos_consistencia(ventanas)

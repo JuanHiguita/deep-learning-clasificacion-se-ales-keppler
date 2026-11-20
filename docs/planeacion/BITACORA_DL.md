@@ -6,9 +6,9 @@
 
 | PT | Spec | Estado | Hito | Fecha límite |
 |---|---|---|---|---|
-| PT0 Entorno | `specs/000-entorno` | **Siguiente: ejecutar `scripts\descargar_recursos.bat` en el PC** | — | vie 20-nov |
-| PT1 Base común | `specs/001-base-comun` | Código y pruebas listos; falta ejecutarlo con datos reales | D1–D2, `base-v1` | sáb 21-nov |
-| PT2 Dataset temporal | `specs/002-dataset-temporal` | Extractor y pruebas listos; faltan la descarga y la corrida real | D3 | dom 22-nov |
+| PT0 Entorno | `specs/000-entorno` | Hecho en el PC (Python 3.13, Keras 3.15.1 con JAX) | — | vie 20-nov |
+| PT1 Base común | `specs/001-base-comun` | **Hecho con datos reales** (falta etiqueta `base-v1`) | D1–D2, `base-v1` | sáb 21-nov |
+| PT2 Dataset temporal | `specs/002-dataset-temporal` | **Dataset construido** (95,3 % disponible); faltan figura de inspección y EDA | D3 | dom 22-nov |
 | PT3 Motor | `specs/003-motor-experimentos` | En curso: T3.1–T3.3 hechas | — | lun 23-nov |
 | PT4 Ramas | `specs/004-ramas-temporales` | Pendiente | D4, `ramas-v1` | jue 26-nov |
 | PT5 Fusión | `specs/005-fusion` | Pendiente | D5 (con imagen v0) | dom 29-nov |
@@ -54,6 +54,17 @@
 - **Sin probar con datos reales:** todo el extractor. La primera corrida real debe pasar por la inspección de K00022.01 y K03615.01 (spec 002, T2.9).
 - **Desviaciones:** (1) descarga directa por HTTPS en lugar de `lightkurve`; (2) calidad `SAP_QUALITY = 0` en lugar de la máscara `default`; (3) los estadísticos de consistencia 1, 2 y 4 van en escala `sign·log10(1+|x|)`. Todas anotadas en la spec 002.
 - **Siguiente paso exacto:** ejecutar `scripts\descargar_recursos.bat`; luego spec 002 T2.8–T2.11 y spec 003 T3.4.
+
+### 2026-11-20 · Claude Fable 5.2 · PT1 y PT2 con datos reales
+
+- **Descargas (en el PC, `scripts\\descargar_recursos.bat`):** DR25 (8.054 filas) y acumulada (9.564 filas); 3.792 curvas `_llc.fits` (1,6 GB); 224 TPF de Q5 (525 MB; 21 estrellas no tienen TPF en Q5). El primer intento dio HTTP 403 por una tilde en la cabecera `User-Agent`; corregido.
+- **Base (`base-v1` pendiente de etiquetar):** 245 KOIs, 490 ejemplos (130 planetas, 115 FP, 245 sin señal); 26 planetas y 23 FP por partición. Salieron 15 KOIs de la demo, todos FP (8 sin fila en DR25, 7 sin etiqueta definitiva). 0 prerregistrados. Terciles de MES: 35,6 y 100,6.
+- **Líneas base (AUC, IC 95 %):** S3-B selección 0,857 [0,804–0,904]; S3-B tabla completa 0,920 [0,882–0,952]; S3-C selección 0,979 [0,962–0,992]; S3-C tabla completa 0,989 [0,978–0,996]; `koi_score` 0,996 [0,986–1,000].
+- **Dataset temporal:** primera corrida con 89,6 % de disponibilidad (< 95 %). Causa: la regla que descartaba ventanas que tocaran a otro KOI anulaba los ejemplos sin señal con duración/periodo > 1/13 y las estrellas con compañeros de periodo muy corto (K00191.01). Corregido (spec 002, RF-12, RF-12b y RF-19). Segunda corrida: vistas 467/490, tránsitos 471/490, ambas 467/490 = 95,3 %. No disponibles: 14 ejemplos de 7 estrellas con menos de 4 trimestres y 9 ejemplos sin señal con duración/periodo > 0,22. 10 ejemplos sin señal con SNR > 5 (se conservan).
+- **Inspección T2.9:** K00022.01 (planeta): par−impar = −0,16 (escala log), vista local −1,01 / −1,01 / −1,00. K03615.01 (estrella doble): par−impar = 2,52, pares −0,90 e impares −1,59. La alternancia se recupera. Falta la figura.
+- **Pruebas:** 61 pasan.
+- **Decisión pendiente de Juan:** rama 4 sin centroide en la configuración principal (S3-C ya da 0,98–0,99 y hay circularidad con las etiquetas).
+- **Siguiente paso exacto:** etiqueta `base-v1`; spec 003 T3.4 (motor de entrenamiento).
 
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>

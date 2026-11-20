@@ -39,6 +39,8 @@
     "transito_semiancho_duraciones": 2.5,
     "max_transitos": 32,
     "min_fraccion_cadencias": 0.7,
+    "min_fraccion_visible": 0.5,
+    "tolerancia_mismo_periodo": 0.01,
     "min_cadencias_en_transito": 2,
     "escala_min_sigmas": 3.0,
     "recorte_relativo": 5.0,

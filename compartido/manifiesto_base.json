@@ -1,0 +1,91 @@
+{
+ "argumentos": {
+  "acumulada": "data\\koi_cumulative.csv",
+  "koi": "data\\koi_dr25.csv",
+  "manifiesto": "None",
+  "protocolo": "config\\protocolo.json",
+  "salida": "compartido\\ejemplos.csv",
+  "seleccion": "data\\seleccion_demo.csv"
+ },
+ "commit": "70315a0833d06f0e4bf515430b4a21b1521ddaef",
+ "entradas": {
+  "config/protocolo.json": "b58a39ef43f5c4c2e1d2755526731f9647b17f84d33caf13a12367a45a05381c",
+  "data/koi_cumulative.csv": "201b52138748edbae7a921b5d1a5dbaccee951e6a34455bb7a857a4879d3d8a1",
+  "data/koi_dr25.csv": "4e720cce3366827692beeffec479b81152745bcdeb6d279e606705f1db95c2b1",
+  "data/seleccion_demo.csv": "5a9b2105762e175c29397e815fc5d2401c194c2616e0191d86363d7b79a1421c"
+ },
+ "fecha_utc": "2026-11-20T06:04:20Z",
+ "resumen": {
+  "cambian_de_etiqueta_respecto_a_la_seleccion": [],
+  "n_ejemplos": 490,
+  "n_estrellas": 245,
+  "n_kois": 245,
+  "n_prerregistrados_kois": 0,
+  "por_clase": {
+   "0": 130,
+   "1": 115,
+   "2": 245
+  },
+  "por_particion_y_clase": {
+   "0": {
+    "0": 26,
+    "1": 23,
+    "2": 49
+   },
+   "1": {
+    "0": 26,
+    "1": 23,
+    "2": 49
+   },
+   "2": {
+    "0": 26,
+    "1": 23,
+    "2": 49
+   },
+   "3": {
+    "0": 26,
+    "1": 23,
+    "2": 49
+   },
+   "4": {
+    "0": 26,
+    "1": 23,
+    "2": 49
+   }
+  },
+  "prerregistrados": [],
+  "sin_etiqueta_en_dr25": [
+   "K00160.01",
+   "K01058.01",
+   "K00506.01",
+   "K03692.01",
+   "K01747.01",
+   "K05708.01",
+   "K06104.01"
+  ],
+  "sin_fila_en_dr25": [
+   "K04217.01",
+   "K01640.01",
+   "K01097.01",
+   "K06906.01",
+   "K03182.01",
+   "K07586.01",
+   "K00997.01",
+   "K00983.01"
+  ],
+  "terciles_mes": [
+   35.600068666666665,
+   100.58162999999999
+  ]
+ },
+ "sha256_ejemplos": "deb694da52428d078dd5eca0f02324140eb5e05beb4bad8a43eefc2fc6af7ccb",
+ "versiones": {
+  "astropy": "8.0.3",
+  "keras": null,
+  "lightkurve": null,
+  "numpy": "2.5.5",
+  "pandas": "3.1.1",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.1"
+ }
+}

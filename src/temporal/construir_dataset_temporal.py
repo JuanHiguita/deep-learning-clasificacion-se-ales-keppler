@@ -50,7 +50,10 @@ def construir(ejemplos: pd.DataFrame, koi: pd.DataFrame, carpeta_llc: Path, prot
             t = f = s = np.empty(0)
         for fila in usar[usar["kepid"] == kepid].sort_values("id_ejemplo").itertuples():
             real = efs[fila.kepoi_name]
-            otras = [e for nombre, e in efs.items() if nombre != fila.kepoi_name]
+            tol = cfg["tolerancia_mismo_periodo"]
+            # Un KOI con el mismo periodo suele ser el eclipse secundario catalogado aparte: no se oculta.
+            otras = [e for nombre, e in efs.items()
+                     if nombre != fila.kepoi_name and abs(e.periodo / real.periodo - 1) > tol]
             if fila.tipo == "sin_senal":
                 ef = Efemerides(real.periodo, real.t0 + cfg["desfase_sin_senal"] * real.periodo, real.duracion)
                 ej = curvas.construir_ejemplo(t, f, s, ef, otras + [real], cfg)
