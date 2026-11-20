@@ -63,7 +63,7 @@
 - **Dataset temporal:** primera corrida con 89,6 % de disponibilidad (< 95 %). Causa: la regla que descartaba ventanas que tocaran a otro KOI anulaba los ejemplos sin señal con duración/periodo > 1/13 y las estrellas con compañeros de periodo muy corto (K00191.01). Corregido (spec 002, RF-12, RF-12b y RF-19). Segunda corrida: vistas 467/490, tránsitos 471/490, ambas 467/490 = 95,3 %. No disponibles: 14 ejemplos de 7 estrellas con menos de 4 trimestres y 9 ejemplos sin señal con duración/periodo > 0,22. 10 ejemplos sin señal con SNR > 5 (se conservan).
 - **Inspección T2.9:** K00022.01 (planeta): par−impar = −0,16 (escala log), vista local −1,01 / −1,01 / −1,00. K03615.01 (estrella doble): par−impar = 2,52, pares −0,90 e impares −1,59. La alternancia se recupera. Falta la figura.
 - **Pruebas:** 61 pasan.
-- **Decisión pendiente de Juan:** rama 4 sin centroide en la configuración principal (S3-C ya da 0,98–0,99 y hay circularidad con las etiquetas).
+- **Decisión de Juan (20-nov):** se siguen los planes establecidos. La rama 4 conserva el centroide (7 escalares, spec 002 RF-16 y `ROADMAP_PROYECTO` 4.4). No se agregan la variante sin centroide ni la prueba de circularidad al alcance del curso. El informe declara que S3-C ya da 0,98–0,99 en esta muestra y que hay circularidad parcial con las etiquetas (`00_ESTADO` §5).
 - **Siguiente paso exacto:** etiqueta `base-v1`; spec 003 T3.4 (motor de entrenamiento).
 
 <!-- Plantilla de entrada
