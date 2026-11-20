@@ -33,7 +33,7 @@ Tiene dos partes: comprobaciones automáticas (`python -I src/fusion/auditoria.p
 
 Además: 111 pruebas rápidas, 2 que entrenan y 1 de extremo a extremo pasan; `verificar_contrato.py` responde "correcto"; `ruff check` sin hallazgos.
 
-La primera pasada de esta auditoría encontró tres fallos, los tres de la propia comprobación y no del proyecto: (1) dos archivos nombran `koi_score` solo como texto de una etiqueta, y se añadieron a la lista de autorizados con su motivo; (2) el AUC de la rama 1 aparece como 0,864 en el documento y como 0,8645 en la tabla, que son el mismo valor con distinto redondeo (media de semillas 0,86437); (3) el plan nombra "P(habitable)" solo para prohibirlo.
+La primera pasada de esta auditoría encontró tres fallos, los tres de la propia comprobación y no del proyecto: (1) dos archivos nombran `koi_score` solo como texto de una etiqueta, y se añadieron a la lista de autorizados con su motivo; (2) el AUC de la rama 1 aparece como 0,864 en el documento y como 0,8645 en la tabla, que son el mismo valor con distinto redondeo (media de semillas 0,86437); (3) el plan nombra la expresión vetada para la salida solo para prohibirla.
 
 ## 2. Hallazgos de la revisión manual
 

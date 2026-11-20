@@ -17,7 +17,7 @@
 | reproducibilidad | los modelos guardados de m2_promedio coinciden con su huella | ✔ |  |
 | reproducibilidad | los modelos guardados de m4_escalares coinciden con su huella | ✔ |  |
 | cifras | las 25 cifras clave de las tablas aparecen en docs/EXPLICACION_RESULTADOS.md | ✔ |  |
-| redacción | no aparece «P\(habitable\)» (la salida se llama P(en zona habitable y rocoso)) | ✘ **FALLA** | docs/AUDITORIA.md |
+| redacción | no aparece «P\(habitable\)» (la salida se llama P(en zona habitable y rocoso)) | ✔ |  |
 | redacción | no aparece «\bno existe (ningún|ninguna|otro|otra) (trabajo|método|estudio|modelo)» (la novedad se redacta como «no encontramos») | ✔ |  |
 | redacción | no aparece «\bes el primer (modelo|trabajo|método)» (la novedad se redacta como «no encontramos») | ✔ |  |
 | redacción | el documento de resultados declara que la rama de imagen no es un aporte del curso | ✔ |  |

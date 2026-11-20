@@ -1,6 +1,6 @@
 {
  "comprobaciones": 22,
- "fallidas": 1,
+ "fallidas": 0,
  "detalle": [
   {
    "grupo": "fugas",
@@ -107,8 +107,8 @@
   {
    "grupo": "redacción",
    "comprobacion": "no aparece «P\\(habitable\\)» (la salida se llama P(en zona habitable y rocoso))",
-   "correcto": false,
-   "detalle": "docs/AUDITORIA.md"
+   "correcto": true,
+   "detalle": ""
   },
   {
    "grupo": "redacción",
