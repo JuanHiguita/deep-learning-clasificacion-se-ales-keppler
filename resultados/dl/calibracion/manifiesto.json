@@ -1,0 +1,24 @@
+{
+ "argumentos": {
+  "ejemplos": "compartido/ejemplos.csv",
+  "koi": "data/koi_dr25.csv",
+  "predicciones": "resultados/dl/fusion/e6a_cuatro_ramas",
+  "protocolo": "config/protocolo.json",
+  "salida": "resultados/dl/calibracion"
+ },
+ "commit": "7d547071610d94ab7cc6c18553c94e562ef84dae",
+ "entradas": {
+  "data/koi_dr25.csv": "4e720cce3366827692beeffec479b81152745bcdeb6d279e606705f1db95c2b1",
+  "resultados/dl/fusion/e6a_cuatro_ramas/pred_semilla0.npz": "aad4af535b3cedaa4e8aa7d980a8b4aa968a5024fc85ba3a9757cd539621d7e3"
+ },
+ "fecha_utc": "2026-11-20T09:27:32Z",
+ "versiones": {
+  "astropy": "6.1.7",
+  "keras": null,
+  "lightkurve": "2.6.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "sklearn": "1.7.2"
+ }
+}

@@ -1,0 +1,223 @@
+{
+ "E8_temperatura": {
+  "temperaturas": [
+   1.063,
+   1.295,
+   1.175,
+   1.933,
+   1.141
+  ],
+  "antes": {
+   "nll": {
+    "estimacion": 0.2058,
+    "ic_inf": 0.1368,
+    "ic_sup": 0.2882
+   },
+   "brier": {
+    "estimacion": 0.1034,
+    "ic_inf": 0.0734,
+    "ic_sup": 0.1342
+   },
+   "ece_top": {
+    "estimacion": 0.0333,
+    "ic_inf": 0.0221,
+    "ic_sup": 0.0557
+   },
+   "exactitud": {
+    "estimacion": 0.9184,
+    "ic_inf": 0.8939,
+    "ic_sup": 0.9429
+   },
+   "auc_planeta_fp": {
+    "estimacion": 0.9849,
+    "ic_inf": 0.9736,
+    "ic_sup": 0.9937
+   }
+  },
+  "despues": {
+   "nll": {
+    "estimacion": 0.1878,
+    "ic_inf": 0.1347,
+    "ic_sup": 0.2465
+   },
+   "brier": {
+    "estimacion": 0.1003,
+    "ic_inf": 0.0719,
+    "ic_sup": 0.1295
+   },
+   "ece_top": {
+    "estimacion": 0.0221,
+    "ic_inf": 0.017,
+    "ic_sup": 0.0447
+   },
+   "exactitud": {
+    "estimacion": 0.9184,
+    "ic_inf": 0.8939,
+    "ic_sup": 0.9429
+   },
+   "auc_planeta_fp": {
+    "estimacion": 0.9846,
+    "ic_inf": 0.973,
+    "ic_sup": 0.9935
+   }
+  },
+  "diferencia_despues_menos_antes": {
+   "nll": {
+    "estimacion": -0.0181,
+    "ic_inf": -0.0462,
+    "ic_sup": 0.0008
+   },
+   "brier": {
+    "estimacion": -0.0031,
+    "ic_inf": -0.0064,
+    "ic_sup": -0.0003
+   },
+   "ece_top": {
+    "estimacion": -0.0112,
+    "ic_inf": -0.0179,
+    "ic_sup": 0.0045
+   },
+   "exactitud": {
+    "estimacion": 0.0,
+    "ic_inf": 0.0,
+    "ic_sup": 0.0
+   },
+   "auc_planeta_fp": {
+    "estimacion": -0.0003,
+    "ic_inf": -0.0021,
+    "ic_sup": 0.0013
+   }
+  }
+ },
+ "E9_prior": {
+  "tasa_dr25": {
+   "valor": 0.453,
+   "confirmados": 2060,
+   "falsos_positivos": 2487
+  },
+  "tasa_entrenamiento_media": 0.5306,
+  "por_tasa": {
+   "dr25_periodo_1_30_d": {
+    "tasa": 0.453,
+    "ece_ponderado_sin_corregir": 0.0505,
+    "ece_ponderado_corregido": 0.0503,
+    "diferencia_corregido_menos_sin": {
+     "estimacion": -0.0003,
+     "ic_inf": -0.016,
+     "ic_sup": 0.0111
+    },
+    "candidatos_con_q_mayor_0.5": [
+     132,
+     128
+    ],
+    "candidatos_con_q_mayor_0.9": [
+     113,
+     107
+    ],
+    "tau_kendall_orden": 0.9962,
+    "cambios_en_los_20_primeros": 0
+   },
+   "rejilla_0.5": {
+    "tasa": 0.5,
+    "ece_ponderado_sin_corregir": 0.0482,
+    "ece_ponderado_corregido": 0.052,
+    "diferencia_corregido_menos_sin": {
+     "estimacion": 0.0038,
+     "ic_inf": -0.0157,
+     "ic_sup": 0.0147
+    },
+    "candidatos_con_q_mayor_0.5": [
+     132,
+     131
+    ],
+    "candidatos_con_q_mayor_0.9": [
+     113,
+     112
+    ],
+    "tau_kendall_orden": 0.9979,
+    "cambios_en_los_20_primeros": 0
+   },
+   "rejilla_0.2": {
+    "tasa": 0.2,
+    "ece_ponderado_sin_corregir": 0.0816,
+    "ece_ponderado_corregido": 0.0408,
+    "diferencia_corregido_menos_sin": {
+     "estimacion": -0.0408,
+     "ic_inf": -0.0604,
+     "ic_sup": -0.0229
+    },
+    "candidatos_con_q_mayor_0.5": [
+     132,
+     116
+    ],
+    "candidatos_con_q_mayor_0.9": [
+     113,
+     82
+    ],
+    "tau_kendall_orden": 0.9878,
+    "cambios_en_los_20_primeros": 1
+   },
+   "rejilla_0.1": {
+    "tasa": 0.1,
+    "ece_ponderado_sin_corregir": 0.0994,
+    "ece_ponderado_corregido": 0.0296,
+    "diferencia_corregido_menos_sin": {
+     "estimacion": -0.0698,
+     "ic_inf": -0.0962,
+     "ic_sup": -0.0456
+    },
+    "candidatos_con_q_mayor_0.5": [
+     132,
+     112
+    ],
+    "candidatos_con_q_mayor_0.9": [
+     113,
+     59
+    ],
+    "tau_kendall_orden": 0.9853,
+    "cambios_en_los_20_primeros": 1
+   },
+   "rejilla_0.05": {
+    "tasa": 0.05,
+    "ece_ponderado_sin_corregir": 0.1083,
+    "ece_ponderado_corregido": 0.0207,
+    "diferencia_corregido_menos_sin": {
+     "estimacion": -0.0876,
+     "ic_inf": -0.1183,
+     "ic_sup": -0.0596
+    },
+    "candidatos_con_q_mayor_0.5": [
+     132,
+     94
+    ],
+    "candidatos_con_q_mayor_0.9": [
+     113,
+     33
+    ],
+    "tau_kendall_orden": 0.9839,
+    "cambios_en_los_20_primeros": 1
+   },
+   "rejilla_0.02": {
+    "tasa": 0.02,
+    "ece_ponderado_sin_corregir": 0.1137,
+    "ece_ponderado_corregido": 0.0097,
+    "diferencia_corregido_menos_sin": {
+     "estimacion": -0.1039,
+     "ic_inf": -0.1379,
+     "ic_sup": -0.0706
+    },
+    "candidatos_con_q_mayor_0.5": [
+     132,
+     75
+    ],
+    "candidatos_con_q_mayor_0.9": [
+     113,
+     15
+    ],
+    "tau_kendall_orden": 0.9831,
+    "cambios_en_los_20_primeros": 1
+   }
+  }
+ },
+ "nota": "E9 supone que solo cambia la tasa base (no el aspecto de las señales); no valida el régimen de zona habitable."
+}

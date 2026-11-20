@@ -1,0 +1,22 @@
+id_ejemplo,clase_real,prediccion,p_planeta,p_fp,p_sin_senal,entropia,informacion_mutua,seleccion
+K03728.01|transito,0,1,0.078,0.921,0.001,0.282,0.0141,error al azar
+K07993.01|sin_senal,2,1,0.18,0.42,0.4,1.039,0.0098,error al azar
+K00128.01|transito,0,1,0.197,0.803,0.0,0.497,0.0871,error al azar
+K03216.01|transito,1,2,0.454,0.063,0.483,0.884,0.0984,error al azar
+K06228.01|transito,0,1,0.165,0.448,0.388,1.024,0.1533,error al azar
+K00191.01|transito,0,1,0.302,0.697,0.0,0.615,0.083,error al azar
+K00081.01|transito,1,0,0.897,0.102,0.0,0.334,0.012,error al azar
+K04929.01|transito,1,0,0.683,0.311,0.006,0.655,0.079,error al azar
+K05100.01|sin_senal,2,1,0.18,0.42,0.4,1.039,0.0098,error al azar
+K00897.01|transito,0,1,0.473,0.526,0.001,0.696,0.0072,error al azar
+K01518.01|sin_senal,2,2,0.0,0.0,1.0,0.004,0.0001,acierto al azar
+K00098.01|transito,0,0,0.837,0.163,0.001,0.449,0.0183,acierto al azar
+K01838.01|sin_senal,2,2,0.024,0.039,0.937,0.277,0.0071,acierto al azar
+K00826.01|transito,0,0,0.999,0.001,0.0,0.008,0.0008,acierto al azar
+K00486.01|transito,0,0,0.999,0.0,0.0,0.005,0.0002,acierto al azar
+K00614.01|sin_senal,2,2,0.018,0.019,0.963,0.184,0.0058,acierto al azar
+K00652.01|transito,0,0,0.978,0.022,0.0,0.107,0.0025,acierto al azar
+K00646.01|sin_senal,2,2,0.0,0.0,1.0,0.002,0.0001,acierto al azar
+K00891.01|transito,0,0,0.998,0.002,0.0,0.015,0.0011,acierto al azar
+K00586.01|transito,0,0,1.0,0.0,0.0,0.004,0.0002,acierto al azar
+K00022.01|transito,0,0,0.951,0.049,0.0,0.196,0.0105,caso fijo de la demo

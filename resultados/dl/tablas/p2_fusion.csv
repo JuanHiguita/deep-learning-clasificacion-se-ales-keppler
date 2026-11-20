@@ -1,0 +1,66 @@
+tipo,modelo,clave,metrica,estimacion,ic_inf,ic_sup,semillas,distinguible
+modelo,Fusión de 4 ramas (E6a),e6a_cuatro_ramas,auc_planeta_fp,0.9852,0.9742,0.9935,5.0,
+modelo,Fusión de 4 ramas (E6a),e6a_cuatro_ramas,nll,0.21,0.1356,0.3002,5.0,
+modelo,Fusión de 4 ramas (E6a),e6a_cuatro_ramas,exactitud,0.9269,0.9053,0.9478,5.0,
+modelo,Fusión de 4 ramas (E6a),e6a_cuatro_ramas,ece_top,0.0298,0.0229,0.0485,5.0,
+modelo,Fusión con ajuste cruzado,e6a_ajuste_cruzado,auc_planeta_fp,0.975,0.9591,0.9884,5.0,
+modelo,Fusión con ajuste cruzado,e6a_ajuste_cruzado,nll,0.2367,0.1638,0.3315,5.0,
+modelo,Fusión con ajuste cruzado,e6a_ajuste_cruzado,exactitud,0.9216,0.9008,0.9416,5.0,
+modelo,Fusión con ajuste cruzado,e6a_ajuste_cruzado,ece_top,0.025,0.0257,0.0418,5.0,
+modelo,Fusión tardía: promedio de probabilidades (E6c),e6c_fusion_tardia,auc_planeta_fp,0.9764,0.9575,0.9909,1.0,
+modelo,Fusión tardía: promedio de probabilidades (E6c),e6c_fusion_tardia,nll,0.2599,0.2309,0.2896,1.0,
+modelo,Fusión tardía: promedio de probabilidades (E6c),e6c_fusion_tardia,exactitud,0.9388,0.9163,0.9592,1.0,
+modelo,Fusión tardía: promedio de probabilidades (E6c),e6c_fusion_tardia,ece_top,0.1203,0.1028,0.1383,1.0,
+modelo,Sin rama 1 (vistas),e7_sin_vistas,auc_planeta_fp,0.978,0.963,0.9894,5.0,
+modelo,Sin rama 1 (vistas),e7_sin_vistas,nll,0.2199,0.1408,0.3175,5.0,
+modelo,Sin rama 1 (vistas),e7_sin_vistas,exactitud,0.9249,0.902,0.9473,5.0,
+modelo,Sin rama 1 (vistas),e7_sin_vistas,ece_top,0.0317,0.0228,0.052,5.0,
+modelo,Sin rama 2 (tránsitos),e7_sin_transitos,auc_planeta_fp,0.9835,0.9709,0.9928,5.0,
+modelo,Sin rama 2 (tránsitos),e7_sin_transitos,nll,0.2152,0.1299,0.3205,5.0,
+modelo,Sin rama 2 (tránsitos),e7_sin_transitos,exactitud,0.9294,0.9053,0.951,5.0,
+modelo,Sin rama 2 (tránsitos),e7_sin_transitos,ece_top,0.0251,0.0198,0.0478,5.0,
+modelo,Sin rama 3 (imagen v0),e7_sin_imagen,auc_planeta_fp,0.9814,0.9683,0.9917,5.0,
+modelo,Sin rama 3 (imagen v0),e7_sin_imagen,nll,0.2071,0.1485,0.2715,5.0,
+modelo,Sin rama 3 (imagen v0),e7_sin_imagen,exactitud,0.9245,0.902,0.9457,5.0,
+modelo,Sin rama 3 (imagen v0),e7_sin_imagen,ece_top,0.03,0.0235,0.051,5.0,
+modelo,Sin rama 4 (escalares),e7_sin_escalares,auc_planeta_fp,0.9692,0.9503,0.9851,5.0,
+modelo,Sin rama 4 (escalares),e7_sin_escalares,nll,0.3035,0.205,0.4247,5.0,
+modelo,Sin rama 4 (escalares),e7_sin_escalares,exactitud,0.9118,0.8873,0.9347,5.0,
+modelo,Sin rama 4 (escalares),e7_sin_escalares,ece_top,0.0337,0.0283,0.0563,5.0,
+modelo,Solo rama 1 (vistas),e7_solo_vistas,auc_planeta_fp,0.9132,0.8764,0.9441,5.0,
+modelo,Solo rama 1 (vistas),e7_solo_vistas,nll,0.3877,0.3144,0.4689,5.0,
+modelo,Solo rama 1 (vistas),e7_solo_vistas,exactitud,0.8743,0.8441,0.9008,5.0,
+modelo,Solo rama 1 (vistas),e7_solo_vistas,ece_top,0.0431,0.0415,0.0727,5.0,
+modelo,Solo rama 2 (tránsitos),e7_solo_transitos,auc_planeta_fp,0.8942,0.8529,0.9304,5.0,
+modelo,Solo rama 2 (tránsitos),e7_solo_transitos,nll,0.5239,0.4487,0.6056,5.0,
+modelo,Solo rama 2 (tránsitos),e7_solo_transitos,exactitud,0.8139,0.7808,0.8453,5.0,
+modelo,Solo rama 2 (tránsitos),e7_solo_transitos,ece_top,0.0442,0.0432,0.0762,5.0,
+modelo,"Solo rama 3 (imagen v0, demo)",e7_solo_imagen,auc_planeta_fp,0.9093,0.8715,0.9431,5.0,
+modelo,"Solo rama 3 (imagen v0, demo)",e7_solo_imagen,nll,0.4762,0.3519,0.6526,5.0,
+modelo,"Solo rama 3 (imagen v0, demo)",e7_solo_imagen,exactitud,0.8363,0.8033,0.8686,5.0,
+modelo,"Solo rama 3 (imagen v0, demo)",e7_solo_imagen,ece_top,0.0285,0.033,0.0592,5.0,
+modelo,Solo rama 4 (escalares),e7_solo_escalares,auc_planeta_fp,0.9537,0.9246,0.9776,5.0,
+modelo,Solo rama 4 (escalares),e7_solo_escalares,nll,0.2123,0.1601,0.2735,5.0,
+modelo,Solo rama 4 (escalares),e7_solo_escalares,exactitud,0.9204,0.8963,0.9424,5.0,
+modelo,Solo rama 4 (escalares),e7_solo_escalares,ece_top,0.0235,0.0207,0.0468,5.0,
+diferencia,Fusión (E6a) − Fusión con ajuste cruzado,e6a_ajuste_cruzado,auc_planeta_fp,0.0102,-0.0008,0.0226,,False
+diferencia,Fusión (E6a) − Fusión con ajuste cruzado,e6a_ajuste_cruzado,nll,-0.0268,-0.0627,0.0099,,False
+diferencia,Fusión (E6a) − Fusión tardía: promedio de probabilidades (E6c),e6c_fusion_tardia,auc_planeta_fp,0.0088,-0.0021,0.0225,,False
+diferencia,Fusión (E6a) − Fusión tardía: promedio de probabilidades (E6c),e6c_fusion_tardia,nll,-0.0499,-0.1068,0.0256,,False
+diferencia,Fusión (E6a) − Sin rama 1 (vistas),e7_sin_vistas,auc_planeta_fp,0.0072,0.0021,0.0138,,True
+diferencia,Fusión (E6a) − Sin rama 1 (vistas),e7_sin_vistas,nll,-0.0099,-0.0405,0.0188,,False
+diferencia,Fusión (E6a) − Sin rama 2 (tránsitos),e7_sin_transitos,auc_planeta_fp,0.0017,-0.0062,0.0096,,False
+diferencia,Fusión (E6a) − Sin rama 2 (tránsitos),e7_sin_transitos,nll,-0.0052,-0.0404,0.0304,,False
+diferencia,Fusión (E6a) − Sin rama 3 (imagen v0),e7_sin_imagen,auc_planeta_fp,0.0038,-0.0033,0.0109,,False
+diferencia,Fusión (E6a) − Sin rama 3 (imagen v0),e7_sin_imagen,nll,0.0029,-0.0387,0.0605,,False
+diferencia,Fusión (E6a) − Sin rama 4 (escalares),e7_sin_escalares,auc_planeta_fp,0.016,0.0046,0.0306,,True
+diferencia,Fusión (E6a) − Sin rama 4 (escalares),e7_sin_escalares,nll,-0.0935,-0.137,-0.0563,,True
+diferencia,Fusión (E6a) − Solo rama 1 (vistas),e7_solo_vistas,auc_planeta_fp,0.072,0.0426,0.1043,,True
+diferencia,Fusión (E6a) − Solo rama 1 (vistas),e7_solo_vistas,nll,-0.1778,-0.2449,-0.1077,,True
+diferencia,Fusión (E6a) − Solo rama 2 (tránsitos),e7_solo_transitos,auc_planeta_fp,0.091,0.0589,0.1299,,True
+diferencia,Fusión (E6a) − Solo rama 2 (tránsitos),e7_solo_transitos,nll,-0.314,-0.3891,-0.2275,,True
+diferencia,"Fusión (E6a) − Solo rama 3 (imagen v0, demo)",e7_solo_imagen,auc_planeta_fp,0.0759,0.0442,0.1113,,True
+diferencia,"Fusión (E6a) − Solo rama 3 (imagen v0, demo)",e7_solo_imagen,nll,-0.2662,-0.3763,-0.1815,,True
+diferencia,Fusión (E6a) − Solo rama 4 (escalares),e7_solo_escalares,auc_planeta_fp,0.0315,0.0099,0.057,,True
+diferencia,Fusión (E6a) − Solo rama 4 (escalares),e7_solo_escalares,nll,-0.0023,-0.0815,0.0881,,False
+diferencia,"Fusión (E6a) − demo completa (M0), ejemplos con imagen",m0_demo_completo,auc_planeta_fp,0.0515,0.027,0.0793,,True

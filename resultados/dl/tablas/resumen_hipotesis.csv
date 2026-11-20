@@ -1,0 +1,13 @@
+hipotesis,pregunta,cantidad,estimacion,ic_inf,ic_sup,veredicto
+P1a,¿La lectura tránsito por tránsito supera a la curva plegada?,AUC: rama 2 con atención − rama 1 (AstroNet),0.0189,-0.0247,0.0618,no se sostiene (el intervalo incluye el 0 o va en contra)
+P1b,¿La atención aporta frente al promedio?,AUC: atención − promedio,0.0202,-0.0138,0.0547,no se sostiene (el intervalo incluye el 0 o va en contra)
+P1c,¿La GRU supera a la atención?,AUC: GRU − atención,-0.0215,-0.0456,-0.0004,no se sostiene (el intervalo incluye el 0 o va en contra)
+P2,¿La fusión supera a la mejor rama sola?,AUC: fusión − solo rama 4 (escalares),0.0315,0.0099,0.057,se sostiene
+P2,¿Aporta la rama? (Sin rama 1 (vistas)),AUC: fusión − sin vistas,0.0072,0.0021,0.0138,se sostiene
+P2,¿Aporta la rama? (Sin rama 2 (tránsitos)),AUC: fusión − sin transitos,0.0017,-0.0062,0.0096,no se sostiene (el intervalo incluye el 0 o va en contra)
+P2,¿Aporta la rama? (Sin rama 3 (imagen v0)),AUC: fusión − sin imagen,0.0038,-0.0033,0.0109,no se sostiene (el intervalo incluye el 0 o va en contra)
+P2,¿Aporta la rama? (Sin rama 4 (escalares)),AUC: fusión − sin escalares,0.016,0.0046,0.0306,se sostiene
+P2,¿La fusión supera a la demo vuelta a medir?,AUC: fusión − demo completa,0.0515,0.027,0.0793,se sostiene
+P3a,¿Mejora el NLL con temperature scaling?,NLL: después − antes,-0.0181,-0.0462,0.0008,no se sostiene (el intervalo incluye el 0 o va en contra)
+P3b,"¿El prior explícito mejora la calibración (tasa base 0,05)?",ECE ponderado: corregido − sin corregir,-0.0876,-0.1183,-0.0596,se sostiene
+P3c,¿El ensamble supera a MC Dropout?,NLL: ensamble − MC Dropout,0.0033,-0.0192,0.0344,no se sostiene (el intervalo incluye el 0 o va en contra)

@@ -1,0 +1,12 @@
+experimento,cantidad,antes,despues,diferencia,ic_inf,ic_sup
+E8,nll,0.2058,0.1878,-0.0181,-0.0462,0.0008
+E8,brier,0.1034,0.1003,-0.0031,-0.0064,-0.0003
+E8,ece_top,0.0333,0.0221,-0.0112,-0.0179,0.0045
+E8,exactitud,0.9184,0.9184,0.0,0.0,0.0
+E8,auc_planeta_fp,0.9849,0.9846,-0.0003,-0.0021,0.0013
+E9,"ECE ponderado, tasa base 0.453",0.0505,0.0503,-0.0003,-0.016,0.0111
+E9,"ECE ponderado, tasa base 0.5",0.0482,0.052,0.0038,-0.0157,0.0147
+E9,"ECE ponderado, tasa base 0.2",0.0816,0.0408,-0.0408,-0.0604,-0.0229
+E9,"ECE ponderado, tasa base 0.1",0.0994,0.0296,-0.0698,-0.0962,-0.0456
+E9,"ECE ponderado, tasa base 0.05",0.1083,0.0207,-0.0876,-0.1183,-0.0596
+E9,"ECE ponderado, tasa base 0.02",0.1137,0.0097,-0.1039,-0.1379,-0.0706

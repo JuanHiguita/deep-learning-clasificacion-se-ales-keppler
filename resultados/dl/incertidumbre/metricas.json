@@ -1,0 +1,54 @@
+{
+ "determinista_semilla_0": {
+  "nll": 0.2058,
+  "nll_ic": [
+   0.1368,
+   0.2882
+  ],
+  "brier": 0.1034,
+  "ece_top": 0.0333,
+  "exactitud": 0.9184,
+  "aurc": 0.014,
+  "auroc_deteccion_errores": 0.9246,
+  "entropia_media_aciertos": 0.0746,
+  "entropia_media_errores": 0.627
+ },
+ "mc_dropout": {
+  "nll": 0.186,
+  "nll_ic": [
+   0.1314,
+   0.248
+  ],
+  "brier": 0.1017,
+  "ece_top": 0.0264,
+  "exactitud": 0.9163,
+  "aurc": 0.0113,
+  "auroc_deteccion_errores": 0.9416,
+  "entropia_media_aciertos": 0.0988,
+  "entropia_media_errores": 0.6771
+ },
+ "ensamble_5_semillas": {
+  "nll": 0.1893,
+  "nll_ic": [
+   0.1273,
+   0.262
+  ],
+  "brier": 0.097,
+  "ece_top": 0.019,
+  "exactitud": 0.9347,
+  "aurc": 0.0139,
+  "auroc_deteccion_errores": 0.8886,
+  "entropia_media_aciertos": 0.1039,
+  "entropia_media_errores": 0.6044
+ },
+ "auroc_errores_con_informacion_mutua": {
+  "mc_dropout": 0.9078,
+  "ensamble_5_semillas": 0.8684
+ },
+ "nota": "La incertidumbre solo cubre la cabeza de fusión: los codificadores están congelados.",
+ "diferencia_nll_ensamble_menos_mc": {
+  "estimacion": 0.0033,
+  "ic_inf": -0.0192,
+  "ic_sup": 0.0344
+ }
+}
