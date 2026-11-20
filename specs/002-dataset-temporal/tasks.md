@@ -1,0 +1,18 @@
+# 002 · Dataset temporal — tareas
+
+Modelo sugerido: Opus escribe `curvas.py` y revisa; Sonnet hace descarga, orquestación, pruebas y notebook.
+
+- [ ] T2.1 `descargar_llc.py` y **lanzarlo de inmediato** en segundo plano. Revisar el avance cada pocas horas. Corte: domingo 22-nov; si no llega al 80 %, activar el respaldo de la spec.
+- [ ] T2.2 [P] `tests/sinteticos.py`: generador de curva con tránsitos de caja, ruido gaussiano, tendencia lenta, huecos entre trimestres, opción de alternancia par/impar, eclipse secundario y segundo planeta.
+- [ ] T2.3 `curvas.py`: `mascara_transitos`, `aplanar`, `ruido_robusto`, `fase`, `medir_profundidad`, `escala`. Pruebas de profundidad y escala.
+- [ ] T2.4 `vista_plegada` y las 4 vistas. Pruebas de formas y de eclipse secundario.
+- [ ] T2.5 `ventanas_por_transito`, `seleccionar_transitos`, `estadisticos_consistencia`. Pruebas de par/impar, huecos, otro KOI y selección.
+- [ ] T2.6 `construir_ejemplo` para `transito` y `sin_senal`. Prueba de sin señal.
+- [ ] T2.7 `lectura.py` y `construir_dataset_temporal.py`. Probar con 5 estrellas reales antes de correr todo.
+- [ ] T2.8 Corrida completa. Guardar `.npz`, registro y manifiesto. `verificar_contrato.py`.
+- [ ] T2.9 Inspección de K00022.01 y K03615.01 (figura en `resultados/dl/eda/`). **Si la alternancia de K03615.01 no se ve, detenerse:** el extractor está mal.
+- [ ] T2.10 `notebooks/eda_temporal.ipynb`.
+- [ ] T2.11 Revisión (Opus): leer el registro de descartes; confirmar ≥ 95 % de disponibilidad; confirmar que ningún escalar viene de una columna prohibida.
+- [ ] T2.12 Commit `PT2: dataset temporal`, bitácora (con el conteo de `aviso_sin_senal`).
+
+**Si hay retraso:** reducir `vista_global` a 401 puntos (anotar desviación) y dejar el notebook de EDA para el bloque E.

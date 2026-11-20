@@ -1,0 +1,11 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+lightkurve>=2.4
+astropy
+jax[cpu]
+keras>=3
+pytest
+ruff
+jupyter

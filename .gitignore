@@ -1,0 +1,18 @@
+# datos y modelos grandes
+data/*
+!data/seleccion_demo.csv
+!data/.gitkeep
+*.npz
+*.fits
+*.fits.gz
+modelos/**/*.keras
+# resultados: se versionan métricas y tablas, no predicciones
+resultados/**/*.npz
+# entorno
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.ipynb_checkpoints/
