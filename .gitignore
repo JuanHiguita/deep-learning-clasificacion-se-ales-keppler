@@ -20,3 +20,9 @@ __pycache__/
 __pycache__/
 resultados/**/parciales/
 resultados/dl/cordura/
+resultados/dl/busqueda_demo/
+
+# pesos que SÍ se versionan para poder volver a desplegar (son pequeños)
+!modelos/**/*.keras
+!modelos/**/*.npz
+!resultados/dl/fusion/e6a_cuatro_ramas/cabezas/*.keras

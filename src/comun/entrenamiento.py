@@ -601,6 +601,41 @@ def entrenar_cv(
     return resumen
 
 
+def guardar_modelo_de_particion(
+    exp: Experimento,
+    entradas: Entradas,
+    ejemplos: pd.DataFrame,
+    protocolo: dict,
+    k: int,
+    semilla: int,
+    destino: str | Path,
+) -> dict[str, np.ndarray]:
+    """Entrena el modelo de UNA partición y lo guarda completo, listo para volver a usarlo.
+
+    Escribe en `destino`:
+        particion_<k>.keras                  modelo completo (entradas → 3 probabilidades)
+        estandarizacion_particion_<k>.npz    media y desviación de las entradas estandarizadas
+    Devuelve sus predicciones de prueba y de validación interna, para comprobar que el modelo
+    guardado es el mismo que produjo los resultados publicados (el entrenamiento es determinista).
+    """
+    destino = Path(destino)
+    destino.mkdir(parents=True, exist_ok=True)
+    datos = _preparar_datos(exp, entradas, ejemplos)
+    sep = separar(datos.particion, k, protocolo["particiones"]["n"])
+    comprobar_sin_solape(datos.kepid, sep)
+    resultado, modelo, _, estadisticas = _entrenar_particion(
+        exp, datos, sep, semilla, protocolo["entrenamiento"]
+    )
+    modelo.save(destino / f"particion_{k}.keras")
+    if estadisticas:
+        np.savez(
+            destino / f"estandarizacion_particion_{k}.npz",
+            **{f"{clave}_media": media for clave, (media, _) in estadisticas.items()},
+            **{f"{clave}_desviacion": desv for clave, (_, desv) in estadisticas.items()},
+        )
+    return {"p_prueba": resultado.p_prueba, "p_validacion": resultado.p_validacion}
+
+
 # ---------------------------------------------------------------------------------------------
 # Pruebas de cordura (plan, sección 4.5)
 # ---------------------------------------------------------------------------------------------

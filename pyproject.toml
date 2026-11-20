@@ -33,3 +33,4 @@ max-line-length = 120
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/construir_notebook.py" = ["E501"]  # párrafos del notebook en una sola línea
+"scripts/construir_notebooks_exploratorios.py" = ["E501"]

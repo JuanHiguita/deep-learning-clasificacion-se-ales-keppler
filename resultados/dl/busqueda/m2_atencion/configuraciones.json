@@ -1,0 +1,66 @@
+[
+ {
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "cabezas": 2
+ },
+ {
+  "tasa_aprendizaje": 0.000366,
+  "weight_decay": 0.0001,
+  "lote": 16,
+  "dropout": 0.1,
+  "ancho": 0.5,
+  "cabezas": 2
+ },
+ {
+  "tasa_aprendizaje": 0.000524,
+  "weight_decay": 0.001,
+  "lote": 16,
+  "dropout": 0.5,
+  "ancho": 2.0,
+  "cabezas": 2
+ },
+ {
+  "tasa_aprendizaje": 0.00121,
+  "weight_decay": 0.0001,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "cabezas": 4
+ },
+ {
+  "tasa_aprendizaje": 0.000406,
+  "weight_decay": 0.001,
+  "lote": 64,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "cabezas": 4
+ },
+ {
+  "tasa_aprendizaje": 0.000313,
+  "weight_decay": 0.0,
+  "lote": 16,
+  "dropout": 0.3,
+  "ancho": 2.0,
+  "cabezas": 4
+ },
+ {
+  "tasa_aprendizaje": 0.00262,
+  "weight_decay": 0.001,
+  "lote": 16,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "cabezas": 2
+ },
+ {
+  "tasa_aprendizaje": 0.00101,
+  "weight_decay": 0.0,
+  "lote": 32,
+  "dropout": 0.1,
+  "ancho": 1.0,
+  "cabezas": 2
+ }
+]

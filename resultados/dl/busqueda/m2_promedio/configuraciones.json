@@ -1,0 +1,58 @@
+[
+ {
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0
+ },
+ {
+  "tasa_aprendizaje": 0.000667,
+  "weight_decay": 0.001,
+  "lote": 64,
+  "dropout": 0.5,
+  "ancho": 1.0
+ },
+ {
+  "tasa_aprendizaje": 0.00171,
+  "weight_decay": 0.0001,
+  "lote": 16,
+  "dropout": 0.5,
+  "ancho": 0.5
+ },
+ {
+  "tasa_aprendizaje": 0.00111,
+  "weight_decay": 1e-05,
+  "lote": 16,
+  "dropout": 0.3,
+  "ancho": 1.0
+ },
+ {
+  "tasa_aprendizaje": 0.000866,
+  "weight_decay": 0.0001,
+  "lote": 16,
+  "dropout": 0.1,
+  "ancho": 0.5
+ },
+ {
+  "tasa_aprendizaje": 0.000983,
+  "weight_decay": 1e-05,
+  "lote": 64,
+  "dropout": 0.3,
+  "ancho": 0.5
+ },
+ {
+  "tasa_aprendizaje": 0.000417,
+  "weight_decay": 1e-05,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 0.5
+ },
+ {
+  "tasa_aprendizaje": 0.00261,
+  "weight_decay": 0.001,
+  "lote": 64,
+  "dropout": 0.1,
+  "ancho": 1.0
+ }
+]

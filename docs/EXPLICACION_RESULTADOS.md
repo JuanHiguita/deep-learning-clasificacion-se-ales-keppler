@@ -169,6 +169,26 @@ Con tasa 0,05, las señales con probabilidad de planeta mayor que 0,5 pasan de 1
 
 Los errores tienen mucha más entropía que los aciertos (0,60 frente a 0,10 en el ensamble). Entre MC Dropout y ensamble **no hay diferencia distinguible** (NLL: +0,006 [−0,016 a +0,035]). La incertidumbre solo cubre la cabeza de fusión.
 
+### 5.5 Análisis de sensibilidad — búsqueda de hiperparámetros (spec 009)
+
+El resultado principal usa hiperparámetros fijados de antemano. Para saber cuánto depende de esa elección se hizo una búsqueda aleatoria: 8 configuraciones por modelo (la del protocolo y 7 sorteadas de un espacio declarado antes de entrenar), con **selección anidada** (cada partición elige con su validación interna; la prueba no interviene) y una semilla.
+
+| Modelo | AUC protocolo (semilla 0) | AUC con búsqueda | Diferencia [IC 95 %] |
+|---|---|---|---|
+| Rama 1 · CNN tipo AstroNet | 0,881 | 0,880 | −0,001 [−0,041 a +0,037] |
+| Rama 2 · promedio | 0,847 | 0,880 | +0,033 [−0,000 a +0,069] |
+| Rama 2 · GRU | 0,867 | 0,873 | +0,006 [−0,004 a +0,015] |
+| Rama 2 · atención | 0,891 | 0,901 | +0,010 [−0,013 a +0,033] |
+| Rama 4 · escalares | 0,957 | 0,954 | −0,004 [−0,019 a +0,009] |
+| Cabeza de fusión | 0,985 | 0,984 | −0,001 [−0,004 a +0,002] |
+
+- **Ninguna mejora se distingue de cero.** El caso del promedio roza el 0, y parte de su subida puede ser variación entre semillas: su semilla 0 fue la más baja de las tres (0,847 · 0,863 · 0,879).
+- **La comparación entre arquitecturas no cambia:** con búsqueda, ninguna diferencia entre las ramas temporales se distingue de cero (atención − promedio +0,021 [−0,010 a +0,054]; atención − GRU +0,028 [−0,003 a +0,061]).
+- **Decisión:** el protocolo fijo sigue siendo el resultado principal; la búsqueda se reporta como análisis de sensibilidad y no se rehízo la fusión.
+- **Límites:** espacio pequeño, una semilla, y la validación interna también decide la parada temprana. No permite afirmar que estos sean los mejores modelos posibles.
+
+Los modelos elegidos quedaron guardados en `modelos/mejores/` y se pueden volver a cargar con `temporal/despliegue.py` (ver `modelos/LEEME.md`).
+
 ## 6. Qué significa y qué no
 
 **Lo que el trabajo muestra**
@@ -209,6 +229,8 @@ Los errores tienen mucha más entropía que los aciertos (0,60 frente a 0,10 en 
 | Scripts originales de la demo, sin modificar | `src/demo/` |
 | 78 pruebas automáticas (76 rápidas y 2 que entrenan) | `tests/` |
 | Notebook ilustrativo e interactivo | `notebooks/informe_dl.ipynb` |
+| Notebooks exploratorios: datos que motivan cada arquitectura y búsqueda de hiperparámetros | `notebooks/01_exploracion_datos.ipynb`, `notebooks/02_experimentacion_hiperparametros.ipynb` |
+| Pesos guardados y cómo volver a usarlos | `modelos/`, `modelos/LEEME.md` |
 | Tablas con todas las cifras | `resultados/dl/tablas/` |
 | Registro de cada sesión y de cada desviación del plan | `docs/planeacion/BITACORA_DL.md` |
 

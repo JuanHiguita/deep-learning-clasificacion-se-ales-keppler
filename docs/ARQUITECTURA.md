@@ -59,6 +59,8 @@ flowchart TD
     VC -. comprueba .-> D3 & D4 & X1 & F
 ```
 
+**Excepción declarada:** `02_experimentacion_hiperparametros.ipynb` sí entrena (una búsqueda pequeña en `resultados/dl/busqueda_demo/`, fuera de git); `informe_dl.ipynb` y `01_exploracion_datos.ipynb` no entrenan.
+
 **Regla de dependencias:** una capa solo importa de capas con número menor. `src/comun` no importa de `src/temporal` ni de `src/fusion`. `src/temporal` no importa de `src/fusion`. Los notebooks no importan código de entrenamiento: solo leen `resultados/dl/`.
 
 ## 2. Árbol de carpetas
@@ -95,7 +97,7 @@ Proyecto_Final/
 │   └── demo/                    scripts originales de la demo, SIN modificar (referencia)
 ├── specs/NNN-nombre/            Spec Kit: spec.md, plan.md, tasks.md
 ├── tests/                       pytest; curvas sintéticas solo aquí
-├── notebooks/                   eda_temporal.ipynb, informe_dl.ipynb (no entrenan)
+├── notebooks/                   01_exploracion_datos, 02_experimentacion_hiperparametros, informe_dl
 ├── docs/
 │   ├── ARQUITECTURA.md          este documento
 │   └── planeacion/              plan de ejecución, bitácora, copia de contrato y estado
@@ -126,6 +128,11 @@ Proyecto_Final/
 | `fusion/calibracion.py` | 4 | E8 (temperatura) y E9 (prior explícito) | spec 006 |
 | `fusion/incertidumbre.py` | 4 | E10 (MC Dropout vs ensamble) y E11 (errores) | spec 006 |
 | `fusion/consolidar_resultados.py` | 4 | Tablas finales y veredicto de las hipótesis | spec 007 |
+| `comun/busqueda.py` | 2 | Búsqueda aleatoria: muestreo, selección anidada, resumen y tablas | spec 009 |
+| `temporal/busqueda_ramas.py` | 3 | Espacios de las ramas 1, 2 y 4; guarda el modelo elegido por partición | spec 009 |
+| `temporal/despliegue.py` | 3 | Cargar un modelo guardado (verifica la huella) y predecir | spec 009 |
+| `fusion/busqueda_cabeza.py` | 4 | Búsqueda de la cabeza de fusión | spec 009 |
+| `informe/exploracion.py`, `informe/experimentacion.py` | 5 | Figuras de los notebooks exploratorios | spec 009 |
 | `informe/datos.py` | 5 | Carga única de dataset, tablas y predicciones (`Resultados`) | spec 007 |
 | `informe/graficos.py` | 5 | Gráfico de intervalos, diagrama de confiabilidad, vista de una señal | spec 007 |
 | `informe/secciones.py` | 5 | Una función por figura del notebook | spec 007 |

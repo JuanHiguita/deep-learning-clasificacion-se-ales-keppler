@@ -1,0 +1,71 @@
+{
+ "arquitectura": "m2_promedio",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "archivo": "particion_0.keras",
+   "configuracion": "cfg02",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00171,
+    "weight_decay": 0.0001,
+    "lote": 16,
+    "dropout": 0.5,
+    "ancho": 0.5
+   },
+   "diferencia_maxima_con_la_busqueda": 8.929937733714866e-09,
+   "sha256": "f9d3f1f715eda0f548dba6251f34923c2e961ed3dcf16d31a27fefe930fa4707"
+  },
+  "1": {
+   "archivo": "particion_1.keras",
+   "configuracion": "cfg07",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00261,
+    "weight_decay": 0.001,
+    "lote": 64,
+    "dropout": 0.1,
+    "ancho": 1.0
+   },
+   "diferencia_maxima_con_la_busqueda": 0.0,
+   "sha256": "5f3cd7e92b84c6e07d8eb76bef102211fde23a88cc250edf9cee7560317819a8"
+  },
+  "2": {
+   "archivo": "particion_2.keras",
+   "configuracion": "cfg03",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00111,
+    "weight_decay": 1e-05,
+    "lote": 16,
+    "dropout": 0.3,
+    "ancho": 1.0
+   },
+   "diferencia_maxima_con_la_busqueda": 1.1254023823958903e-08,
+   "sha256": "f95ac02752d1d566f7395e45c4cd3ca3972da5391917d0e55beccf02954d7229"
+  },
+  "3": {
+   "archivo": "particion_3.keras",
+   "configuracion": "cfg03",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00111,
+    "weight_decay": 1e-05,
+    "lote": 16,
+    "dropout": 0.3,
+    "ancho": 1.0
+   },
+   "diferencia_maxima_con_la_busqueda": 1.3245476604417661e-08,
+   "sha256": "e5cf4d4df1ed0c4a74f6f95797702b95d476ecd09d3399b778a45caffb404e36"
+  },
+  "4": {
+   "archivo": "particion_4.keras",
+   "configuracion": "cfg04",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.000866,
+    "weight_decay": 0.0001,
+    "lote": 16,
+    "dropout": 0.1,
+    "ancho": 0.5
+   },
+   "diferencia_maxima_con_la_busqueda": 1.3374187091130807e-08,
+   "sha256": "4294c02294128aa5c38366a0035375642c98f68c1073bca2d29208411462212e"
+  }
+ }
+}

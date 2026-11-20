@@ -1,0 +1,66 @@
+[
+ {
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "pooling": "max"
+ },
+ {
+  "tasa_aprendizaje": 0.00188,
+  "weight_decay": 1e-05,
+  "lote": 32,
+  "dropout": 0.1,
+  "ancho": 0.5,
+  "pooling": "max"
+ },
+ {
+  "tasa_aprendizaje": 0.000702,
+  "weight_decay": 0.0,
+  "lote": 32,
+  "dropout": 0.5,
+  "ancho": 0.5,
+  "pooling": "max"
+ },
+ {
+  "tasa_aprendizaje": 0.00235,
+  "weight_decay": 0.0,
+  "lote": 32,
+  "dropout": 0.1,
+  "ancho": 1.0,
+  "pooling": "promedio"
+ },
+ {
+  "tasa_aprendizaje": 0.000598,
+  "weight_decay": 0.001,
+  "lote": 64,
+  "dropout": 0.3,
+  "ancho": 0.5,
+  "pooling": "promedio"
+ },
+ {
+  "tasa_aprendizaje": 0.00111,
+  "weight_decay": 0.001,
+  "lote": 64,
+  "dropout": 0.1,
+  "ancho": 1.0,
+  "pooling": "max"
+ },
+ {
+  "tasa_aprendizaje": 0.00169,
+  "weight_decay": 1e-05,
+  "lote": 64,
+  "dropout": 0.1,
+  "ancho": 1.0,
+  "pooling": "max"
+ },
+ {
+  "tasa_aprendizaje": 0.00209,
+  "weight_decay": 1e-05,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "pooling": "max"
+ }
+]

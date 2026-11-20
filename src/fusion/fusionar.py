@@ -62,14 +62,14 @@ class _Particion:
     x: np.ndarray
 
 
-def cabeza(dim_entrada: int, semilla: int, dropout: float = 0.3) -> keras.Model:
+def cabeza(dim_entrada: int, semilla: int, dropout: float = 0.3, oculta: int = 64) -> keras.Model:
     """Cabeza de fusión del contrato §6: Densa(64, ReLU) → Dropout → Densa(3, softmax)."""
     keras.utils.set_random_seed(semilla)
     x = keras.Input((dim_entrada,), name="z")
     # El orden de creación de las capas fija qué números aleatorios recibe cada una: el Dropout
     # se crea antes que la capa densa para reproducir exactamente los resultados publicados.
     dropout_fusion = layers.Dropout(dropout, name="dropout_fusion")
-    oculta = dropout_fusion(layers.Dense(64, activation="relu")(x))
+    oculta = dropout_fusion(layers.Dense(oculta, activation="relu")(x))
     return keras.Model(
         x, layers.Dense(N_CLASES, activation="softmax")(oculta), name="cabeza_fusion"
     )
@@ -113,7 +113,7 @@ def _indices_de_entrenamiento(
     return sep.validacion & ~i_parar, i_parar
 
 
-def _entrenar_semilla(
+def entrenar_semilla(
     nombre: str,
     semilla: int,
     particiones: dict[int, _Particion],
@@ -131,7 +131,9 @@ def _entrenar_semilla(
     for k, particion in particiones.items():
         sep, x = particion.sep, particion.x
         i_ent, i_parar = _indices_de_entrenamiento(nombre, sep, kepid)
-        modelo = cabeza(x.shape[1], 1000 * semilla + k, cfg["dropout_fusion"])
+        modelo = cabeza(
+            x.shape[1], 1000 * semilla + k, cfg["dropout_fusion"], cfg.get("oculta_fusion", 64)
+        )
         modelo, historial = ent.entrenar_una(
             modelo,
             x[i_ent],
@@ -191,6 +193,21 @@ def _resumen_del_apilado(carpeta: Path) -> dict | None:
     }
 
 
+def preparar_particiones(
+    ramas, modelos: Path, dataset: dict, tabla: pd.DataFrame, n_particiones: int
+) -> dict[int, _Particion]:
+    """Entrada de la cabeza de cada partición, con los vectores del codificador de esa partición."""
+    particion, kepid = tabla["particion"].to_numpy(), tabla["kepid"].to_numpy()
+    particiones = {}
+    for k in range(n_particiones):
+        sep = separar(particion, k, n_particiones)
+        comprobar_sin_solape(kepid, sep)
+        i_ent = np.flatnonzero(sep.entrenamiento)
+        x = entrada_de_particion(modelos, k, dataset["id_ejemplo"], dataset, ramas, i_ent)
+        particiones[k] = _Particion(sep, x)
+    return particiones
+
+
 def entrenar_fusion(
     nombre: str,
     ramas,
@@ -215,13 +232,7 @@ def entrenar_fusion(
     n_particiones = protocolo["particiones"]["n"]
     semillas = protocolo["semillas_cabeza_fusion"]
 
-    particiones = {}
-    for k in range(n_particiones):
-        sep = separar(particion, k, n_particiones)
-        comprobar_sin_solape(kepid, sep)
-        i_ent = np.flatnonzero(sep.entrenamiento)
-        x = entrada_de_particion(modelos, k, ids, dataset, ramas, i_ent)
-        particiones[k] = _Particion(sep, x)
+    particiones = preparar_particiones(ramas, modelos, dataset, tabla, n_particiones)
 
     for semilla in semillas:
         ruta = carpeta / f"pred_semilla{semilla}.npz"
@@ -229,7 +240,7 @@ def entrenar_fusion(
             continue
         if limite is not None and time.perf_counter() - inicio > limite:
             return None
-        predicciones = _entrenar_semilla(
+        predicciones = entrenar_semilla(
             nombre, semilla, particiones, y, kepid, protocolo["entrenamiento"], carpeta
         )
         np.savez_compressed(

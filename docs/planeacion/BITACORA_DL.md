@@ -14,6 +14,7 @@
 | PT5 Fusión | `specs/005-fusion` | **Hecho (prioridad A)** | D5 (con imagen v0) | dom 29-nov |
 | PT6 Calibración | `specs/006-calibracion-incertidumbre` | **Hecho (prioridad A)** | D6 | mié 2-dic |
 | PT7 Consolidación | `specs/007-consolidacion` | Tablas y notebook hechos; falta la auditoría final | D6 | mié 2-dic |
+| PT9 Búsqueda y exploración | `specs/009-busqueda-hiperparametros` | **Hecho** (análisis de sensibilidad; no cambia el resultado principal) | — | — |
 | PT8 Informe | `specs/008-informe` | Pendiente | D7, `curso-dl-v1` | sáb 5-dic |
 
 ## Decisiones abiertas (responde Juan)
@@ -98,6 +99,16 @@
 - **Lint:** `ruff check` sin hallazgos (el código se parte a 100 columnas; textos que no se pueden partir, hasta 120).
 - **Sin probar en Windows:** el notebook nuevo y los `.bat` solo se ejecutaron en el entorno de desarrollo (Linux, Python 3.10).
 - **Siguiente paso exacto:** en el PC, `pytest -q`, `pytest -q -m lenta` y `scripts\\abrir_notebook.bat`; después, spec 008 cuando llegue la rúbrica.
+
+### 2026-11-20 · Fable 5.2 · Spec 009: búsqueda de hiperparámetros, notebooks exploratorios y modelos guardados
+- **Hecho:** spec 009 (spec, plan, tareas). `comun/busqueda.py`, `temporal/busqueda_ramas.py`, `fusion/busqueda_cabeza.py`, `temporal/despliegue.py`, `informe/exploracion.py`, `informe/experimentacion.py`. Notebooks `01_exploracion_datos.ipynb` y `02_experimentacion_hiperparametros.ipynb`. Modelos con parámetros de arquitectura nuevos (`ancho`, `unidades_gru`, `cabezas`, `oculta`) cuyos valores por defecto son los del protocolo (mismos conteos de parámetros).
+- **Búsqueda:** 8 configuraciones por modelo (protocolo + 7 sorteadas, semilla 20261120), semilla de entrenamiento 0, selección anidada por validación interna. La configuración 0 es el experimento publicado (se comprobó: reentrenarla da diferencia 0 con `m2_promedio` y el mismo AUC en `m4_escalares`).
+- **Resultados (tal como salieron), AUC en prueba protocolo → con búsqueda [diferencia e IC 95 %]:** rama 1 0,8810 → 0,8803 [−0,0007; −0,0406 a +0,0370]; promedio 0,8472 → 0,8803 [+0,0332; −0,0000 a +0,0687]; GRU 0,8674 → 0,8730 [+0,0057; −0,0038 a +0,0154]; atención 0,8912 → 0,9011 [+0,0099; −0,0129 a +0,0325]; escalares 0,9573 → 0,9536 [−0,0037; −0,0192 a +0,0093]; cabeza 0,9849 → 0,9837 [−0,0012; −0,0043 a +0,0016]. **Ninguna se distingue de cero.** Pares entre ramas temporales con búsqueda: ninguno distinguible.
+- **Decisión D-3 aplicada:** el protocolo fijo sigue siendo el resultado principal; la búsqueda es análisis de sensibilidad. No se rehízo fusión ni calibración.
+- **Modelos guardados:** `modelos/mejores/<arquitectura>/particion_k.keras` + estandarización + manifiesto con SHA-256 para las 5 ramas buscadas (reentrenados y comprobados contra la búsqueda, diferencia ≤ 1,4e-8) y la cabeza. `.gitignore` ahora versiona `modelos/**` y las cabezas de la fusión principal. `despliegue.cargar(...).predecir(...)` reproduce las predicciones reportadas (diferencia 0 en las 5 ramas, partición 1).
+- **Desviaciones e incidencias:** (1) se planearon 12 y luego 10 configuraciones; se bajó a 8 por cómputo **antes** de ver resultados de las ramas temporales (de la rama 4 ya se habían entrenado 12; se usan las 8 primeras). (2) Tres particiones de `m2_promedio/cfg03` se entrenaron con otra configuración de hilos durante una prueba de velocidad y no eran reproducibles; se borró y reentrenó esa configuración. Con ello la diferencia del promedio pasó de +0,037 [+0,004 a +0,073] a +0,033 [−0,000 a +0,069]: el veredicto dependía de ese detalle numérico, y así se declara. (3) La rama 1 no incluye ancho 2 ni lote 16 (una partición no cabía en una corrida). (4) El notebook 02 entrena: excepción declarada a la regla de que los notebooks no entrenan.
+- **Sin probar en Windows:** búsqueda, despliegue y notebooks nuevos solo corrieron en el entorno de desarrollo.
+- **Siguiente paso exacto:** en el PC, `pytest -q` y abrir los tres notebooks; después, auditoría final (T7.7) y spec 008 cuando llegue la rúbrica.
 
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>

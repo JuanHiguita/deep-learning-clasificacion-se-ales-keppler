@@ -1,0 +1,66 @@
+[
+ {
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "unidades_gru": 32
+ },
+ {
+  "tasa_aprendizaje": 0.00103,
+  "weight_decay": 0.0001,
+  "lote": 32,
+  "dropout": 0.5,
+  "ancho": 2.0,
+  "unidades_gru": 64
+ },
+ {
+  "tasa_aprendizaje": 0.0013,
+  "weight_decay": 0.0,
+  "lote": 64,
+  "dropout": 0.5,
+  "ancho": 0.5,
+  "unidades_gru": 32
+ },
+ {
+  "tasa_aprendizaje": 0.00132,
+  "weight_decay": 1e-05,
+  "lote": 32,
+  "dropout": 0.3,
+  "ancho": 1.0,
+  "unidades_gru": 32
+ },
+ {
+  "tasa_aprendizaje": 0.000854,
+  "weight_decay": 0.001,
+  "lote": 64,
+  "dropout": 0.5,
+  "ancho": 1.0,
+  "unidades_gru": 64
+ },
+ {
+  "tasa_aprendizaje": 0.00113,
+  "weight_decay": 0.0,
+  "lote": 32,
+  "dropout": 0.5,
+  "ancho": 2.0,
+  "unidades_gru": 64
+ },
+ {
+  "tasa_aprendizaje": 0.00164,
+  "weight_decay": 1e-05,
+  "lote": 64,
+  "dropout": 0.3,
+  "ancho": 2.0,
+  "unidades_gru": 64
+ },
+ {
+  "tasa_aprendizaje": 0.000533,
+  "weight_decay": 1e-05,
+  "lote": 32,
+  "dropout": 0.1,
+  "ancho": 1.0,
+  "unidades_gru": 64
+ }
+]

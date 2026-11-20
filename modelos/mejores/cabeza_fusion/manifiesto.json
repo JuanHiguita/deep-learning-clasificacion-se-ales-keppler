@@ -1,0 +1,66 @@
+{
+ "arquitectura": "cabeza_fusion",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "archivo": "particion_0.keras",
+   "configuracion": "cfg04",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.000571,
+    "weight_decay": 0.001,
+    "lote": 16,
+    "dropout": 0.3,
+    "oculta": 64
+   },
+   "sha256": "5ce11230fec9ca5ea1245165aba35eacfb21872b22b182ec93acee496f1d4899"
+  },
+  "1": {
+   "archivo": "particion_1.keras",
+   "configuracion": "cfg01",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00059,
+    "weight_decay": 0.001,
+    "lote": 16,
+    "dropout": 0.3,
+    "oculta": 64
+   },
+   "sha256": "c91e29b81d458b59c7034a8c30ab7acbcd8cbaf049511568b7c8aa9ebd807a7b"
+  },
+  "2": {
+   "archivo": "particion_2.keras",
+   "configuracion": "cfg01",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00059,
+    "weight_decay": 0.001,
+    "lote": 16,
+    "dropout": 0.3,
+    "oculta": 64
+   },
+   "sha256": "fd15db980e49ea43e186fac7f771e870682a9c5cd1209859d934251b5077d9ae"
+  },
+  "3": {
+   "archivo": "particion_3.keras",
+   "configuracion": "cfg04",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.000571,
+    "weight_decay": 0.001,
+    "lote": 16,
+    "dropout": 0.3,
+    "oculta": 64
+   },
+   "sha256": "2ea5c9121cf2b5b9d2ee7611ad781de518d83288a1034e8af6b6ed293eee484a"
+  },
+  "4": {
+   "archivo": "particion_4.keras",
+   "configuracion": "cfg04",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.000571,
+    "weight_decay": 0.001,
+    "lote": 16,
+    "dropout": 0.3,
+    "oculta": 64
+   },
+   "sha256": "55996385319497f85e7e871a044d4a8fde1a263bf2e97f89ea3a60ce2620bfb4"
+  }
+ }
+}

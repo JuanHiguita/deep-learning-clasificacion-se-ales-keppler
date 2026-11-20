@@ -1,0 +1,76 @@
+{
+ "arquitectura": "m2_gru",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "archivo": "particion_0.keras",
+   "configuracion": "cfg00",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.001,
+    "weight_decay": 0.0001,
+    "lote": 32,
+    "dropout": 0.3,
+    "ancho": 1.0,
+    "unidades_gru": 32
+   },
+   "diferencia_maxima_con_la_busqueda": 8.929937733714866e-09,
+   "sha256": "f641a9798a701eae84bcad31c47d2aede8218ecfcc103094f62827d0d1d5cb54"
+  },
+  "1": {
+   "archivo": "particion_1.keras",
+   "configuracion": "cfg03",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00132,
+    "weight_decay": 1e-05,
+    "lote": 32,
+    "dropout": 0.3,
+    "ancho": 1.0,
+    "unidades_gru": 32
+   },
+   "diferencia_maxima_con_la_busqueda": 0.0,
+   "sha256": "d36b4c12bfc2c9ab049c85d80164b77ec222477bfa49d43e1f7680b52af04959"
+  },
+  "2": {
+   "archivo": "particion_2.keras",
+   "configuracion": "cfg00",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.001,
+    "weight_decay": 0.0001,
+    "lote": 32,
+    "dropout": 0.3,
+    "ancho": 1.0,
+    "unidades_gru": 32
+   },
+   "diferencia_maxima_con_la_busqueda": 1.1254023823958903e-08,
+   "sha256": "5210cd70a6457d394cfa419a653ac002355d0983d1bbc8c55ff92f63ecc19815"
+  },
+  "3": {
+   "archivo": "particion_3.keras",
+   "configuracion": "cfg03",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.00132,
+    "weight_decay": 1e-05,
+    "lote": 32,
+    "dropout": 0.3,
+    "ancho": 1.0,
+    "unidades_gru": 32
+   },
+   "diferencia_maxima_con_la_busqueda": 1.3245476604417661e-08,
+   "sha256": "003931032aa6fee8c25fe55aa1674d62d954f3f48ab63c360616c3f7561cb3b8"
+  },
+  "4": {
+   "archivo": "particion_4.keras",
+   "configuracion": "cfg07",
+   "hiperparametros": {
+    "tasa_aprendizaje": 0.000533,
+    "weight_decay": 1e-05,
+    "lote": 32,
+    "dropout": 0.1,
+    "ancho": 1.0,
+    "unidades_gru": 64
+   },
+   "diferencia_maxima_con_la_busqueda": 1.3374187091130807e-08,
+   "sha256": "898b676862f8d50fedcc5d1dddd36c874aa0a2b2d07d0362f8c7dcb67716785c"
+  }
+ }
+}

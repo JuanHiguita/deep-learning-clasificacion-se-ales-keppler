@@ -1,0 +1,50 @@
+{
+ "n_configuraciones": 8,
+ "elegida_por_particion": [
+  "cfg05",
+  "cfg01",
+  "cfg03",
+  "cfg02",
+  "cfg05"
+ ],
+ "mejor_en_validacion_media": "cfg05",
+ "nll_validacion": {
+  "fijo": 0.4647,
+  "con_busqueda": 0.4041
+ },
+ "auc_prueba": {
+  "fijo": {
+   "estimacion": 0.8912,
+   "ic_inf": 0.8492,
+   "ic_sup": 0.9289
+  },
+  "con_busqueda": {
+   "estimacion": 0.9011,
+   "ic_inf": 0.8588,
+   "ic_sup": 0.9356
+  },
+  "diferencia": {
+   "estimacion": 0.0099,
+   "ic_inf": -0.0129,
+   "ic_sup": 0.0325
+  }
+ },
+ "nll_prueba": {
+  "fijo": {
+   "estimacion": 0.4902,
+   "ic_inf": 0.4237,
+   "ic_sup": 0.5591
+  },
+  "con_busqueda": {
+   "estimacion": 0.4786,
+   "ic_inf": 0.4077,
+   "ic_sup": 0.554
+  },
+  "diferencia": {
+   "estimacion": -0.0116,
+   "ic_inf": -0.0482,
+   "ic_sup": 0.0267
+  }
+ },
+ "nota": "Una semilla. La NLL de validación 'con búsqueda' es optimista por construcción (se eligió mirándola); la comparación válida es la de prueba."
+}
