@@ -1,0 +1,71 @@
+{
+ "versiones": {
+  "vistas": "v1",
+  "transitos": "v1",
+  "imagen": "v0",
+  "escalares": "v1"
+ },
+ "ramas": [
+  "vistas",
+  "transitos",
+  "imagen",
+  "escalares"
+ ],
+ "particiones": {
+  "0": {
+   "temperatura": 1.062674,
+   "tasa_entrenamiento": 0.530612,
+   "sha256_cabeza": "a3b135ec567093ccce20aa2aedda8cf5f00aff5983adc3cb6b7bd0ed67d233da",
+   "sha256_codificadores": {
+    "vistas": "ff7ff8c085cfa81e75a952da9552ceb0c138ee180a193267adf050d654913727",
+    "transitos": "2cfa88917eac3f26ce13dbcddd74aa67939621e50d97c9e32b0f2ab540bf0e27",
+    "imagen": "86c4bfcca5f8dc0520504d472271a411d0bfee6b413710e966359808474a76ca",
+    "escalares": "b62d2f57fb8940ad6bdea129bb8038b9673bf998923451650162eced0e16f299"
+   }
+  },
+  "1": {
+   "temperatura": 1.295242,
+   "tasa_entrenamiento": 0.530612,
+   "sha256_cabeza": "a50cf2722a6ebb4e9a5bfb4a1e92fdfaff3bebb76be9c5bc28a7a284ffe6192e",
+   "sha256_codificadores": {
+    "vistas": "f0f4208f1beaa361cbb13f04fdea5560d64a13c1b5923b1ef91d8760afc3ccd3",
+    "transitos": "6d613a256269a60f09a172c6f97d73a4f787cb68ecd40f616f38f5778e94846a",
+    "imagen": "0e61ebd7c6239747e35e82f4835d9af93ea2ee3fb75ca1361757a69cf5d8cd0b",
+    "escalares": "e881d836a7b37ba00aced11f56e62ce3978f413f1f2d4b4aea5b9ed90e410586"
+   }
+  },
+  "2": {
+   "temperatura": 1.175025,
+   "tasa_entrenamiento": 0.530612,
+   "sha256_cabeza": "43a494b822f490c45794eb72f5e388d78b5c81e5129ee66831ce744db33b2756",
+   "sha256_codificadores": {
+    "vistas": "756390a851e83508e6332d737755260a8665b05bdd18643db411b684e804a003",
+    "transitos": "5204a04fa657c9a76a5c1a844ee623d517d626177aa9fe7efc8f2ad22b0859dc",
+    "imagen": "9074c95ff41b17677f1d9368093cdabd48b0141d9bff483a2714a3305b77869e",
+    "escalares": "9fa1e2f063cd690721b319168fb944033cd489773d078a1426bc8b7daaca1676"
+   }
+  },
+  "3": {
+   "temperatura": 1.933025,
+   "tasa_entrenamiento": 0.530612,
+   "sha256_cabeza": "149fd2515b1d34a7fb0a852f6ec60148914147d6660da9e915ae2585c0b7727c",
+   "sha256_codificadores": {
+    "vistas": "18600babe37330f07a9507162e222411480053b1c86e37afc54bd77d121a912b",
+    "transitos": "986d10aa34510bc9584cf7ac7a82b8f0f4da8e8926b671d769d2700f154b9b10",
+    "imagen": "97d3aeae68740ccb5514744d250aa54b84a688e320fb27f6853156670d900119",
+    "escalares": "29da92aae62580e6048eeb0a898bac459b51c0350667d871578b8689ca21883f"
+   }
+  },
+  "4": {
+   "temperatura": 1.140854,
+   "tasa_entrenamiento": 0.530612,
+   "sha256_cabeza": "0df09604c75abe0864a2b41993c178abee355fb9d12f03af3762138fdd2f71b8",
+   "sha256_codificadores": {
+    "vistas": "eaf64b31611868ecbcefc33ee084412bc936fd141c355b0f7fe35946d36b6a71",
+    "transitos": "7c3554369f01e9bdee105f6e125b93fe7715b05016045d48834a5733f4db9e7a",
+    "imagen": "8f41cb09459fbd856ab4d88837b1300bd06cf142cdf8abc551d83f94ad43008b",
+    "escalares": "9dca3eb2df81aca4c57506bbb6cf1709c4a0c66beaf9a0e6e59202c6f5c85614"
+   }
+  }
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "experimento": "m1_astronet",
+ "semillas": [
+  0,
+  1,
+  2
+ ],
+ "n_no_disponibles": 23,
+ "por_semilla": {
+  "0": {
+   "auc_planeta_fp": 0.8809,
+   "nll": 0.4727,
+   "nll_validacion": 0.3847,
+   "epocas": [
+    35,
+    27,
+    11,
+    17,
+    40
+   ],
+   "segundos_por_epoca": 0.53
+  },
+  "1": {
+   "auc_planeta_fp": 0.8452,
+   "nll": 0.4079,
+   "nll_validacion": 0.3688,
+   "epocas": [
+    14,
+    24,
+    17,
+    11,
+    36
+   ],
+   "segundos_por_epoca": 0.536
+  },
+  "2": {
+   "auc_planeta_fp": 0.867,
+   "nll": 0.452,
+   "nll_validacion": 0.3846,
+   "epocas": [
+    19,
+    32,
+    26,
+    14,
+    32
+   ],
+   "segundos_por_epoca": 0.536
+  }
+ },
+ "parametros": 57747,
+ "auc_media_semillas": 0.8644,
+ "auc_desviacion_semillas": 0.0147,
+ "nll_validacion_media": 0.3794,
+ "semilla_0": {
+  "n": 490,
+  "matriz_confusion": [
+   [
+    112,
+    14,
+    4
+   ],
+   [
+    22,
+    79,
+    14
+   ],
+   [
+    0,
+    10,
+    235
+   ]
+  ],
+  "global": {
+   "auc_planeta_fp": {
+    "estimacion": 0.8809,
+    "ic_inf": 0.8357,
+    "ic_sup": 0.9194
+   },
+   "nll": {
+    "estimacion": 0.4727,
+    "ic_inf": 0.3601,
+    "ic_sup": 0.602
+   },
+   "brier": {
+    "estimacion": 0.2193,
+    "ic_inf": 0.1836,
+    "ic_sup": 0.2582
+   },
+   "ece_top": {
+    "estimacion": 0.0629,
+    "ic_inf": 0.0492,
+    "ic_sup": 0.0949
+   },
+   "exactitud": {
+    "estimacion": 0.8694,
+    "ic_inf": 0.8388,
+    "ic_sup": 0.8959
+   },
+   "ece_binario_q": {
+    "estimacion": 0.0667
+   }
+  },
+  "acierto_fp_por_bandera": {
+   "fp_ss": {
+    "n": 64,
+    "aciertos": 48
+   },
+   "fp_co": {
+    "n": 49,
+    "aciertos": 35
+   },
+   "fp_nt": {
+    "n": 29,
+    "aciertos": 21
+   },
+   "fp_ec": {
+    "n": 31,
+    "aciertos": 25
+   }
+  },
+  "auc_por_tercil_mes": {
+   "bajo": {
+    "n": 82,
+    "estimacion": 0.8991
+   },
+   "medio": {
+    "n": 81,
+    "estimacion": 0.8767
+   },
+   "alto": {
+    "n": 82,
+    "estimacion": 0.8407
+   }
+  }
+ }
+}

@@ -189,6 +189,35 @@ El resultado principal usa hiperparámetros fijados de antemano. Para saber cuá
 
 Los modelos elegidos quedaron guardados en `modelos/mejores/` y se pueden volver a cargar con `temporal/despliegue.py` (ver `modelos/LEEME.md`).
 
+### 5.6 Estudio de decisiones de diseño (spec 010)
+
+Cada variante cambia **una sola cosa** respecto al protocolo (semilla 0, mismo motor y particiones): activación (GELU, tanh), normalización (por lote, por capa), optimizador (Adam, SGD), profundidad (una capa menos o más), pérdida (sin pesos por clase, suavizado de etiquetas, focal) y preprocesamiento (sin aumentación, *z-score* por serie). Se hizo para las ramas 1, 2 (atención) y 4: 45 variantes. Con tantas comparaciones y una semilla, se fijó de antemano que una variante solo cuenta si se confirma con 3 semillas.
+
+- **Rama 4 (escalares):** ninguna variante cambia el AUC de forma distinguible, salvo no estandarizar, que lo hunde (−0,414).
+- **Rama 2 (atención):** ninguna la mejora. La empeoran de forma distinguible entrenar sin pesos por clase (−0,021 [−0,042 a −0,002]) y quitar los estadísticos de consistencia (−0,050 [−0,089 a −0,015]).
+- **Rama 1 (AstroNet):** tres variantes la mejoran y **se confirman con 3 semillas** (media de 3 semillas; protocolo 0,865):
+
+| Variante de la rama 1 | AUC (3 semillas) | Diferencia [IC 95 %] | Sin la semilla 0 |
+|---|---|---|---|
+| tanh en vez de ReLU | 0,917 | +0,053 [+0,025 a +0,082] | +0,061 [+0,033 a +0,091] |
+| Suavizado de etiquetas 0,1 | 0,936 | +0,071 [+0,044 a +0,102] | +0,080 [+0,052 a +0,113] |
+| *z-score* por serie | 0,946 | +0,081 [+0,054 a +0,112] | +0,097 [+0,068 a +0,130] |
+
+**Qué significa:** la rama 1 del protocolo estaba por debajo de lo que la misma arquitectura puede dar. **Qué no:** no se sabe si mejora el sistema, porque no se rehízo la fusión. El resultado principal (fusión 0,985) sigue siendo el del protocolo fijo. Adoptar una variante es un cambio de protocolo que debe elegirse con la validación, no con la prueba, y declararse.
+
+### 5.7 Experimentos pendientes del plan: E2b, E4 y E5
+
+- **E2b (rama 2 sin estadísticos de consistencia):** promedio −0,087 [−0,153 a −0,025], atención −0,050 [−0,089 a −0,015], GRU −0,036 [−0,080 a +0,006].
+- **E4 (menos tránsitos en prueba, modelos de E2b):** sin esos estadísticos, **la atención supera al promedio** con 32, 16 y 8 tránsitos (+0,073 [+0,020 a +0,126], +0,058 [+0,007 a +0,108], +0,060 [+0,010 a +0,107]); con 4 y 2 la ventaja no se distingue (+0,029 y +0,030). Frente a la GRU no hay diferencia en ningún caso. Simula pocos tránsitos con señales de periodo corto: no es el régimen de zona habitable.
+- **E5 (pooling de la rama 1):** promedio +0,039 [−0,003 a +0,079] y convolución con paso −0,008 [−0,045 a +0,026] frente a máximo; ninguna se distingue. No se hizo la parte de robustez a desplazamientos.
+- **No realizados:** E1b (BiGRU sobre vistas), E6b (ajuste fino conjunto), E7b (dropout de ramas) y E10b (ensamble de codificadores).
+
+**Lectura conjunta para la pregunta 1:** con los estadísticos hechos a mano, atención y promedio empatan; sin ellos, la atención gana. La atención aprende sola lo que al promedio hay que dárselo calculado.
+
+### 5.8 Sistema conjunto y prueba de extremo a extremo (spec 011)
+
+`fusion/sistema.py` encadena los 4 codificadores congelados, la cabeza de fusión, la temperatura y el prior explícito. `scripts/prueba_e2e.py` recorre todo el camino desde los FITS de Kepler para 10 estrellas elegidas al azar (2 por partición, semilla 7) y reproduce lo publicado: entradas idénticas, vectores con diferencia máxima 2e-6 y probabilidad calibrada con diferencia máxima 2e-7. La imagen de píxeles se toma del archivo de la demo y no se vuelve a derivar. La auditoría automática (`fusion/auditoria.py`) pasa sus 22 comprobaciones; ver `docs/AUDITORIA.md`.
+
 ## 6. Qué significa y qué no
 
 **Lo que el trabajo muestra**
@@ -201,7 +230,8 @@ Los modelos elegidos quedaron guardados en `modelos/mejores/` y se pueden volver
 **Lo que no se puede afirmar**
 
 - Que la fusión supere al modelo tabular con centroide.
-- Que la atención sea mejor que promediar.
+- Que la atención sea mejor que promediar cuando el promedio recibe los estadísticos entre tránsitos (sin ellos, sí lo es).
+- Que mejorar la rama 1 mejore el sistema: no se rehízo la fusión.
 - Nada sobre el régimen de zona habitable: todas las señales son de periodo corto, con muchos tránsitos.
 
 **Limitaciones declaradas**
@@ -227,7 +257,9 @@ Los modelos elegidos quedaron guardados en `modelos/mejores/` y se pueden volver
 | Imagen v0, fusión, calibración, incertidumbre | `src/fusion/` |
 | Lectura de resultados, figuras y controles del notebook | `src/informe/` |
 | Scripts originales de la demo, sin modificar | `src/demo/` |
-| 78 pruebas automáticas (76 rápidas y 2 que entrenan) | `tests/` |
+| 114 pruebas automáticas (111 rápidas, 2 que entrenan y 1 de extremo a extremo) | `tests/` |
+| Sistema conjunto, prueba de extremo a extremo y auditoría | `src/fusion/sistema.py`, `scripts/prueba_e2e.py`, `src/fusion/auditoria.py`, `docs/AUDITORIA.md` |
+| Estudio de diseño y experimentos E2b, E4, E5 | `src/temporal/estudio_diseno.py`, `src/temporal/e4_menos_transitos.py`, `notebooks/03_estudio_de_diseno.ipynb` |
 | Notebook ilustrativo e interactivo | `notebooks/informe_dl.ipynb` |
 | Notebooks exploratorios: datos que motivan cada arquitectura y búsqueda de hiperparámetros | `notebooks/01_exploracion_datos.ipynb`, `notebooks/02_experimentacion_hiperparametros.ipynb` |
 | Pesos guardados y cómo volver a usarlos | `modelos/`, `modelos/LEEME.md` |
@@ -240,7 +272,7 @@ Los modelos elegidos quedaron guardados en `modelos/mejores/` y se pueden volver
 - Las cadencias de otros KOIs se ocultan en vez de descartar la ventana entera (la regla original dejaba sin tránsitos a 37 ejemplos).
 - Las ventanas individuales se escalan por el mayor entre la profundidad y el ruido por punto.
 - Descarga directa de MAST por HTTPS (sin `lightkurve`) y calidad `SAP_QUALITY = 0`.
-- No se hicieron los experimentos de prioridad B y C: menos tránsitos (E4), pooling (E5), BiGRU sobre vistas, rama 2 sin estadísticos de consistencia, ajuste fino conjunto y ensamble de codificadores.
+- De los experimentos de prioridad B y C se hicieron E2b, E4 y la primera mitad de E5 (sección 5.7). No se hicieron E1b, E6b, E7b ni E10b.
 
 ## 8. Cómo abrir el notebook y reproducir
 

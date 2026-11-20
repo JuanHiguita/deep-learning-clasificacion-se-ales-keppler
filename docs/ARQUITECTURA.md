@@ -97,7 +97,7 @@ Proyecto_Final/
 │   └── demo/                    scripts originales de la demo, SIN modificar (referencia)
 ├── specs/NNN-nombre/            Spec Kit: spec.md, plan.md, tasks.md
 ├── tests/                       pytest; curvas sintéticas solo aquí
-├── notebooks/                   01_exploracion_datos, 02_experimentacion_hiperparametros, informe_dl
+├── notebooks/                   01_exploracion_datos, 02_experimentacion_hiperparametros, 03_estudio_de_diseno, informe_dl
 ├── docs/
 │   ├── ARQUITECTURA.md          este documento
 │   └── planeacion/              plan de ejecución, bitácora, copia de contrato y estado
@@ -132,6 +132,11 @@ Proyecto_Final/
 | `temporal/busqueda_ramas.py` | 3 | Espacios de las ramas 1, 2 y 4; guarda el modelo elegido por partición | spec 009 |
 | `temporal/despliegue.py` | 3 | Cargar un modelo guardado (verifica la huella) y predecir | spec 009 |
 | `fusion/busqueda_cabeza.py` | 4 | Búsqueda de la cabeza de fusión | spec 009 |
+| `comun/estudio.py`, `temporal/estudio_diseno.py` | 2–3 | Estudio de decisiones de diseño (una variante cambia una cosa) y su confirmación con 3 semillas | spec 010 |
+| `temporal/e4_menos_transitos.py` | 3 | E4: AUC por agregador con menos tránsitos en prueba | spec 010 |
+| `fusion/sistema.py` | 4 | Sistema conjunto: codificadores → cabeza → temperatura → prior; `empaquetar` y `Sistema.responder` | spec 011 |
+| `fusion/auditoria.py` | 4 | Auditoría automática (fugas, particiones, datos, reproducibilidad, cifras, redacción) | spec 011 |
+| `informe/diseno.py` | 5 | Figuras del notebook 03 | spec 010 |
 | `informe/exploracion.py`, `informe/experimentacion.py` | 5 | Figuras de los notebooks exploratorios | spec 009 |
 | `informe/datos.py` | 5 | Carga única de dataset, tablas y predicciones (`Resultados`) | spec 007 |
 | `informe/graficos.py` | 5 | Gráfico de intervalos, diagrama de confiabilidad, vista de una señal | spec 007 |

@@ -166,6 +166,49 @@ def _preparar_datos(exp: Experimento, entradas: Entradas, ejemplos: pd.DataFrame
 # ---------------------------------------------------------------------------------------------
 
 
+def crear_optimizador(cfg: dict) -> keras.optimizers.Optimizer:
+    """Optimizador según `cfg["optimizador"]`. El del protocolo es AdamW.
+
+    SGD usa momento de Nesterov 0,9 y una tasa 10 veces mayor: con la tasa de Adam casi no avanza.
+    """
+    nombre = cfg.get("optimizador", "adamw")
+    tasa, decaimiento = cfg["tasa_aprendizaje"], cfg["weight_decay"]
+    if nombre == "adamw":
+        return keras.optimizers.AdamW(learning_rate=tasa, weight_decay=decaimiento)
+    if nombre == "adam":  # igual que AdamW pero sin decaimiento de pesos
+        return keras.optimizers.Adam(learning_rate=tasa)
+    if nombre == "sgd":
+        return keras.optimizers.SGD(
+            learning_rate=10 * tasa, momentum=0.9, nesterov=True, weight_decay=decaimiento
+        )
+    if nombre == "rmsprop":
+        return keras.optimizers.RMSprop(learning_rate=tasa, weight_decay=decaimiento)
+    raise ValueError(f"Optimizador desconocido: {nombre!r}")
+
+
+def crear_perdida(cfg: dict):
+    """Función de pérdida según `cfg["perdida"]`. La del protocolo es la entropía cruzada.
+
+    "suavizado": entropía cruzada con suavizado de etiquetas 0,1 (castiga la confianza extrema).
+    "focal": pérdida focal con γ = 2 (da más peso a los ejemplos difíciles; Lin et al., 2017).
+    """
+    nombre = cfg.get("perdida", "ce")
+    if nombre == "ce":
+        return "sparse_categorical_crossentropy"
+    if nombre not in ("suavizado", "focal"):
+        raise ValueError(f"Pérdida desconocida: {nombre!r}")
+
+    def perdida(y, p):
+        en_columnas = keras.ops.one_hot(
+            keras.ops.cast(keras.ops.reshape(y, (-1,)), "int32"), N_CLASES
+        )
+        if nombre == "suavizado":
+            return keras.losses.categorical_crossentropy(en_columnas, p, label_smoothing=0.1)
+        return keras.losses.categorical_focal_crossentropy(en_columnas, p, gamma=2.0)
+
+    return perdida
+
+
 def entrenar_una(
     modelo: keras.Model,
     x_ent: Entradas,
@@ -178,11 +221,9 @@ def entrenar_una(
     usar_pesos_de_clase: bool = True,
 ) -> tuple[keras.Model, dict]:
     """Bucle de épocas con parada temprana por NLL de validación; restaura los mejores pesos."""
-    optimizador = keras.optimizers.AdamW(
-        learning_rate=cfg["tasa_aprendizaje"], weight_decay=cfg["weight_decay"]
-    )
-    modelo.compile(optimizer=optimizador, loss="sparse_categorical_crossentropy")
-    pesos = pesos_por_clase(y_ent) if usar_pesos_de_clase else None
+    modelo.compile(optimizer=crear_optimizador(cfg), loss=crear_perdida(cfg))
+    con_pesos = usar_pesos_de_clase and cfg.get("pesos_de_clase", True)
+    pesos = pesos_por_clase(y_ent) if con_pesos else None
     rng = rng or np.random.default_rng(0)
 
     mejor_perdida, epocas_sin_mejorar, mejores_pesos = np.inf, 0, modelo.get_weights()

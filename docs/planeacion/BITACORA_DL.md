@@ -13,8 +13,10 @@
 | PT4 Ramas | `specs/004-ramas-temporales` | **Hecho (prioridad A)** | D4, `ramas-v1` | jue 26-nov |
 | PT5 Fusión | `specs/005-fusion` | **Hecho (prioridad A)** | D5 (con imagen v0) | dom 29-nov |
 | PT6 Calibración | `specs/006-calibracion-incertidumbre` | **Hecho (prioridad A)** | D6 | mié 2-dic |
-| PT7 Consolidación | `specs/007-consolidacion` | Tablas y notebook hechos; falta la auditoría final | D6 | mié 2-dic |
+| PT7 Consolidación | `specs/007-consolidacion` | Tablas, notebook y auditoría hechos (`docs/AUDITORIA.md`) | D6 | mié 2-dic |
 | PT9 Búsqueda y exploración | `specs/009-busqueda-hiperparametros` | **Hecho** (análisis de sensibilidad; no cambia el resultado principal) | — | — |
+| PT10 Estudio de diseño, E2b, E4, E5 | `specs/010-estudio-de-diseno` | **Hecho** (la rama 1 tiene variantes mejores, confirmadas; decisión pendiente) | — | — |
+| PT11 Sistema, e2e y auditoría | `specs/011-sistema-e2e-auditoria` | **Hecho** (auditoría T7.7 incluida) | — | — |
 | PT8 Informe | `specs/008-informe` | Pendiente | D7, `curso-dl-v1` | sáb 5-dic |
 
 ## Decisiones abiertas (responde Juan)
@@ -109,6 +111,17 @@
 - **Desviaciones e incidencias:** (1) se planearon 12 y luego 10 configuraciones; se bajó a 8 por cómputo **antes** de ver resultados de las ramas temporales (de la rama 4 ya se habían entrenado 12; se usan las 8 primeras). (2) Tres particiones de `m2_promedio/cfg03` se entrenaron con otra configuración de hilos durante una prueba de velocidad y no eran reproducibles; se borró y reentrenó esa configuración. Con ello la diferencia del promedio pasó de +0,037 [+0,004 a +0,073] a +0,033 [−0,000 a +0,069]: el veredicto dependía de ese detalle numérico, y así se declara. (3) La rama 1 no incluye ancho 2 ni lote 16 (una partición no cabía en una corrida). (4) El notebook 02 entrena: excepción declarada a la regla de que los notebooks no entrenan.
 - **Sin probar en Windows:** búsqueda, despliegue y notebooks nuevos solo corrieron en el entorno de desarrollo.
 - **Siguiente paso exacto:** en el PC, `pytest -q` y abrir los tres notebooks; después, auditoría final (T7.7) y spec 008 cuando llegue la rúbrica.
+
+### 2026-11-20 · Fable 5.2 · Specs 010 y 011: estudio de diseño, E2b/E4/E5, sistema conjunto, prueba de extremo a extremo y auditoría
+- **Hecho:** `comun/estudio.py`, `temporal/estudio_diseno.py`, `temporal/e4_menos_transitos.py`, `fusion/sistema.py`, `fusion/auditoria.py`, `scripts/prueba_e2e.py`, `informe/diseno.py`, `notebooks/03_estudio_de_diseno.ipynb`, `docs/AUDITORIA.md`. Motor con `optimizador`, `perdida` y `pesos_de_clase` configurables; modelos con `activacion`, `normalizacion` y `capas_extra`. Los valores por defecto siguen dando los mismos conteos de parámetros.
+- **Estudio de diseño (45 variantes, semilla 0, una cosa a la vez):** rama 4, nada distinguible salvo no estandarizar (−0,4142). Rama 2 atención, nada mejora; empeoran sin pesos por clase (−0,0211 [−0,0423 a −0,0021]) y sin consistencia (−0,0498 [−0,0885 a −0,0145]). Rama 1, mejoran suavizado (+0,0536 [+0,0182 a +0,0914]) y *z-score* (+0,0496 [+0,0108 a +0,0891]).
+- **Confirmación con 3 semillas (rama 1; protocolo 0,8645):** tanh 0,9174 (+0,0529 [+0,0250 a +0,0819]); suavizado 0,9356 (+0,0711 [+0,0436 a +0,1023]); *z-score* 0,9457 (+0,0812 [+0,0544 a +0,1123]). Sin la semilla 0: +0,0612, +0,0798 y +0,0970, todas distinguibles.
+- **E2b:** promedio −0,0866 [−0,1529 a −0,0251]; atención −0,0498; GRU −0,0363 [−0,0796 a +0,0056]. **E4** (atención − promedio, sin consistencia): 32 tr. +0,0728 [+0,0200 a +0,1259]; 16 +0,0581 [+0,0073 a +0,1075]; 8 +0,0598 [+0,0101 a +0,1065]; 4 +0,0287 [−0,0208 a +0,0732]; 2 +0,0299 [−0,0162 a +0,0733]. **E5:** pooling promedio +0,0385 [−0,0026 a +0,0787]; paso −0,0084.
+- **Sistema y prueba de extremo a extremo:** `modelos/sistema/` empaquetado; 10 estrellas al azar (semilla 7): entradas idénticas, vectores ≤ 2,4e-6, probabilidad ≤ 2,3e-7. **Auditoría:** 22 de 22 comprobaciones; 14 hallazgos manuales en `docs/AUDITORIA.md`.
+- **Decisión pendiente (de Juan):** adoptar o no una variante de la rama 1 y rehacer el resultado principal. Hasta entonces, el resultado principal sigue siendo el del protocolo fijo.
+- **Desviaciones e incidencias:** no se pudo entrenar en GPU (la máquina virtual de trabajo no tiene acceso a la tarjeta y JAX en Windows nativo es solo CPU). No se hicieron E1b, E6b, E7b, E10b ni la robustez a desplazamientos de E5. La confirmación de la rama 1 no estaba en el alcance inicial de la spec 010 (que la dejaba para una spec nueva); se hizo porque dos variantes se distinguieron. Apareció en el repositorio trabajo de otra sesión (notebook 00 y `src/cuaderno_demo/`): no se tocó ni se incluyó en el commit.
+- **Sin probar en Windows.**
+- **Siguiente paso exacto:** decisión sobre la rama 1; `pytest -q` en el PC; spec 008 cuando llegue la rúbrica.
 
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>

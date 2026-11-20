@@ -1,0 +1,16 @@
+variante,factor,cambio,parametros,epocas_medias,nll_validacion,auc_prueba,nll_prueba,ece_prueba,diferencia_auc,ic_inf,ic_sup,distinguible
+referencia,referencia,protocolo fijo (experimento publicado),13604,33.4,0.4647,0.8912,0.4902,0.0467,0.0,0.0,0.0,False
+act_gelu,activación,GELU en vez de ReLU,13604,38.8,0.4615,0.8791,0.4994,0.0581,-0.012,-0.0335,0.0077,False
+act_tanh,activación,tanh en vez de ReLU,13604,46.2,0.4427,0.8884,0.4781,0.0329,-0.0028,-0.0276,0.0227,False
+norm_lote,normalización,normalización por lote (BatchNorm),13796,28.4,0.4563,0.8918,0.4956,0.0453,0.0007,-0.0185,0.0189,False
+norm_capa,normalización,normalización por capa (LayerNorm),13700,32.4,0.4647,0.8764,0.5645,0.0277,-0.0148,-0.0422,0.0122,False
+opt_adam,optimizador,Adam (sin decaimiento de pesos),13604,29.0,0.4651,0.888,0.4934,0.061,-0.0032,-0.0172,0.01,False
+opt_sgd,optimizador,"SGD con momento de Nesterov, tasa ×10",13604,34.6,0.4702,0.8681,0.5142,0.0432,-0.0231,-0.0603,0.0131,False
+capas_menos,profundidad,una capa o bloque menos,10500,35.8,0.4696,0.8642,0.5057,0.0251,-0.027,-0.0588,0.0014,False
+capas_mas,profundidad,una capa o bloque más,24932,32.4,0.4362,0.8984,0.4826,0.0427,0.0072,-0.0151,0.0301,False
+perdida_sin_pesos,pérdida,entropía cruzada sin pesos por clase,13604,40.0,0.4445,0.8701,0.5111,0.0515,-0.0211,-0.0423,-0.0021,True
+perdida_suavizado,pérdida,"suavizado de etiquetas 0,1",13604,40.2,0.4745,0.8909,0.5,0.0531,-0.0003,-0.0155,0.0148,False
+perdida_focal,pérdida,pérdida focal (γ = 2),13604,33.6,0.5582,0.8629,0.5715,0.1423,-0.0283,-0.0581,0.0009,False
+pre_sin_aumentacion,preprocesamiento,sin aumentación de datos,13604,24.2,0.4677,0.8856,0.5057,0.0521,-0.0056,-0.0238,0.0131,False
+pre_zscore,preprocesamiento,cada serie con media 0 y desviación 1 (se pierde la escala de profundidad),13604,42.6,0.4937,0.8962,0.5646,0.0646,0.005,-0.0224,0.0336,False
+sin_consistencia,entradas (E2b),sin los 4 estadísticos de consistencia,13476,38.4,0.4756,0.8413,0.5271,0.0314,-0.0498,-0.0885,-0.0145,True

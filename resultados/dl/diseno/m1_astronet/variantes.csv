@@ -1,0 +1,17 @@
+variante,factor,cambio,parametros,epocas_medias,nll_validacion,auc_prueba,nll_prueba,ece_prueba,diferencia_auc,ic_inf,ic_sup,distinguible
+referencia,referencia,protocolo fijo (experimento publicado),57747,26.0,0.3847,0.881,0.4727,0.0629,0.0,0.0,0.0,False
+act_gelu,activación,GELU en vez de ReLU,57747,18.8,0.4277,0.839,0.4463,0.0652,-0.042,-0.0874,0.0013,False
+act_tanh,activación,tanh en vez de ReLU,57747,27.0,0.2753,0.9174,0.3173,0.0304,0.0364,-0.0059,0.0788,False
+norm_lote,normalización,normalización por lote (BatchNorm),58387,39.8,0.3857,0.8855,0.4112,0.0799,0.0045,-0.0421,0.0485,False
+norm_capa,normalización,normalización por capa (LayerNorm),58067,17.6,0.302,0.9018,0.3509,0.053,0.0208,-0.0132,0.0585,False
+opt_adam,optimizador,Adam (sin decaimiento de pesos),57747,25.4,0.3658,0.8914,0.4399,0.0612,0.0104,-0.0126,0.0332,False
+opt_sgd,optimizador,"SGD con momento de Nesterov, tasa ×10",57747,36.2,0.3858,0.8987,0.4706,0.0426,0.0177,-0.0248,0.0577,False
+capas_menos,profundidad,una capa o bloque menos,16083,23.2,0.3535,0.847,0.4304,0.0505,-0.034,-0.0739,0.0008,False
+capas_mas,profundidad,una capa o bloque más,217875,19.6,0.386,0.8703,0.458,0.0577,-0.0107,-0.0492,0.0263,False
+perdida_sin_pesos,pérdida,entropía cruzada sin pesos por clase,57747,23.6,0.3706,0.89,0.4316,0.0576,0.009,-0.0269,0.0431,False
+perdida_suavizado,pérdida,"suavizado de etiquetas 0,1",57747,59.4,0.3362,0.9346,0.3309,0.0599,0.0536,0.0182,0.0914,True
+perdida_focal,pérdida,pérdida focal (γ = 2),57747,22.2,0.4084,0.871,0.4531,0.1271,-0.01,-0.0411,0.0204,False
+pre_sin_aumentacion,preprocesamiento,sin aumentación de datos,57747,24.4,0.3799,0.8985,0.4474,0.0628,0.0175,-0.0054,0.04,False
+pre_zscore,preprocesamiento,cada serie con media 0 y desviación 1 (se pierde la escala de profundidad),57747,24.4,0.3144,0.9306,0.3532,0.0498,0.0496,0.0108,0.0891,True
+pool_promedio,pooling (E5),pooling promedio,57747,47.4,0.3273,0.9195,0.3328,0.029,0.0385,-0.0026,0.0787,False
+pool_paso,pooling (E5),sin pooling: convolución con paso 2,57747,29.2,0.3681,0.8726,0.4518,0.0542,-0.0084,-0.0445,0.026,False

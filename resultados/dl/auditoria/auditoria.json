@@ -1,0 +1,138 @@
+{
+ "comprobaciones": 22,
+ "fallidas": 1,
+ "detalle": [
+  {
+   "grupo": "fugas",
+   "comprobacion": "los escalares de entrada están en la lista permitida del protocolo",
+   "correcto": true,
+   "detalle": "log10_periodo_d, log10_duracion_h, profundidad_medida_ppm, snr_medido, log10_n_transitos_validos, koi_dikco_msky, koi_dicco_msky"
+  },
+  {
+   "grupo": "fugas",
+   "comprobacion": "ninguna columna prohibida es un escalar de entrada",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "fugas",
+   "comprobacion": "las columnas prohibidas solo se nombran en los archivos autorizados",
+   "correcto": true,
+   "detalle": "autorizados: comun/lineas_base_tabulares.py; comun/construir_ejemplos.py; comun/descargar_koi.py; comun/verificar_contrato.py; fusion/auditoria.py; informe/secciones.py; cuaderno_demo/flujo.py"
+  },
+  {
+   "grupo": "particiones",
+   "comprobacion": "cada estrella está en una sola partición",
+   "correcto": true,
+   "detalle": "245 estrellas"
+  },
+  {
+   "grupo": "particiones",
+   "comprobacion": "ningún ejemplo prerregistrado entra a los datasets",
+   "correcto": true,
+   "detalle": "0 prerregistrados"
+  },
+  {
+   "grupo": "particiones",
+   "comprobacion": "todas las predicciones usan la partición de compartido/ejemplos.csv",
+   "correcto": true,
+   "detalle": "180 archivos revisados"
+  },
+  {
+   "grupo": "datos",
+   "comprobacion": "las entradas no contienen NaN ni infinitos",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "datos",
+   "comprobacion": "todo escalar que falta vale 0 Y tiene su bandera de faltante",
+   "correcto": true,
+   "detalle": "597 valores faltantes marcados"
+  },
+  {
+   "grupo": "datos",
+   "comprobacion": "compartido/ejemplos.csv coincide con la huella de su manifiesto",
+   "correcto": true,
+   "detalle": "deb694da52428d07…"
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "la prueba de extremo a extremo reproduce lo publicado",
+   "correcto": true,
+   "detalle": "10 estrellas, tolerancia 0.0001"
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "los modelos guardados de cabeza_fusion coinciden con su huella",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "los modelos guardados de m1_astronet coinciden con su huella",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "los modelos guardados de m2_atencion coinciden con su huella",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "los modelos guardados de m2_gru coinciden con su huella",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "los modelos guardados de m2_promedio coinciden con su huella",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "reproducibilidad",
+   "comprobacion": "los modelos guardados de m4_escalares coinciden con su huella",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "cifras",
+   "comprobacion": "las 25 cifras clave de las tablas aparecen en docs/EXPLICACION_RESULTADOS.md",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "redacción",
+   "comprobacion": "no aparece «P\\(habitable\\)» (la salida se llama P(en zona habitable y rocoso))",
+   "correcto": false,
+   "detalle": "docs/AUDITORIA.md"
+  },
+  {
+   "grupo": "redacción",
+   "comprobacion": "no aparece «\\bno existe (ningún|ninguna|otro|otra) (trabajo|método|estudio|modelo)» (la novedad se redacta como «no encontramos»)",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "redacción",
+   "comprobacion": "no aparece «\\bes el primer (modelo|trabajo|método)» (la novedad se redacta como «no encontramos»)",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "redacción",
+   "comprobacion": "el documento de resultados declara que la rama de imagen no es un aporte del curso",
+   "correcto": true,
+   "detalle": ""
+  },
+  {
+   "grupo": "redacción",
+   "comprobacion": "el documento de resultados declara que no hay conclusiones sobre zona habitable",
+   "correcto": true,
+   "detalle": ""
+  }
+ ]
+}

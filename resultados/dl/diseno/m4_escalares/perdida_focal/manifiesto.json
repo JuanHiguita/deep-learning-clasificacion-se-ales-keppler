@@ -1,0 +1,30 @@
+{
+ "argumentos": {
+  "experimento": "perdida_focal",
+  "semillas": "[0]"
+ },
+ "commit": "e83cb55c7bdcf457575f4c02193f10d472bd5e5a",
+ "entradas": {},
+ "fecha_utc": "2026-11-20T18:42:37Z",
+ "protocolo": {
+  "dropout_escalares": 0.2,
+  "dropout_fusion": 0.3,
+  "dropout_rama": 0.3,
+  "epocas_max": 150,
+  "lote": 32,
+  "optimizador": "adamw",
+  "paciencia": 15,
+  "perdida": "focal",
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001
+ },
+ "versiones": {
+  "astropy": "6.1.7",
+  "keras": "3.12.4",
+  "lightkurve": "2.6.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "sklearn": "1.7.2"
+ }
+}

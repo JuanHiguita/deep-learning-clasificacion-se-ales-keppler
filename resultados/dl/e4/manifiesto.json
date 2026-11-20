@@ -1,0 +1,21 @@
+{
+ "argumentos": {
+  "dataset": "data/dataset_temporal.npz",
+  "diseno": "resultados/dl/diseno",
+  "ejemplos": "compartido/ejemplos.csv",
+  "protocolo": "config/protocolo.json",
+  "salida": "resultados/dl/e4"
+ },
+ "commit": "e83cb55c7bdcf457575f4c02193f10d472bd5e5a",
+ "entradas": {},
+ "fecha_utc": "2026-11-20T19:37:36Z",
+ "versiones": {
+  "astropy": "6.1.7",
+  "keras": "3.12.4",
+  "lightkurve": "2.6.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "sklearn": "1.7.2"
+ }
+}

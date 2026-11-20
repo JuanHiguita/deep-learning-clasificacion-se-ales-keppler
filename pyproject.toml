@@ -15,8 +15,11 @@ packages = ["comun", "temporal", "fusion", "informe"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-markers = ["lenta: pruebas que entrenan un modelo pequeño"]
-addopts = "-q -m 'not lenta'"
+markers = [
+    "lenta: pruebas que entrenan un modelo pequeño",
+    "e2e: prueba de extremo a extremo con datos y modelos reales",
+]
+addopts = "-q -m 'not lenta and not e2e'"
 
 [tool.ruff]
 line-length = 100
@@ -34,3 +37,4 @@ max-line-length = 120
 [tool.ruff.lint.per-file-ignores]
 "scripts/construir_notebook.py" = ["E501"]  # párrafos del notebook en una sola línea
 "scripts/construir_notebooks_exploratorios.py" = ["E501"]
+"scripts/construir_notebook_diseno.py" = ["E501"]

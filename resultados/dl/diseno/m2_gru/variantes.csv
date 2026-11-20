@@ -1,0 +1,3 @@
+variante,factor,cambio,parametros,epocas_medias,nll_validacion,auc_prueba,nll_prueba,ece_prueba,diferencia_auc,ic_inf,ic_sup,distinguible
+referencia,referencia,protocolo fijo (experimento publicado),18723,46.6,0.4483,0.8674,0.5281,0.0301,0.0,0.0,0.0,False
+sin_consistencia,entradas (E2b),sin los 4 estadísticos de consistencia,18595,47.0,0.5227,0.8311,0.5521,0.0542,-0.0363,-0.0796,0.0056,False

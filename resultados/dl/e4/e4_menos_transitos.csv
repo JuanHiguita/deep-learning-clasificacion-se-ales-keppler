@@ -1,0 +1,26 @@
+tipo,transitos,modelo,estimacion,ic_inf,ic_sup,distinguible
+modelo,32,promedio,0.7701,0.7036,0.8315,
+modelo,32,gru,0.8387,0.7809,0.8856,
+modelo,32,atencion,0.843,0.7898,0.8897,
+diferencia,32,atencion − promedio,0.0728,0.02,0.1259,True
+diferencia,32,atencion − gru,0.0043,-0.033,0.041,False
+modelo,16,promedio,0.7753,0.7121,0.8327,
+modelo,16,gru,0.8354,0.7834,0.8788,
+modelo,16,atencion,0.8334,0.7803,0.8785,
+diferencia,16,atencion − promedio,0.0581,0.0073,0.1075,True
+diferencia,16,atencion − gru,-0.002,-0.0374,0.034,False
+modelo,8,promedio,0.7427,0.6829,0.8018,
+modelo,8,gru,0.7983,0.7422,0.8479,
+modelo,8,atencion,0.8025,0.7504,0.8493,
+diferencia,8,atencion − promedio,0.0598,0.0101,0.1065,True
+diferencia,8,atencion − gru,0.0042,-0.0365,0.0467,False
+modelo,4,promedio,0.7503,0.6932,0.8061,
+modelo,4,gru,0.7701,0.715,0.8227,
+modelo,4,atencion,0.779,0.7272,0.8252,
+diferencia,4,atencion − promedio,0.0287,-0.0208,0.0732,False
+diferencia,4,atencion − gru,0.0089,-0.0404,0.0606,False
+modelo,2,promedio,0.7078,0.6504,0.7616,
+modelo,2,gru,0.7316,0.6748,0.7841,
+modelo,2,atencion,0.7376,0.6868,0.7817,
+diferencia,2,atencion − promedio,0.0299,-0.0162,0.0733,False
+diferencia,2,atencion − gru,0.0061,-0.054,0.0689,False
