@@ -7,9 +7,9 @@
   "protocolo": "config/protocolo.json",
   "salida": "resultados/dl/incertidumbre"
  },
- "commit": "7d547071610d94ab7cc6c18553c94e562ef84dae",
+ "commit": "1adee71e60087c2aaa3f3caa05f2ef6369699f92",
  "entradas": {},
- "fecha_utc": "2026-11-20T09:28:10Z",
+ "fecha_utc": "2026-11-20T13:50:40Z",
  "versiones": {
   "astropy": "6.1.7",
   "keras": "3.12.4",

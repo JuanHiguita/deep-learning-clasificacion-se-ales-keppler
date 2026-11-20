@@ -7,6 +7,7 @@ Uso:
   python -I src/comun/construir_ejemplos.py --seleccion data/seleccion_demo.csv \
       --koi data/koi_dr25.csv --acumulada data/koi_cumulative.csv --salida compartido/ejemplos.csv
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,8 +23,23 @@ from comun.utilidades import escribir_manifiesto, sha256_archivo, validar_kepid
 
 CLASE = {"CONFIRMED": 0, "FALSE POSITIVE": 1}
 COLUMNAS_SALIDA = [
-    "id_ejemplo", "kepid", "kepoi_name", "tipo", "clase", "tipo_fp", "periodo_d", "mes", "particion",
-    "prerregistrado", "fp_nt", "fp_ss", "fp_co", "fp_ec", "n_koi_en_estrella", "t0_bkjd", "duracion_h",
+    "id_ejemplo",
+    "kepid",
+    "kepoi_name",
+    "tipo",
+    "clase",
+    "tipo_fp",
+    "periodo_d",
+    "mes",
+    "particion",
+    "prerregistrado",
+    "fp_nt",
+    "fp_ss",
+    "fp_co",
+    "fp_ec",
+    "n_koi_en_estrella",
+    "t0_bkjd",
+    "duracion_h",
 ]
 MAX_FRACCION_PRERREGISTRADA = 0.10
 
@@ -35,7 +51,9 @@ def tipo_fp(fila) -> str:
     banderas = [n for n in ("nt", "ss", "co", "ec") if int(fila[f"koi_fpflag_{n}"]) == 1]
     if len(banderas) != 1:
         return "otro"
-    return {"nt": "no_transito", "ss": "eclipse_secundario", "co": "centroide", "ec": "otro"}[banderas[0]]
+    return {"nt": "no_transito", "ss": "eclipse_secundario", "co": "centroide", "ec": "otro"}[
+        banderas[0]
+    ]
 
 
 def marcar_prerregistrados(dr25: pd.DataFrame, acumulada: pd.DataFrame) -> pd.Series:
@@ -64,8 +82,9 @@ def asignar_particiones(kois: pd.DataFrame, n: int, semilla: int) -> np.ndarray:
     return kois["kepid"].map(asignada).to_numpy(dtype=int)
 
 
-def construir(seleccion: pd.DataFrame, dr25: pd.DataFrame, acumulada: pd.DataFrame, protocolo: dict
-              ) -> tuple[pd.DataFrame, dict]:
+def construir(
+    seleccion: pd.DataFrame, dr25: pd.DataFrame, acumulada: pd.DataFrame, protocolo: dict
+) -> tuple[pd.DataFrame, dict]:
     """Devuelve la tabla de ejemplos y un resumen para el manifiesto."""
     dr25 = dr25.copy()
     dr25["kepid"] = dr25["kepid"].map(validar_kepid)
@@ -73,7 +92,9 @@ def construir(seleccion: pd.DataFrame, dr25: pd.DataFrame, acumulada: pd.DataFra
     n_koi = dr25.groupby("kepid")["kepoi_name"].transform("count")
     dr25["n_koi_en_estrella"] = n_koi
 
-    sel = seleccion[["kepoi_name", "koi_disposition"]].rename(columns={"koi_disposition": "disp_seleccion"})
+    sel = seleccion[["kepoi_name", "koi_disposition"]].rename(
+        columns={"koi_disposition": "disp_seleccion"}
+    )
     kois = sel.merge(dr25, on="kepoi_name", how="left", indicator=True)
     sin_dr25 = kois.loc[kois["_merge"] == "left_only", "kepoi_name"].tolist()
     kois = kois[kois["_merge"] == "both"].drop(columns="_merge")
@@ -101,26 +122,54 @@ def construir(seleccion: pd.DataFrame, dr25: pd.DataFrame, acumulada: pd.DataFra
     filas = []
     for k in kois.itertuples():
         comun = dict(
-            kepid=int(k.kepid), kepoi_name=k.kepoi_name, periodo_d=k.koi_period, mes=k.koi_max_mult_ev,
-            particion=int(k.particion), prerregistrado=bool(k.prerregistrado),
-            fp_nt=int(k.koi_fpflag_nt), fp_ss=int(k.koi_fpflag_ss), fp_co=int(k.koi_fpflag_co),
-            fp_ec=int(k.koi_fpflag_ec), n_koi_en_estrella=int(k.n_koi_en_estrella),
-            t0_bkjd=k.koi_time0bk, duracion_h=k.koi_duration,
+            kepid=int(k.kepid),
+            kepoi_name=k.kepoi_name,
+            periodo_d=k.koi_period,
+            mes=k.koi_max_mult_ev,
+            particion=int(k.particion),
+            prerregistrado=bool(k.prerregistrado),
+            fp_nt=int(k.koi_fpflag_nt),
+            fp_ss=int(k.koi_fpflag_ss),
+            fp_co=int(k.koi_fpflag_co),
+            fp_ec=int(k.koi_fpflag_ec),
+            n_koi_en_estrella=int(k.n_koi_en_estrella),
+            t0_bkjd=k.koi_time0bk,
+            duracion_h=k.koi_duration,
         )
-        filas.append(dict(id_ejemplo=f"{k.kepoi_name}|transito", tipo="transito", clase=int(k.clase),
-                          tipo_fp=k.tipo_fp, **comun))
-        filas.append(dict(id_ejemplo=f"{k.kepoi_name}|sin_senal", tipo="sin_senal", clase=2, tipo_fp="", **comun))
+        filas.append(
+            dict(
+                id_ejemplo=f"{k.kepoi_name}|transito",
+                tipo="transito",
+                clase=int(k.clase),
+                tipo_fp=k.tipo_fp,
+                **comun,
+            )
+        )
+        filas.append(
+            dict(
+                id_ejemplo=f"{k.kepoi_name}|sin_senal",
+                tipo="sin_senal",
+                clase=2,
+                tipo_fp="",
+                **comun,
+            )
+        )
     ejemplos = pd.DataFrame(filas)[COLUMNAS_SALIDA].sort_values("id_ejemplo").reset_index(drop=True)
 
     usables = ejemplos[(ejemplos["tipo"] == "transito") & ~ejemplos["prerregistrado"]]
     resumen = {
-        "n_kois": int(len(kois)), "n_ejemplos": int(len(ejemplos)), "n_estrellas": int(kois["kepid"].nunique()),
-        "por_clase": {str(c): int(n) for c, n in ejemplos["clase"].value_counts().sort_index().items()},
+        "n_kois": int(len(kois)),
+        "n_ejemplos": int(len(ejemplos)),
+        "n_estrellas": int(kois["kepid"].nunique()),
+        "por_clase": {
+            str(c): int(n) for c, n in ejemplos["clase"].value_counts().sort_index().items()
+        },
         "por_particion_y_clase": {
             str(p): {str(c): int(n) for c, n in g["clase"].value_counts().sort_index().items()}
             for p, g in ejemplos.groupby("particion")
         },
-        "sin_fila_en_dr25": sin_dr25, "sin_etiqueta_en_dr25": no_etiquetados,
+        "sin_fila_en_dr25": sin_dr25,
+        "sin_etiqueta_en_dr25": no_etiquetados,
         "cambian_de_etiqueta_respecto_a_la_seleccion": cambian,
         "n_prerregistrados_kois": int(kois["prerregistrado"].sum()),
         "prerregistrados": kois.loc[kois["prerregistrado"], "kepoi_name"].tolist(),
@@ -133,19 +182,27 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--seleccion", type=Path, required=True)
     ap.add_argument("--koi", type=Path, required=True, help="tabla q1_q17_dr25_koi")
-    ap.add_argument("--acumulada", type=Path, required=True, help="tabla cumulative (para el prerregistro)")
+    ap.add_argument(
+        "--acumulada", type=Path, required=True, help="tabla cumulative (para el prerregistro)"
+    )
     ap.add_argument("--salida", type=Path, required=True)
     ap.add_argument("--manifiesto", type=Path, default=None)
     ap.add_argument("--protocolo", type=Path, default=Path("config/protocolo.json"))
     a = ap.parse_args(argv)
 
     protocolo = cargar_protocolo(a.protocolo)
-    ejemplos, resumen = construir(pd.read_csv(a.seleccion), pd.read_csv(a.koi), pd.read_csv(a.acumulada), protocolo)
+    ejemplos, resumen = construir(
+        pd.read_csv(a.seleccion), pd.read_csv(a.koi), pd.read_csv(a.acumulada), protocolo
+    )
     a.salida.parent.mkdir(parents=True, exist_ok=True)
     ejemplos.to_csv(a.salida, index=False, lineterminator="\n", float_format="%.10g")
     manifiesto = a.manifiesto or a.salida.with_name("manifiesto_base.json")
-    escribir_manifiesto(manifiesto, vars(a), entradas=[a.seleccion, a.koi, a.acumulada, a.protocolo],
-                        extra={"sha256_ejemplos": sha256_archivo(a.salida), "resumen": resumen})
+    escribir_manifiesto(
+        manifiesto,
+        vars(a),
+        entradas=[a.seleccion, a.koi, a.acumulada, a.protocolo],
+        extra={"sha256_ejemplos": sha256_archivo(a.salida), "resumen": resumen},
+    )
     for clave in ("n_kois", "n_ejemplos", "por_clase", "n_prerregistrados_kois", "terciles_mes"):
         print(clave, "=", resumen[clave])
     print("cambian de etiqueta:", resumen["cambian_de_etiqueta_respecto_a_la_seleccion"])

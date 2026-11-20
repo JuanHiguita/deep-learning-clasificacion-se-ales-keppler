@@ -7,6 +7,7 @@ Decisión DD-04: las series se expresan como (flujo − 1) / escala, donde escal
 medida del ejemplo (con un piso de 3 sigmas). Un tránsito real vale cerca de −1, y la diferencia
 entre eclipses pares e impares no se pierde por saturación.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -19,8 +20,8 @@ CADENCIA_D = 0.0204340  # cadencia larga de Kepler, 29,4 minutos
 
 @dataclass(frozen=True)
 class Efemerides:
-    periodo: float   # días
-    t0: float        # época del primer tránsito, BKJD
+    periodo: float  # días
+    t0: float  # época del primer tránsito, BKJD
     duracion: float  # días
 
     def __post_init__(self):
@@ -30,13 +31,13 @@ class Efemerides:
 
 @dataclass(frozen=True)
 class Ventana:
-    indice: int          # número de tránsito respecto a t0
+    indice: int  # número de tránsito respecto a t0
     centro: float
-    serie: np.ndarray    # (n_puntos,), flujo − 1 sin escalar
+    serie: np.ndarray  # (n_puntos,), flujo − 1 sin escalar
     profundidad: float
     error: float
     valida: bool
-    motivo: str          # "", "cadencias", "en_transito" u "otro_koi"
+    motivo: str  # "", "cadencias", "en_transito" u "otro_koi"
 
 
 def fase(t: np.ndarray, ef: Efemerides, centro: float = 0.0) -> np.ndarray:
@@ -48,7 +49,9 @@ def numero_de_transito(t: np.ndarray, ef: Efemerides) -> np.ndarray:
     return np.round((t - ef.t0) / ef.periodo).astype(int)
 
 
-def mascara_transitos(t: np.ndarray, efemerides: list[Efemerides], factor: float = 1.5) -> np.ndarray:
+def mascara_transitos(
+    t: np.ndarray, efemerides: list[Efemerides], factor: float = 1.5
+) -> np.ndarray:
     """Verdadero en las cadencias dentro de `factor` duraciones (ancho total) de cualquier tránsito."""
     m = np.zeros(len(t), dtype=bool)
     for ef in efemerides:
@@ -56,8 +59,9 @@ def mascara_transitos(t: np.ndarray, efemerides: list[Efemerides], factor: float
     return m
 
 
-def aplanar(t: np.ndarray, f: np.ndarray, enmascarado: np.ndarray, ventana: int = 401,
-            hueco_d: float = 0.5) -> np.ndarray:
+def aplanar(
+    t: np.ndarray, f: np.ndarray, enmascarado: np.ndarray, ventana: int = 401, hueco_d: float = 0.5
+) -> np.ndarray:
     """Divide por una tendencia suave (Savitzky–Golay) ajustada sin los puntos enmascarados.
 
     Se trabaja por tramos sin huecos mayores de `hueco_d` días. Sobre los puntos enmascarados la
@@ -70,11 +74,15 @@ def aplanar(t: np.ndarray, f: np.ndarray, enmascarado: np.ndarray, ventana: int 
             continue
         libre = ~enmascarado[tramo]
         if libre.sum() < 15:
-            tendencia = np.full(len(tramo), np.median(f[tramo][libre]) if libre.any() else np.median(f[tramo]))
+            tendencia = np.full(
+                len(tramo), np.median(f[tramo][libre]) if libre.any() else np.median(f[tramo])
+            )
         else:
             relleno = np.interp(t[tramo], t[tramo][libre], f[tramo][libre])
             w = min(ventana, len(tramo) if len(tramo) % 2 else len(tramo) - 1)
-            tendencia = savgol_filter(relleno, w, 2) if w >= 5 else np.full(len(tramo), np.median(relleno))
+            tendencia = (
+                savgol_filter(relleno, w, 2) if w >= 5 else np.full(len(tramo), np.median(relleno))
+            )
         salida[tramo] = f[tramo] / tendencia
     return salida
 
@@ -84,8 +92,9 @@ def ruido_robusto(f: np.ndarray) -> float:
     return float(1.4826 * np.median(np.abs(f - np.median(f)))) if len(f) else float("nan")
 
 
-def preparar_curva(trimestres: list[tuple[np.ndarray, np.ndarray]], efemerides: list[Efemerides], cfg: dict
-                   ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def preparar_curva(
+    trimestres: list[tuple[np.ndarray, np.ndarray]], efemerides: list[Efemerides], cfg: dict
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Limpia y une los trimestres. Devuelve tiempo, flujo aplanado y ruido por punto, ordenados.
 
     `efemerides` son las de TODOS los KOIs de la estrella: se enmascaran al aplanar (RF-4).
@@ -100,7 +109,11 @@ def preparar_curva(trimestres: list[tuple[np.ndarray, np.ndarray]], efemerides: 
         t, f = t[orden], f[orden] / np.median(f[orden])
         en_transito = mascara_transitos(t, efemerides, cfg["mascara_transito_duraciones"])
         plano = aplanar(t, f, en_transito, cfg["ventana_aplanado_cadencias"])
-        sigma = ruido_robusto(plano[~en_transito]) if (~en_transito).sum() > 20 else ruido_robusto(plano)
+        sigma = (
+            ruido_robusto(plano[~en_transito])
+            if (~en_transito).sum() > 20
+            else ruido_robusto(plano)
+        )
         if not (np.isfinite(sigma) and sigma > 0):
             continue
         conservar = plano < 1 + cfg["recorte_atipicos_sigma_superior"] * sigma  # solo hacia arriba
@@ -114,7 +127,9 @@ def preparar_curva(trimestres: list[tuple[np.ndarray, np.ndarray]], efemerides: 
     return t[orden], f[orden], s[orden]
 
 
-def medir_profundidad(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efemerides) -> tuple[float, float, int]:
+def medir_profundidad(
+    t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efemerides
+) -> tuple[float, float, int]:
     """Profundidad (fracción), su error y el número de puntos, con los puntos del centro del tránsito."""
     centro = np.abs(fase(t, ef)) < 0.25 * ef.duracion
     n = int(centro.sum())
@@ -123,18 +138,21 @@ def medir_profundidad(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efeme
     return float(1.0 - np.median(f[centro])), float(np.median(sigma[centro]) / np.sqrt(n)), n
 
 
-def vista_plegada(fase_d: np.ndarray, valor: np.ndarray, semiancho: float, n_puntos: int
-                  ) -> tuple[np.ndarray, float]:
+def vista_plegada(
+    fase_d: np.ndarray, valor: np.ndarray, semiancho: float, n_puntos: int
+) -> tuple[np.ndarray, float]:
     """Mediana por intervalo en [−semiancho, semiancho]. Devuelve la serie y la fracción de vacíos."""
     dentro = np.abs(fase_d) <= semiancho
-    idx = np.clip(((fase_d[dentro] + semiancho) / (2 * semiancho) * n_puntos).astype(int), 0, n_puntos - 1)
+    idx = np.clip(
+        ((fase_d[dentro] + semiancho) / (2 * semiancho) * n_puntos).astype(int), 0, n_puntos - 1
+    )
     v = valor[dentro]
     orden = np.argsort(idx, kind="mergesort")
     idx, v = idx[orden], v[orden]
     serie = np.full(n_puntos, np.nan)
     if len(idx):
         inicios = np.flatnonzero(np.r_[True, np.diff(idx) > 0])
-        for a, b in zip(inicios, np.r_[inicios[1:], len(idx)]):
+        for a, b in zip(inicios, np.r_[inicios[1:], len(idx)], strict=True):
             serie[idx[a]] = np.median(v[a:b])
     lleno = np.isfinite(serie)
     vacios = 1.0 - lleno.mean()
@@ -145,8 +163,14 @@ def vista_plegada(fase_d: np.ndarray, valor: np.ndarray, semiancho: float, n_pun
     return serie, float(vacios)
 
 
-def ventanas_por_transito(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efemerides,
-                          otras: list[Efemerides], cfg: dict) -> list[Ventana]:
+def ventanas_por_transito(
+    t: np.ndarray,
+    f: np.ndarray,
+    sigma: np.ndarray,
+    ef: Efemerides,
+    otras: list[Efemerides],
+    cfg: dict,
+) -> list[Ventana]:
     """Una ventana por tránsito observado, con su validez (RF-11 y RF-12).
 
     Las cadencias que caen en el tránsito de OTRO KOI de la estrella se ocultan (no se usan) y la
@@ -159,14 +183,21 @@ def ventanas_por_transito(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: E
     esperadas = 2 * semi / CADENCIA_D
     if len(t) == 0:
         return []
-    visible = ~mascara_transitos(t, otras, cfg["mascara_transito_duraciones"]) if otras else np.ones(len(t), bool)
+    visible = (
+        ~mascara_transitos(t, otras, cfg["mascara_transito_duraciones"])
+        if otras
+        else np.ones(len(t), bool)
+    )
     tv, fv, sv = t[visible], f[visible], sigma[visible]
-    n_min, n_max = int(np.ceil((t[0] - ef.t0) / ef.periodo)), int(np.floor((t[-1] - ef.t0) / ef.periodo))
+    n_min, n_max = (
+        int(np.ceil((t[0] - ef.t0) / ef.periodo)),
+        int(np.floor((t[-1] - ef.t0) / ef.periodo)),
+    )
     ventanas = []
     for n in range(n_min, n_max + 1):
         tc = ef.t0 + n * ef.periodo
-        a0, b0 = np.searchsorted(t, [tc - semi, tc + semi])      # todas las cadencias observadas
-        a, b = np.searchsorted(tv, [tc - semi, tc + semi])       # solo las visibles
+        a0, b0 = np.searchsorted(t, [tc - semi, tc + semi])  # todas las cadencias observadas
+        a, b = np.searchsorted(tv, [tc - semi, tc + semi])  # solo las visibles
         dt, y = tv[a:b] - tc, fv[a:b] - 1.0
         en_centro_total = (np.abs(t[a0:b0] - tc) < 0.5 * ef.duracion).sum()
         en_centro = (np.abs(dt) < 0.5 * ef.duracion).sum()
@@ -175,10 +206,14 @@ def ventanas_por_transito(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: E
             motivo = "cadencias"
         elif en_centro_total < cfg["min_cadencias_en_transito"]:
             motivo = "en_transito"
-        elif (b - a) < cfg["min_fraccion_visible"] * esperadas or en_centro < cfg["min_cadencias_en_transito"]:
+        elif (b - a) < cfg["min_fraccion_visible"] * esperadas or en_centro < cfg[
+            "min_cadencias_en_transito"
+        ]:
             motivo = "otro_koi"
         if motivo:
-            ventanas.append(Ventana(n, tc, np.zeros(n_puntos), float("nan"), float("nan"), False, motivo))
+            ventanas.append(
+                Ventana(n, tc, np.zeros(n_puntos), float("nan"), float("nan"), False, motivo)
+            )
             continue
         nucleo = np.abs(dt) < 0.25 * ef.duracion
         if nucleo.sum() < 1:
@@ -191,7 +226,11 @@ def ventanas_por_transito(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: E
 
 
 def _equiespaciados(n_total: int, k: int) -> np.ndarray:
-    return np.unique(np.round(np.linspace(0, n_total - 1, k)).astype(int)) if k > 0 else np.empty(0, int)
+    return (
+        np.unique(np.round(np.linspace(0, n_total - 1, k)).astype(int))
+        if k > 0
+        else np.empty(0, int)
+    )
 
 
 def seleccionar_transitos(ventanas: list[Ventana], maximo: int = 32) -> list[Ventana]:
@@ -203,8 +242,9 @@ def seleccionar_transitos(ventanas: list[Ventana], maximo: int = 32) -> list[Ven
     k_p, k_i = min(len(pares), mitad), min(len(impares), mitad)
     k_p = min(len(pares), maximo - k_i)
     k_i = min(len(impares), maximo - k_p)
-    elegidas = [pares[i] for i in _equiespaciados(len(pares), k_p)] + \
-               [impares[i] for i in _equiespaciados(len(impares), k_i)]
+    elegidas = [pares[i] for i in _equiespaciados(len(pares), k_p)] + [
+        impares[i] for i in _equiespaciados(len(impares), k_i)
+    ]
     return sorted(elegidas, key=lambda v: v.indice)
 
 
@@ -235,82 +275,175 @@ def estadisticos_consistencia(ventanas: list[Ventana]) -> np.ndarray:
     else:
         diferencia = 0.0
     maxima = np.max(np.abs(d - np.median(d)) / e)
-    return np.array([_log_con_signo(dispersion), _log_con_signo(diferencia), np.log10(1 + len(validas)),
-                     _log_con_signo(maxima)], dtype=np.float32)
+    return np.array(
+        [
+            _log_con_signo(dispersion),
+            _log_con_signo(diferencia),
+            np.log10(1 + len(validas)),
+            _log_con_signo(maxima),
+        ],
+        dtype=np.float32,
+    )
 
 
-def construir_ejemplo(t: np.ndarray, f: np.ndarray, sigma: np.ndarray, ef: Efemerides,
-                      otras: list[Efemerides], cfg: dict, centroide: tuple[float, float] = (np.nan, np.nan)
-                      ) -> dict:
+N_ESCALARES = 7
+N_CANALES_VISTA_LOCAL = 4  # todos, pares, impares y fase 0,5
+MAX_FRACCION_VACIA = 1 / 3  # una vista con más intervalos vacíos que esto no se usa
+MIN_PUNTOS_EN_EL_CENTRO = 3  # para poder medir la profundidad
+SNR_DE_AVISO = 5.0  # un ejemplo "sin señal" con más SNR que esto se marca para revisión
+
+
+def _ejemplo_vacio(cfg: dict) -> dict:
+    """Ejemplo con todas sus entradas en cero y marcado como no disponible."""
+    max_transitos = cfg["max_transitos"]
+    return {
+        "vista_global": np.zeros((cfg["vista_global_puntos"], 1), np.float32),
+        "vista_local": np.zeros((cfg["vista_local_puntos"], N_CANALES_VISTA_LOCAL), np.float32),
+        "transitos": np.zeros((max_transitos, cfg["transito_puntos"]), np.float32),
+        "mascara_transitos": np.zeros(max_transitos, np.float32),
+        "paridad_transitos": np.full(max_transitos, -1, np.int8),
+        "n_transitos_validos": 0,
+        "consistencia": np.zeros(4, np.float32),
+        "escalares": np.zeros(N_ESCALARES, np.float32),
+        "faltantes": np.ones(N_ESCALARES, np.float32),
+        "disponible_vistas": 0,
+        "disponible_transitos": 0,
+        "aviso_sin_senal": 0,
+        "descartes": {"cadencias": 0, "en_transito": 0, "otro_koi": 0},
+    }
+
+
+def _llenar_vistas(ej: dict, t: np.ndarray, y: np.ndarray, ef: Efemerides, cfg: dict) -> None:
+    """Rama 1: vista global (órbita completa) y vista local de 4 canales.
+
+    Canales de la vista local: todos los tránsitos, solo los pares, solo los impares y la
+    fase 0,5 (donde aparecería el eclipse secundario de una estrella doble).
+    """
+    n_local, recorte = cfg["vista_local_puntos"], cfg["recorte_relativo"]
+    en_fase = fase(t, ef)
+    semiancho_local = min(cfg["vista_local_semiancho_duraciones"] * ef.duracion, ef.periodo / 2)
+    paridad = numero_de_transito(t, ef) % 2
+    vista_global, vacio_global = vista_plegada(
+        en_fase, y, ef.periodo / 2, cfg["vista_global_puntos"]
+    )
+
+    selecciones = (
+        (slice(None), en_fase),  # todos
+        (paridad == 0, en_fase[paridad == 0]),  # pares
+        (paridad == 1, en_fase[paridad == 1]),  # impares
+        (slice(None), fase(t, ef, ef.periodo / 2)),  # fase 0,5
+    )
+    canales, vacios = [], []
+    for seleccion, fase_del_canal in selecciones:
+        serie, vacio = vista_plegada(fase_del_canal, y[seleccion], semiancho_local, n_local)
+        canales.append(serie if vacio <= MAX_FRACCION_VACIA else np.zeros(n_local))
+        vacios.append(vacio)
+
+    if vacio_global <= MAX_FRACCION_VACIA and vacios[0] <= MAX_FRACCION_VACIA:
+        vista_local = np.stack(canales, axis=-1)
+        ej["vista_global"] = np.clip(vista_global, -recorte, recorte).astype(np.float32)[:, None]
+        ej["vista_local"] = np.clip(vista_local, -recorte, recorte).astype(np.float32)
+        ej["disponible_vistas"] = 1
+
+
+def _llenar_transitos(
+    ej: dict, ventanas: list[Ventana], escala: float, sigma: np.ndarray, cfg: dict
+) -> int:
+    """Rama 2: hasta `max_transitos` ventanas individuales. Devuelve cuántas son válidas."""
+    recorte = cfg["recorte_relativo"]
+    for ventana in ventanas:
+        if not ventana.valida:
+            ej["descartes"][ventana.motivo] += 1
+    n_validas = sum(ventana.valida for ventana in ventanas)
+    ej["n_transitos_validos"] = n_validas
+    if n_validas < cfg["min_transitos_para_rama"]:
+        return n_validas
+
+    # En un tránsito individual el ruido por punto puede superar a la profundidad (planetas
+    # pequeños, ejemplos sin señal). La escala de las ventanas es el mayor de los dos: la señal
+    # vale −1 si domina, y el ruido tiene desviación 1 si domina él. Sin esto, satura el recorte.
+    escala_ventanas = max(escala, float(np.median(sigma)))
+    for i, ventana in enumerate(seleccionar_transitos(ventanas, cfg["max_transitos"])):
+        ej["transitos"][i] = np.clip(ventana.serie / escala_ventanas, -recorte, recorte)
+        ej["mascara_transitos"][i] = 1.0
+        ej["paridad_transitos"][i] = ventana.indice % 2
+    ej["consistencia"] = estadisticos_consistencia(ventanas)
+    ej["disponible_transitos"] = 1
+    return n_validas
+
+
+def _llenar_escalares(
+    ej: dict,
+    ef: Efemerides,
+    profundidad: float,
+    snr: float,
+    n_validas: int,
+    centroide: tuple[float, float],
+) -> None:
+    """Rama 4: escalares medidos en la época del ejemplo. Un dato que falta vale 0 CON su aviso."""
+    valores = [
+        np.log10(ef.periodo),
+        np.log10(ef.duracion * 24.0),
+        profundidad * 1e6,  # partes por millón
+        snr,
+        np.log10(max(n_validas, 1)),
+        centroide[0],
+        centroide[1],
+    ]
+    for i, valor in enumerate(valores):
+        if np.isfinite(valor):
+            ej["escalares"][i], ej["faltantes"][i] = valor, 0.0
+        else:
+            ej["escalares"][i], ej["faltantes"][i] = 0.0, 1.0
+
+
+def construir_ejemplo(
+    t: np.ndarray,
+    f: np.ndarray,
+    sigma: np.ndarray,
+    ef: Efemerides,
+    otras: list[Efemerides],
+    cfg: dict,
+    centroide: tuple[float, float] = (np.nan, np.nan),
+) -> dict:
     """Todas las entradas de un ejemplo (ramas 1, 2 y 4) a partir de la curva ya preparada.
 
     `otras` son los demás KOIs de la estrella: sus cadencias en tránsito se ocultan.
     Para el ejemplo 'sin_senal' se llama con la época desplazada, `otras` debe incluir la
     efeméride real del KOI (así la señal real queda oculta) y `centroide` se deja en NaN.
+
+    Pasos:
+        1. ocultar las cadencias de otros KOIs y medir la profundidad en esta época
+        2. pasar la curva a unidades de profundidad (un tránsito vale cerca de −1)
+        3. llenar las entradas de cada rama
     """
-    ng, nl, nt, mx = cfg["vista_global_puntos"], cfg["vista_local_puntos"], cfg["transito_puntos"], cfg["max_transitos"]
-    recorte = cfg["recorte_relativo"]
-    ej = {
-        "vista_global": np.zeros((ng, 1), np.float32), "vista_local": np.zeros((nl, 4), np.float32),
-        "transitos": np.zeros((mx, nt), np.float32), "mascara_transitos": np.zeros(mx, np.float32),
-        "paridad_transitos": np.full(mx, -1, np.int8), "n_transitos_validos": 0,
-        "consistencia": np.zeros(4, np.float32), "escalares": np.zeros(7, np.float32),
-        "faltantes": np.ones(7, np.float32), "disponible_vistas": 0, "disponible_transitos": 0,
-        "aviso_sin_senal": 0, "descartes": {"cadencias": 0, "en_transito": 0, "otro_koi": 0},
-    }
-    t_todo, f_todo, sigma_todo = t, f, sigma
-    if len(t) and otras:   # las cadencias de otros KOIs no entran a la profundidad ni a las vistas
+    ej = _ejemplo_vacio(cfg)
+
+    # 1. La profundidad y las vistas no usan cadencias en tránsito de otros KOIs
+    t_visible, f_visible, sigma_visible = t, f, sigma
+    if len(t) and otras:
         visible = ~mascara_transitos(t, otras, cfg["mascara_transito_duraciones"])
-        t, f, sigma = t[visible], f[visible], sigma[visible]
-    prof, sig_local, n_centro = medir_profundidad(t, f, sigma, ef) if len(t) else (np.nan, np.nan, 0)
-    if n_centro < 3 or not np.isfinite(sig_local) or sig_local <= 0:
+        t_visible, f_visible, sigma_visible = t[visible], f[visible], sigma[visible]
+    if len(t_visible):
+        profundidad, sigma_local, n_centro = medir_profundidad(
+            t_visible, f_visible, sigma_visible, ef
+        )
+    else:
+        profundidad, sigma_local, n_centro = np.nan, np.nan, 0
+    sin_medida = n_centro < MIN_PUNTOS_EN_EL_CENTRO or not np.isfinite(sigma_local)
+    if sin_medida or sigma_local <= 0:
         return ej
-    escala = max(prof, cfg["escala_min_sigmas"] * sig_local)
-    y = (f - 1.0) / escala
 
-    # ---- rama 1: vistas ----
-    ph = fase(t, ef)
-    semi_local = min(cfg["vista_local_semiancho_duraciones"] * ef.duracion, ef.periodo / 2)
-    paridad = numero_de_transito(t, ef) % 2
-    vg, vac_g = vista_plegada(ph, y, ef.periodo / 2, ng)
-    canales, vac_l = [], []
-    for sel, fase_c in ((slice(None), ph), (paridad == 0, ph[paridad == 0]), (paridad == 1, ph[paridad == 1]),
-                        (slice(None), fase(t, ef, ef.periodo / 2))):
-        serie, vac = vista_plegada(fase_c, y[sel], semi_local, nl)
-        canales.append(serie if vac <= 1 / 3 else np.zeros(nl))
-        vac_l.append(vac)
-    if vac_g <= 1 / 3 and vac_l[0] <= 1 / 3:
-        ej["vista_global"] = np.clip(vg, -recorte, recorte).astype(np.float32)[:, None]
-        ej["vista_local"] = np.clip(np.stack(canales, axis=-1), -recorte, recorte).astype(np.float32)
-        ej["disponible_vistas"] = 1
+    # 2. Normalización por forma: se divide por la profundidad (o por 3σ si no hay señal clara)
+    escala = max(profundidad, cfg["escala_min_sigmas"] * sigma_local)
+    y = (f_visible - 1.0) / escala
 
-    # ---- rama 2: tránsitos uno por uno ----
-    ventanas = ventanas_por_transito(t_todo, f_todo, sigma_todo, ef, otras, cfg)
-    for v in ventanas:
-        if not v.valida:
-            ej["descartes"][v.motivo] += 1
-    validas = [v for v in ventanas if v.valida]
-    ej["n_transitos_validos"] = len(validas)
-    if len(validas) >= cfg["min_transitos_para_rama"]:
-        # En un tránsito individual el ruido por punto puede superar a la profundidad (planetas
-        # pequeños, ejemplos sin señal). La escala de las ventanas es el mayor de los dos: la señal
-        # vale −1 si domina, y el ruido tiene desviación 1 si domina él. Sin esto, satura el recorte.
-        escala_ventanas = max(escala, float(np.median(sigma)))
-        for i, v in enumerate(seleccionar_transitos(ventanas, mx)):
-            ej["transitos"][i] = np.clip(v.serie / escala_ventanas, -recorte, recorte)
-            ej["mascara_transitos"][i] = 1.0
-            ej["paridad_transitos"][i] = v.indice % 2
-        ej["consistencia"] = estadisticos_consistencia(ventanas)
-        ej["disponible_transitos"] = 1
-
-    # ---- rama 4: escalares medidos en la época del ejemplo ----
-    snr = prof / sig_local
-    valores = [np.log10(ef.periodo), np.log10(ef.duracion * 24.0), prof * 1e6, snr,
-               np.log10(max(len(validas), 1)), centroide[0], centroide[1]]
-    for i, v in enumerate(valores):
-        if np.isfinite(v):
-            ej["escalares"][i], ej["faltantes"][i] = v, 0.0
-        else:
-            ej["escalares"][i], ej["faltantes"][i] = 0.0, 1.0  # 0 SIEMPRE acompañado de su aviso
-    ej["aviso_sin_senal"] = int(snr > 5)
+    # 3. Entradas de cada rama. Las ventanas parten de la curva completa: `ventanas_por_transito`
+    #    oculta por su cuenta las cadencias de otros KOIs y mide cuánto de cada ventana se ve.
+    _llenar_vistas(ej, t_visible, y, ef, cfg)
+    ventanas = ventanas_por_transito(t, f, sigma, ef, otras, cfg)
+    n_validas = _llenar_transitos(ej, ventanas, escala, sigma_visible, cfg)
+    snr = profundidad / sigma_local
+    _llenar_escalares(ej, ef, profundidad, snr, n_validas, centroide)
+    ej["aviso_sin_senal"] = int(snr > SNR_DE_AVISO)
     return ej

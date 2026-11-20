@@ -13,6 +13,7 @@ Entradas del modelo por ejemplo:
 
 Uso: python -I demo_dataset.py <carpeta_tpf> <seleccion.csv> <salida.npz>
 """
+
 import glob
 import os
 import sys
@@ -26,7 +27,7 @@ warnings.filterwarnings("ignore")
 CARP, SEL, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
 N = 11
 NB = 61
-CLASES = {"CONFIRMED": 0, "FALSE POSITIVE": 1}   # 2 = negativo (sin señal)
+CLASES = {"CONFIRMED": 0, "FALSE POSITIVE": 1}  # 2 = negativo (sin señal)
 
 
 def imagen_diferencia(t, cubo, epocas, dur):
@@ -100,12 +101,19 @@ def ejemplo(tpf, lc_flat, P, t0, dur, ra, dec):
     xo, yo = int(round(float(xo_f))), int(round(float(yo_f)))
     sx, sy = float(xo_f) - xo, float(yo_f) - yo
     yy, xx = np.mgrid[0:N, 0:N]
-    gauss = np.exp(-(((xx - N // 2 - sx) ** 2) + ((yy - N // 2 - sy) ** 2)) / (2 * 0.7 ** 2))
-    img = np.stack([np.clip(recortar(snr, yo, xo), -30, 30) / 10.0,
-                    recortar(fuera_img, yo, xo), gauss, recortar(valid, yo, xo)], axis=-1)
+    gauss = np.exp(-(((xx - N // 2 - sx) ** 2) + ((yy - N // 2 - sy) ** 2)) / (2 * 0.7**2))
+    img = np.stack(
+        [
+            np.clip(recortar(snr, yo, xo), -30, 30) / 10.0,
+            recortar(fuera_img, yo, xo),
+            gauss,
+            recortar(valid, yo, xo),
+        ],
+        axis=-1,
+    )
     # vistas 1D desde la curva de apertura aplanada
     tl, fl = lc_flat.time.value, lc_flat.flux.value
-    fase = ((tl - t0 + P / 4) % P) - P / 4           # fase 0 en el tránsito, 0.5P cae dentro del rango
+    fase = ((tl - t0 + P / 4) % P) - P / 4  # fase 0 en el tránsito, 0.5P cae dentro del rango
     fuera = np.abs(((tl - t0 + P / 2) % P) - P / 2) > dur
     sigma = np.nanstd(fl[fuera])
     v1 = vista(fase, fl, 0.0, dur, sigma)
@@ -126,18 +134,38 @@ for fila in sel.itertuples():
         P, t0, dur = fila.koi_period, fila.koi_time0bk, fila.koi_duration / 24
         lc = tpf.to_lightcurve(aperture_mask="pipeline").remove_nans().normalize()
         mask = lc.create_transit_mask(period=P, transit_time=t0, duration=dur * 1.5)
-        flat = lc.flatten(window_length=401, mask=mask).remove_outliers(sigma_upper=4, sigma_lower=50)
+        flat = lc.flatten(window_length=401, mask=mask).remove_outliers(
+            sigma_upper=4, sigma_lower=50
+        )
         real = ejemplo(tpf, flat, P, t0, dur, tpf.ra, tpf.dec)
-        falso = ejemplo(tpf, flat, P, t0 + 0.25 * P, dur, tpf.ra, tpf.dec)   # época sin tránsito
+        falso = ejemplo(tpf, flat, P, t0 + 0.25 * P, dur, tpf.ra, tpf.dec)  # época sin tránsito
         if real is None or falso is None:
             continue
-        for (img, seq, n), y, tipo in [(real, CLASES[fila.koi_disposition], "real"), (falso, 2, "nulo")]:
-            IMG.append(img); SEQ.append(seq); Y.append(y)
-            META.append(dict(kepid=fila.kepid, koi=fila.kepoi_name, disp=fila.koi_disposition, tipo=tipo,
-                             n_transitos=n, periodo=P, mes=fila.koi_max_mult_ev, kp=fila.koi_kepmag,
-                             fp_nt=fila.koi_fpflag_nt, fp_ss=fila.koi_fpflag_ss, fp_co=fila.koi_fpflag_co,
-                             dikco=fila.koi_dikco_msky, dicco=fila.koi_dicco_msky,
-                             trimestre=os.path.basename(fs[0])[19:32]))
+        for (img, seq, n), y, tipo in [
+            (real, CLASES[fila.koi_disposition], "real"),
+            (falso, 2, "nulo"),
+        ]:
+            IMG.append(img)
+            SEQ.append(seq)
+            Y.append(y)
+            META.append(
+                dict(
+                    kepid=fila.kepid,
+                    koi=fila.kepoi_name,
+                    disp=fila.koi_disposition,
+                    tipo=tipo,
+                    n_transitos=n,
+                    periodo=P,
+                    mes=fila.koi_max_mult_ev,
+                    kp=fila.koi_kepmag,
+                    fp_nt=fila.koi_fpflag_nt,
+                    fp_ss=fila.koi_fpflag_ss,
+                    fp_co=fila.koi_fpflag_co,
+                    dikco=fila.koi_dikco_msky,
+                    dicco=fila.koi_dicco_msky,
+                    trimestre=os.path.basename(fs[0])[19:32],
+                )
+            )
         print("OK", fila.kepoi_name, fila.koi_disposition, real[2], "tránsitos", flush=True)
     except Exception as e:
         print("FAIL", fila.kepoi_name, repr(e)[:80], flush=True)

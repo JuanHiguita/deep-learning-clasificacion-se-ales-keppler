@@ -8,6 +8,7 @@ Uso:
   python -I src/temporal/descargar_mast.py --ejemplos compartido/ejemplos.csv --destino data --que tpf
   (también acepta --seleccion data/seleccion_demo.csv si todavía no existe ejemplos.csv)
 """
+
 from __future__ import annotations
 
 import argparse
@@ -20,7 +21,13 @@ from pathlib import Path
 
 import pandas as pd
 
-from comun.utilidades import descargar_a_archivo, leer_url, ruta_dentro_de, sha256_archivo, validar_kepid
+from comun.utilidades import (
+    descargar_a_archivo,
+    leer_url,
+    ruta_dentro_de,
+    sha256_archivo,
+    validar_kepid,
+)
 
 BASE = "https://archive.stsci.edu/missions/kepler"
 PATRON_LLC = re.compile(r'href="(kplr(\d{9})-(\d{13})_llc\.fits)"')
@@ -74,9 +81,13 @@ def main(argv=None) -> int:
     origen = ap.add_mutually_exclusive_group(required=True)
     origen.add_argument("--ejemplos", type=Path)
     origen.add_argument("--seleccion", type=Path)
-    ap.add_argument("--destino", type=Path, required=True, help="carpeta data/; se crean llc/ y tpf/ dentro")
+    ap.add_argument(
+        "--destino", type=Path, required=True, help="carpeta data/; se crean llc/ y tpf/ dentro"
+    )
     ap.add_argument("--que", choices=["llc", "tpf"], required=True)
-    ap.add_argument("--pausa", type=float, default=0.2, help="segundos entre archivos, para no saturar MAST")
+    ap.add_argument(
+        "--pausa", type=float, default=0.2, help="segundos entre archivos, para no saturar MAST"
+    )
     ap.add_argument("--max-estrellas", type=int, default=None, help="para pruebas")
     a = ap.parse_args(argv)
 
@@ -104,7 +115,9 @@ def main(argv=None) -> int:
         w = csv.writer(f, lineterminator="\n")
         w.writerow(["kepid", "archivo", "bytes", "sha256"])
         w.writerows(filas)
-    por_estrella = pd.DataFrame(filas, columns=["kepid", "archivo", "bytes", "sha256"]).groupby("kepid").size()
+    por_estrella = (
+        pd.DataFrame(filas, columns=["kepid", "archivo", "bytes", "sha256"]).groupby("kepid").size()
+    )
     print(f"\nEstrellas con archivos: {len(por_estrella)} de {len(kepids)}; archivos: {len(filas)}")
     if a.que == "llc":
         print("Estrellas con menos de 4 trimestres:", int((por_estrella < 4).sum()))

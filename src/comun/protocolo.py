@@ -4,6 +4,7 @@ Regla central (constitución, II y III): para la partición de prueba k, la vali
 interna es la partición (k + 1) mod n y el entrenamiento son las restantes. Ninguna
 estrella (kepid) puede aparecer en dos de los tres conjuntos.
 """
+
 from __future__ import annotations
 
 import json
@@ -72,7 +73,7 @@ def comprobar_sin_solape(kepid: np.ndarray, sep: Separacion) -> None:
     }
     nombres = list(conjuntos)
     for i, a in enumerate(nombres):
-        for b in nombres[i + 1:]:
+        for b in nombres[i + 1 :]:
             comunes = conjuntos[a] & conjuntos[b]
             if comunes:
                 muestra = sorted(comunes)[:5]

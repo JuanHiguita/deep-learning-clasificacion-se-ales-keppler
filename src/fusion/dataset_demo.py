@@ -3,8 +3,10 @@
 Paso 1 (script de la demo, sin modificar):
   python src/demo/demo_dataset.py data/tpf data/seleccion_demo.csv data/demo_crudo.npz
 Paso 2:
-  python -I src/fusion/dataset_demo.py --crudo data/demo_crudo.npz --ejemplos compartido/ejemplos.csv --salida data/dataset_demo.npz
+  python -I src/fusion/dataset_demo.py --crudo data/demo_crudo.npz \
+      --ejemplos compartido/ejemplos.csv --salida data/dataset_demo.npz
 """
+
 from __future__ import annotations
 
 import argparse
@@ -28,8 +30,12 @@ def convertir(crudo: Path, ejemplos: pd.DataFrame) -> dict:
     conservar = np.array([i in validos for i in ids])
     if not (np.isfinite(img[conservar]).all() and np.isfinite(seq[conservar]).all()):
         raise ValueError("El dataset de la demo contiene NaN")
-    return {"id_ejemplo": np.array(ids[conservar], dtype="U"), "img": img[conservar].astype(np.float32),
-            "seq": seq[conservar].astype(np.float32), "n_transitos_q5": meta["n_transitos"].to_numpy()[conservar]}
+    return {
+        "id_ejemplo": np.array(ids[conservar], dtype="U"),
+        "img": img[conservar].astype(np.float32),
+        "seq": seq[conservar].astype(np.float32),
+        "n_transitos_q5": meta["n_transitos"].to_numpy()[conservar],
+    }
 
 
 def main(argv=None) -> int:
@@ -42,10 +48,20 @@ def main(argv=None) -> int:
     datos = convertir(a.crudo, ejemplos)
     np.savez_compressed(a.salida, **datos)
     n_total = int((~ejemplos["prerregistrado"].astype(bool)).sum())
-    escribir_manifiesto(a.salida.with_suffix(".manifiesto.json"), vars(a), entradas=[a.crudo, a.ejemplos],
-                        extra={"origen": "src/demo/demo_dataset.py sin modificar (commit 6ffa66f)",
-                               "n_ejemplos": int(len(datos["id_ejemplo"])), "n_sin_imagen": n_total - int(len(datos["id_ejemplo"]))})
-    print(f"{len(datos['id_ejemplo'])} ejemplos con imagen de {n_total}; img {datos['img'].shape}, seq {datos['seq'].shape}")
+    escribir_manifiesto(
+        a.salida.with_suffix(".manifiesto.json"),
+        vars(a),
+        entradas=[a.crudo, a.ejemplos],
+        extra={
+            "origen": "src/demo/demo_dataset.py sin modificar (commit 6ffa66f)",
+            "n_ejemplos": int(len(datos["id_ejemplo"])),
+            "n_sin_imagen": n_total - int(len(datos["id_ejemplo"])),
+        },
+    )
+    print(
+        f"{len(datos['id_ejemplo'])} ejemplos con imagen de {n_total}; "
+        f"img {datos['img'].shape}, seq {datos['seq'].shape}"
+    )
     return 0
 
 

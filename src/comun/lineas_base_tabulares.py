@@ -10,6 +10,7 @@ Uso:
   python -I src/comun/lineas_base_tabulares.py --ejemplos compartido/ejemplos.csv \
       --koi data/koi_dr25.csv --acumulada data/koi_cumulative.csv --salida resultados/dl/lineas_base_tabulares
 """
+
 from __future__ import annotations
 
 import argparse
@@ -37,8 +38,9 @@ def _comprobar_sin_fuga(columnas: list[str], protocolo: dict) -> None:
         raise ValueError(f"FUGA: columnas prohibidas como entrada: {malas}")
 
 
-def predecir_oof(sel: pd.DataFrame, columnas: list[str], protocolo: dict, extra: pd.DataFrame | None = None
-                 ) -> np.ndarray:
+def predecir_oof(
+    sel: pd.DataFrame, columnas: list[str], protocolo: dict, extra: pd.DataFrame | None = None
+) -> np.ndarray:
     """P(planeta) fuera de muestra para cada fila de `sel` (KOIs del curso, una fila por KOI)."""
     _comprobar_sin_fuga(columnas, protocolo)
     n = protocolo["particiones"]["n"]
@@ -54,7 +56,9 @@ def predecir_oof(sel: pd.DataFrame, columnas: list[str], protocolo: dict, extra:
             y_ent = np.concatenate([y_ent, (ex["clase"].values == 0).astype(int)])
         # Con pocas filas, el mínimo por hoja por defecto (20) impide cualquier división.
         hoja = max(2, min(20, len(y_ent) // 20))
-        modelo = HistGradientBoostingClassifier(max_iter=200, learning_rate=0.1, min_samples_leaf=hoja, random_state=0)
+        modelo = HistGradientBoostingClassifier(
+            max_iter=200, learning_rate=0.1, min_samples_leaf=hoja, random_state=0
+        )
         modelo.fit(X_ent, y_ent)  # los NaN se dejan como NaN: el modelo los maneja
         p[sep.prueba] = modelo.predict_proba(sel.loc[sep.prueba, columnas])[:, 1]
     return p
@@ -65,10 +69,19 @@ def evaluar(puntaje: np.ndarray, sel: pd.DataFrame, protocolo: dict) -> dict:
     s, pos, grupos = puntaje[ok], (sel["clase"].values == 0)[ok], sel["kepid"].values[ok]
     cfg = protocolo["metricas"]
     r = estadistica.bootstrap_por_estrella(
-        grupos, lambda i: metricas.auc(s[i], pos[i]), cfg["bootstrap_remuestreos"], cfg["bootstrap_semilla"],
-        tuple(cfg["ic_percentiles"]))
-    return {"auc": round(r.estimacion, 4), "ic_inf": round(r.ic_inf, 4), "ic_sup": round(r.ic_sup, 4),
-            "n": int(ok.sum()), "n_sin_valor": int((~ok).sum())}
+        grupos,
+        lambda i: metricas.auc(s[i], pos[i]),
+        cfg["bootstrap_remuestreos"],
+        cfg["bootstrap_semilla"],
+        tuple(cfg["ic_percentiles"]),
+    )
+    return {
+        "auc": round(r.estimacion, 4),
+        "ic_inf": round(r.ic_inf, 4),
+        "ic_sup": round(r.ic_sup, 4),
+        "n": int(ok.sum()),
+        "n_sin_valor": int((~ok).sum()),
+    }
 
 
 def main(argv=None) -> int:
@@ -84,26 +97,41 @@ def main(argv=None) -> int:
     ejemplos = pd.read_csv(a.ejemplos)
     dr25 = pd.read_csv(a.koi)
     base = ejemplos[(ejemplos["tipo"] == "transito") & ~ejemplos["prerregistrado"].astype(bool)]
-    sel = base[["kepoi_name", "kepid", "clase", "particion"]].merge(
-        dr25.drop(columns=["kepid"]), on="kepoi_name", how="left", validate="one_to_one").reset_index(drop=True)
+    sel = (
+        base[["kepoi_name", "kepid", "clase", "particion"]]
+        .merge(dr25.drop(columns=["kepid"]), on="kepoi_name", how="left", validate="one_to_one")
+        .reset_index(drop=True)
+    )
 
     extra = dr25[dr25["koi_disposition"].isin(CLASE)].copy()
     extra["clase"] = extra["koi_disposition"].map(CLASE)
     extra = extra[~marcar_prerregistrados(extra, pd.read_csv(a.acumulada)).values]
     extra = extra[~extra["kepoi_name"].isin(set(ejemplos["kepoi_name"]))]
 
-    R = {"n_kois_evaluados": int(len(sel)), "n_kois_extra_tabla_completa": int(len(extra)), "modelos": {}}
+    R = {
+        "n_kois_evaluados": int(len(sel)),
+        "n_kois_extra_tabla_completa": int(len(extra)),
+        "modelos": {},
+    }
     for nombre, columnas in (("S3-B", S3B), ("S3-C", S3C)):
-        R["modelos"][f"{nombre} (seleccion)"] = evaluar(predecir_oof(sel, columnas, protocolo), sel, protocolo)
+        R["modelos"][f"{nombre} (seleccion)"] = evaluar(
+            predecir_oof(sel, columnas, protocolo), sel, protocolo
+        )
         R["modelos"][f"{nombre} (tabla_completa)"] = evaluar(
-            predecir_oof(sel, columnas, protocolo, extra), sel, protocolo)
+            predecir_oof(sel, columnas, protocolo, extra), sel, protocolo
+        )
     R["modelos"]["koi_score (comparador externo, contiene la decisión del Robovetter)"] = evaluar(
-        sel["koi_score"].values.astype(float), sel, protocolo)
+        sel["koi_score"].values.astype(float), sel, protocolo
+    )
 
     a.salida.mkdir(parents=True, exist_ok=True)
     with open(a.salida / "metricas.json", "w", encoding="utf-8", newline="\n") as f:
         json.dump(R, f, ensure_ascii=False, indent=1)
-    escribir_manifiesto(a.salida / "manifiesto.json", vars(a), entradas=[a.ejemplos, a.koi, a.acumulada, a.protocolo])
+    escribir_manifiesto(
+        a.salida / "manifiesto.json",
+        vars(a),
+        entradas=[a.ejemplos, a.koi, a.acumulada, a.protocolo],
+    )
     print(json.dumps(R, ensure_ascii=False, indent=1))
     return 0
 

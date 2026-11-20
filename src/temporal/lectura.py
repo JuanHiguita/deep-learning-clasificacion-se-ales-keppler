@@ -1,4 +1,5 @@
 """Lectura de las curvas de luz de Kepler (archivos *_llc.fits de MAST). Único punto que abre FITS."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -30,7 +31,9 @@ def archivos_de_estrella(carpeta_llc: str | Path, kepid: int) -> list[Path]:
     return sorted((Path(carpeta_llc) / kic).glob(f"kplr{kic}-*_llc.fits"))
 
 
-def trimestres_de_estrella(carpeta_llc: str | Path, kepid: int) -> list[tuple[np.ndarray, np.ndarray]]:
+def trimestres_de_estrella(
+    carpeta_llc: str | Path, kepid: int
+) -> list[tuple[np.ndarray, np.ndarray]]:
     trimestres = []
     for ruta in archivos_de_estrella(carpeta_llc, kepid):
         t, f = leer_llc(ruta)

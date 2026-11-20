@@ -164,10 +164,10 @@ Con tasa 0,05, las señales con probabilidad de planeta mayor que 0,5 pasan de 1
 | Método | NLL | ECE | Detección de errores (AUROC) |
 |---|---|---|---|
 | Una sola cabeza | 0,206 | 0,033 | 0,925 |
-| MC Dropout (50 pasadas) | 0,186 | 0,026 | 0,942 |
+| MC Dropout (50 pasadas) | 0,184 | 0,028 | 0,939 |
 | Ensamble de 5 semillas | 0,189 | 0,019 | 0,889 |
 
-Los errores tienen mucha más entropía que los aciertos (0,60 frente a 0,10 en el ensamble). Entre MC Dropout y ensamble **no hay diferencia distinguible** (NLL: +0,003 [−0,019 a +0,034]). La incertidumbre solo cubre la cabeza de fusión.
+Los errores tienen mucha más entropía que los aciertos (0,60 frente a 0,10 en el ensamble). Entre MC Dropout y ensamble **no hay diferencia distinguible** (NLL: +0,006 [−0,016 a +0,035]). La incertidumbre solo cubre la cabeza de fusión.
 
 ## 6. Qué significa y qué no
 
@@ -205,8 +205,9 @@ Los errores tienen mucha más entropía que los aciertos (0,60 frente a 0,10 en 
 | Base de datos y verificación del contrato | `src/comun/` |
 | Extractor temporal y ramas 1, 2 y 4 | `src/temporal/` |
 | Imagen v0, fusión, calibración, incertidumbre | `src/fusion/` |
+| Lectura de resultados, figuras y controles del notebook | `src/informe/` |
 | Scripts originales de la demo, sin modificar | `src/demo/` |
-| 73 pruebas automáticas (71 rápidas y 2 que entrenan) | `tests/` |
+| 78 pruebas automáticas (76 rápidas y 2 que entrenan) | `tests/` |
 | Notebook ilustrativo e interactivo | `notebooks/informe_dl.ipynb` |
 | Tablas con todas las cifras | `resultados/dl/tablas/` |
 | Registro de cada sesión y de cada desviación del plan | `docs/planeacion/BITACORA_DL.md` |
@@ -226,7 +227,9 @@ scripts\abrir_notebook.bat          :: instala lo necesario y abre notebooks\inf
 scripts\reproducir_todo.bat         :: vuelve a correr todo, desde las tablas hasta el notebook
 ```
 
-El notebook ya trae las figuras incrustadas. Para usar el **explorador interactivo** (sección 7 del notebook) hay que ejecutarlo: "Run All".
+El notebook ya trae las figuras incrustadas, con sus valores iniciales. Para usar los **controles** hay que ejecutarlo ("Run All"): elegir la señal (sección 1), la métrica y la semilla (secciones 3 y 5), los intervalos del diagrama, la temperatura y la cobertura (sección 6) y el explorador de señales (sección 7).
+
+Cada celda del notebook es corta y llama a una función de `src/informe/`: `datos.py` lee, `graficos.py` tiene las piezas de dibujo, `secciones.py` tiene una función por figura e `interactivo.py` los controles.
 
 ## 9. Lo que sigue
 

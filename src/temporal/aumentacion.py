@@ -1,13 +1,19 @@
 """Aumentación de datos, solo para el entrenamiento (spec 004, RF-1). Valores en config/protocolo.json."""
+
 from __future__ import annotations
 
 import numpy as np
 
-CFG = {"ruido_sigma": 0.05, "desplazamiento_max_puntos": 2, "prob_conservar_transito": 0.8, "min_transitos": 4}
+CFG = {
+    "ruido_sigma": 0.05,
+    "desplazamiento_max_puntos": 2,
+    "prob_conservar_transito": 0.8,
+    "min_transitos": 4,
+}
 
 
 def _desplazar(x: np.ndarray, pasos: np.ndarray, eje: int = 1) -> np.ndarray:
-    return np.stack([np.roll(fila, int(p), axis=eje - 1) for fila, p in zip(x, pasos)])
+    return np.stack([np.roll(fila, int(p), axis=eje - 1) for fila, p in zip(x, pasos, strict=True)])
 
 
 def aumentar_vistas(entradas: dict, rng: np.random.Generator, cfg: dict = CFG) -> dict:

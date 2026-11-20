@@ -7,6 +7,7 @@ Convenciones:
 Todas las funciones aceptan pesos por ejemplo, necesarios para evaluar con una
 tasa base distinta de la del conjunto de prueba (experimento E9).
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -111,15 +112,18 @@ def _ece(confianza: np.ndarray, acierto: np.ndarray, w: np.ndarray, n_intervalos
     return float(error)
 
 
-def ece_top(p: np.ndarray, y: np.ndarray, n_intervalos: int = 15, pesos: np.ndarray | None = None) -> float:
+def ece_top(
+    p: np.ndarray, y: np.ndarray, n_intervalos: int = 15, pesos: np.ndarray | None = None
+) -> float:
     """ECE de la clase más probable, intervalos de igual ancho (Guo et al., 2017)."""
     p, y = _validar(p, y)
     w = _pesos(pesos, len(y))
     return _ece(p.max(axis=1), (p.argmax(axis=1) == y).astype(float), w, n_intervalos)
 
 
-def ece_binario(q: np.ndarray, positivo: np.ndarray, n_intervalos: int = 15,
-                pesos: np.ndarray | None = None) -> float:
+def ece_binario(
+    q: np.ndarray, positivo: np.ndarray, n_intervalos: int = 15, pesos: np.ndarray | None = None
+) -> float:
     """ECE de una probabilidad binaria: |frecuencia observada − probabilidad media| por intervalo."""
     q = np.asarray(q, dtype=float)
     positivo = np.asarray(positivo).astype(float)
@@ -151,3 +155,32 @@ def corregir_prior(q: np.ndarray, tasa_entrenamiento: float, tasa_objetivo: floa
             raise ValueError("Las tasas deben estar entre 0 y 1")
     r = (tasa_objetivo / (1 - tasa_objetivo)) / (tasa_entrenamiento / (1 - tasa_entrenamiento))
     return q * r / (q * r + 1 - q)
+
+
+# ---------------------------------------------------------------------------------------------
+# Incertidumbre
+# ---------------------------------------------------------------------------------------------
+
+
+def entropia(p: np.ndarray) -> np.ndarray:
+    """Incertidumbre total de una predicción: 0 si es segura, ln(3) si reparte por igual."""
+    return -np.sum(p * np.log(np.clip(p, 1e-12, 1.0)), axis=-1)
+
+
+def informacion_mutua(p_miembros: np.ndarray) -> np.ndarray:
+    """Desacuerdo entre miembros: entropía de la media − media de las entropías. (m, n, c) → (n,)."""
+    return np.maximum(entropia(p_miembros.mean(axis=0)) - entropia(p_miembros).mean(axis=0), 0.0)
+
+
+def riesgo_cobertura(
+    confianza: np.ndarray, acierto: np.ndarray
+) -> tuple[np.ndarray, np.ndarray, float]:
+    """Curva riesgo–cobertura: se retienen primero los casos más confiados.
+
+    Devuelve la cobertura, el riesgo (fracción de errores entre los retenidos) y su área (AURC).
+    """
+    orden = np.argsort(-confianza, kind="mergesort")
+    errores = np.cumsum(1.0 - acierto[orden])
+    n = np.arange(1, len(orden) + 1)
+    riesgo = errores / n
+    return n / len(orden), riesgo, float(riesgo.mean())

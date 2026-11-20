@@ -20,6 +20,8 @@ python -I src\fusion\incertidumbre.py --modelos modelos %D% --fusion resultados\
 python -I src\fusion\consolidar_resultados.py --resultados resultados\dl --ejemplos compartido\ejemplos.csv
 python -I src\comun\verificar_contrato.py --raiz .
 python scripts\construir_notebook.py
+rem Copia que se lee sin ejecutar: figuras fijas. Al abrirla y ejecutarla aparecen los controles.
+set INFORME_ESTATICO=1
 jupyter nbconvert --to notebook --execute --inplace notebooks\informe_dl.ipynb
 echo Listo.
 pause

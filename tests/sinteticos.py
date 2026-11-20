@@ -1,12 +1,21 @@
 """Curvas de luz sintéticas SOLO para probar código. Nunca producen una cifra del informe."""
+
 import numpy as np
 
 from temporal.curvas import CADENCIA_D, Efemerides
 
 
-def curva(ef: Efemerides, profundidad=1000e-6, ruido=200e-6, semilla=0, n_trimestres=17,
-          profundidad_impar=None, secundario=0.0, otro: tuple[Efemerides, float] | None = None,
-          borrar: tuple[float, float] | None = None):
+def curva(
+    ef: Efemerides,
+    profundidad=1000e-6,
+    ruido=200e-6,
+    semilla=0,
+    n_trimestres=17,
+    profundidad_impar=None,
+    secundario=0.0,
+    otro: tuple[Efemerides, float] | None = None,
+    borrar: tuple[float, float] | None = None,
+):
     """Devuelve una lista de trimestres [(tiempo, flujo)] con tránsitos de caja.
 
     profundidad_impar: si se da, los tránsitos impares tienen esa profundidad (estrella doble).
@@ -20,7 +29,9 @@ def curva(ef: Efemerides, profundidad=1000e-6, ruido=200e-6, semilla=0, n_trimes
         t = inicio + np.arange(int(90 / CADENCIA_D)) * CADENCIA_D
         inicio = t[-1] + 1.5  # hueco entre trimestres
         f = 1.0 + ruido * rng.standard_normal(len(t))
-        f *= (1.0 + 0.002 * np.sin(2 * np.pi * (t - t[0]) / 25.0 + q)) * (1000.0 + 50.0 * q)  # tendencia y escala
+        f *= (1.0 + 0.002 * np.sin(2 * np.pi * (t - t[0]) / 25.0 + q)) * (
+            1000.0 + 50.0 * q
+        )  # tendencia y escala
         n = np.round((t - ef.t0) / ef.periodo).astype(int)
         en = np.abs(t - ef.t0 - n * ef.periodo) < ef.duracion / 2
         d = np.full(len(t), profundidad)

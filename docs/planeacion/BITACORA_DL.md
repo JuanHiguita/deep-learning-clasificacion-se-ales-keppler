@@ -90,6 +90,15 @@
 - **Desviaciones nuevas:** el entorno de desarrollo corta cada comando a los 3 minutos, así que `entrenar_cv` guarda cada partición y se reanuda (`--presupuesto`); el script de fusión se llama `fusionar.py` (no `fusion.py`) para no chocar con el paquete; se agregó la configuración `e6a_ajuste_cruzado` como remedio del apilado.
 - **Siguiente paso exacto:** en el PC, `pytest -q`, `pytest -q -m lenta` y `scripts\\reproducir_todo.bat`; después, spec 008 (informe y presentación) cuando llegue la rúbrica.
 
+### 2026-11-20 · Fable 5.2 · Refactorización para legibilidad (sin experimentos nuevos)
+- **Hecho:** código formateado con `ruff format` (100 columnas) y funciones largas partidas en pasos con nombre: `comun/entrenamiento.py` (`entrenar_cv` → preparar datos, entrenar partición, reanudar, exportar, resumir), `fusion/fusionar.py`, `fusion/calibracion.py` (`experimento_e8`, `experimento_e9`), `fusion/incertidumbre.py` (`experimento_e10`, `casos_al_azar`), `fusion/consolidar_resultados.py` (una función por tabla) y `temporal/curvas.py` (`construir_ejemplo` → vistas, tránsitos, escalares). Paquete nuevo `src/informe/` (datos, gráficos, secciones, controles) y notebook reescrito: celdas cortas, una explicación de cómo leer cada figura y 8 controles (señal, métrica ×2, semilla, intervalos, temperatura, cobertura, explorador).
+- **Comprobación de que nada cambió:** con el código nuevo se regeneraron y compararon con lo guardado: predicciones de `m4_escalares` (diferencia máxima 0), `e7_solo_escalares` y `e6a_ajuste_cruzado` (0), `calibracion/metricas.json` (idéntico), las 6 tablas de `resultados/dl/tablas` (idénticas) y 728 arreglos del extractor en 28 estrellas reales (0 diferencias). `verificar_contrato.py`: correcto. Pruebas: 76 rápidas y 2 lentas pasan.
+- **Corrección encontrada al refactorizar (cambia cifras):** las pasadas de MC Dropout **no eran regenerables**: la capa Dropout toma su semilla al cargar el modelo y la semilla se fijaba después. Ahora se fija antes de cargar (dos corridas dan lo mismo). Cifras de MC Dropout, tal como salen ahora: NLL 0,1838 (antes 0,186), ECE 0,028 (antes 0,026), AUROC de errores 0,939 (antes 0,942); NLL ensamble − MC Dropout +0,0055 [−0,0164 a +0,0352] (antes +0,0033 [−0,0192 a +0,0344]). **El veredicto no cambia** (no distinguible). Las demás cifras no cambian.
+- **Otras correcciones menores:** una prueba comparaba también el tiempo por época (podía fallar según la máquina); el orden de creación de las capas de la cabeza de fusión quedó explícito y comentado, porque determina sus números aleatorios.
+- **Lint:** `ruff check` sin hallazgos (el código se parte a 100 columnas; textos que no se pueden partir, hasta 120).
+- **Sin probar en Windows:** el notebook nuevo y los `.bat` solo se ejecutaron en el entorno de desarrollo (Linux, Python 3.10).
+- **Siguiente paso exacto:** en el PC, `pytest -q`, `pytest -q -m lenta` y `scripts\\abrir_notebook.bat`; después, spec 008 cuando llegue la rúbrica.
+
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>
 - **Hecho:**

@@ -10,4 +10,4 @@ P2,¿Aporta la rama? (Sin rama 4 (escalares)),AUC: fusión − sin escalares,0.0
 P2,¿La fusión supera a la demo vuelta a medir?,AUC: fusión − demo completa,0.0515,0.027,0.0793,se sostiene
 P3a,¿Mejora el NLL con temperature scaling?,NLL: después − antes,-0.0181,-0.0462,0.0008,no se sostiene (el intervalo incluye el 0 o va en contra)
 P3b,"¿El prior explícito mejora la calibración (tasa base 0,05)?",ECE ponderado: corregido − sin corregir,-0.0876,-0.1183,-0.0596,se sostiene
-P3c,¿El ensamble supera a MC Dropout?,NLL: ensamble − MC Dropout,0.0033,-0.0192,0.0344,no se sostiene (el intervalo incluye el 0 o va en contra)
+P3c,¿El ensamble supera a MC Dropout?,NLL: ensamble − MC Dropout,0.0055,-0.0164,0.0352,no se sostiene (el intervalo incluye el 0 o va en contra)

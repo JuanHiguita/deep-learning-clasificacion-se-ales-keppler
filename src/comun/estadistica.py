@@ -3,6 +3,7 @@
 Se remuestrean ESTRELLAS con reemplazo, no ejemplos: los dos ejemplos de una misma
 estrella (tránsito y sin señal) entran o salen juntos.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

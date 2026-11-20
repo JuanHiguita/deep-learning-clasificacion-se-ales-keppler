@@ -1,4 +1,5 @@
 """Pruebas de los modelos (spec 004): formas, máscaras, invariancia al orden y serialización."""
+
 import numpy as np
 import pytest
 
@@ -12,7 +13,11 @@ def _lote(n=6, semilla=0):
     mk = np.zeros((n, 32), "float32")
     for i, k in enumerate([32, 20, 8, 4, 32, 12][:n]):
         mk[i, :k] = 1
-    return {"transitos": tr * mk[:, :, None], "mascara_transitos": mk, "consistencia": rng.normal(size=(n, 4)).astype("float32")}
+    return {
+        "transitos": tr * mk[:, :, None],
+        "mascara_transitos": mk,
+        "consistencia": rng.normal(size=(n, 4)).astype("float32"),
+    }
 
 
 def _permutar(x, semilla=1):
@@ -56,8 +61,18 @@ def test_pesos_de_atencion_suman_uno_y_respetan_la_mascara():
 @pytest.mark.parametrize("pooling", ["max", "promedio", "paso"])
 def test_m1_y_m4(pooling):
     m = modelos.m1_astronet(0, pooling)
-    p = m.predict({"vista_global": np.zeros((3, 2001, 1), "float32"), "vista_local": np.zeros((3, 201, 4), "float32")}, verbose=0)
-    assert p.shape == (3, 3) and m.get_layer("embedding").output.shape[-1] == 32 and m.count_params() < 200_000
+    p = m.predict(
+        {
+            "vista_global": np.zeros((3, 2001, 1), "float32"),
+            "vista_local": np.zeros((3, 201, 4), "float32"),
+        },
+        verbose=0,
+    )
+    assert (
+        p.shape == (3, 3)
+        and m.get_layer("embedding").output.shape[-1] == 32
+        and m.count_params() < 200_000
+    )
     m4 = modelos.m4_escalares(0)
     assert m4.get_layer("embedding").output.shape[-1] == 16
 
@@ -66,13 +81,18 @@ def test_aumentacion_de_transitos():
     x = _lote()
     a = aumentacion.aumentar_transitos(x, np.random.default_rng(0))
     b = aumentacion.aumentar_transitos(x, np.random.default_rng(0))
-    assert np.array_equal(a["transitos"], b["transitos"])                      # reproducible
+    assert np.array_equal(a["transitos"], b["transitos"])  # reproducible
     n = a["mascara_transitos"].sum(1)
     assert np.all(n <= x["mascara_transitos"].sum(1)) and np.all(n >= 4)
-    for i in range(len(n)):                                                    # vacíos al final y en cero
+    for i in range(len(n)):  # vacíos al final y en cero
         k = int(n[i])
         assert a["mascara_transitos"][i, :k].all() and not a["mascara_transitos"][i, k:].any()
         assert not a["transitos"][i, k:].any()
-    v = aumentacion.aumentar_vistas({"vista_global": np.zeros((2, 2001, 1), "float32"),
-                                     "vista_local": np.zeros((2, 201, 4), "float32")}, np.random.default_rng(0))
+    v = aumentacion.aumentar_vistas(
+        {
+            "vista_global": np.zeros((2, 2001, 1), "float32"),
+            "vista_local": np.zeros((2, 201, 4), "float32"),
+        },
+        np.random.default_rng(0),
+    )
     assert v["vista_local"].shape == (2, 201, 4) and v["vista_global"].std() > 0

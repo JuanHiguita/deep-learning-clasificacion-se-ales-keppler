@@ -5,6 +5,7 @@ Rama 2: m2 = codificador por tránsito con pesos compartidos + agregador (promed
 Rama 4: m4_escalares.
 Las capas propias usan keras.ops y están registradas, para poder cargar los .keras con safe_mode=True.
 """
+
 from __future__ import annotations
 
 import os
@@ -85,7 +86,7 @@ class Recorte(layers.Layer):
         self.inicio, self.fin = inicio, fin
 
     def call(self, x):
-        return x[:, self.inicio:self.fin]
+        return x[:, self.inicio : self.fin]
 
     def get_config(self):
         return {**super().get_config(), "inicio": self.inicio, "fin": self.fin}
@@ -100,7 +101,7 @@ def _cabeza(h, dim: int, dropout: float):
 def _torre(x, filtros: tuple[int, ...], ventana_pool: int, pooling: str):
     for f in filtros:
         x = layers.Conv1D(f, 5, padding="same", activation="relu")(x)
-        if pooling == "paso":      # sin pooling: la segunda convolución reduce con paso 2
+        if pooling == "paso":  # sin pooling: la segunda convolución reduce con paso 2
             x = layers.Conv1D(f, 5, padding="same", activation="relu", strides=2)(x)
         else:
             x = layers.Conv1D(f, 5, padding="same", activation="relu")(x)
@@ -116,23 +117,30 @@ def m1_astronet(semilla: int, pooling: str = "max", dropout: float = 0.3) -> ker
     keras.utils.set_random_seed(semilla)
     g = keras.Input((2001, 1), name="vista_global")
     loc = keras.Input((201, 4), name="vista_local")
-    h = layers.Concatenate()([_torre(g, (16, 32, 64), 5, pooling), _torre(loc, (16, 32), 7, pooling)])
+    h = layers.Concatenate()(
+        [_torre(g, (16, 32, 64), 5, pooling), _torre(loc, (16, 32), 7, pooling)]
+    )
     h = layers.Dense(64, activation="relu")(h)
     return keras.Model([g, loc], _cabeza(h, 32, dropout), name=f"m1_astronet_{pooling}")
 
 
 def codificador_por_transito() -> keras.Model:
     """φ: una ventana de tránsito (61, 1) → 32. Se aplica con los mismos pesos a cada tránsito."""
-    return keras.Sequential([
-        keras.Input((61, 1)),
-        layers.Conv1D(16, 5, padding="same", activation="relu"),
-        layers.Conv1D(32, 5, padding="same", activation="relu"),
-        layers.GlobalMaxPooling1D(),
-        layers.Dense(32, activation="relu"),
-    ], name="phi")
+    return keras.Sequential(
+        [
+            keras.Input((61, 1)),
+            layers.Conv1D(16, 5, padding="same", activation="relu"),
+            layers.Conv1D(32, 5, padding="same", activation="relu"),
+            layers.GlobalMaxPooling1D(),
+            layers.Dense(32, activation="relu"),
+        ],
+        name="phi",
+    )
 
 
-def m2(semilla: int, agregador: str, usar_consistencia: bool = True, dropout: float = 0.3) -> keras.Model:
+def m2(
+    semilla: int, agregador: str, usar_consistencia: bool = True, dropout: float = 0.3
+) -> keras.Model:
     """Rama 2: φ compartido por tránsito + agregador. Solo cambia cómo se combinan los tránsitos."""
     if agregador not in AGREGADORES:
         raise ValueError(agregador)
@@ -140,7 +148,9 @@ def m2(semilla: int, agregador: str, usar_consistencia: bool = True, dropout: fl
     tr = keras.Input((32, 61), name="transitos")
     mk = keras.Input((32,), name="mascara_transitos")
     co = keras.Input((4,), name="consistencia")
-    h = layers.TimeDistributed(codificador_por_transito(), name="phi_por_transito")(layers.Reshape((32, 61, 1))(tr))
+    h = layers.TimeDistributed(codificador_por_transito(), name="phi_por_transito")(
+        layers.Reshape((32, 61, 1))(tr)
+    )
     h = AplicarMascara()([h, mk])
     if agregador == "promedio":
         v = MediaEnmascarada(name="agregador")([h, mk])
@@ -148,7 +158,8 @@ def m2(semilla: int, agregador: str, usar_consistencia: bool = True, dropout: fl
         v = layers.Bidirectional(layers.GRU(32), name="agregador")(h, mask=MascaraBooleana()(mk))
     else:
         a = layers.MultiHeadAttention(num_heads=2, key_dim=16, name="autoatencion")(
-            h, h, attention_mask=MascaraBooleana(cuadrada=True)(mk))
+            h, h, attention_mask=MascaraBooleana(cuadrada=True)(mk)
+        )
         h = layers.LayerNormalization()(layers.Add()([h, a]))
         f = layers.Dense(32)(layers.Dense(64, activation="relu")(h))
         h = AplicarMascara()([layers.LayerNormalization()(layers.Add()([h, f])), mk])
@@ -160,7 +171,9 @@ def m2(semilla: int, agregador: str, usar_consistencia: bool = True, dropout: fl
 
 def submodelo_pesos_atencion(modelo: keras.Model) -> keras.Model:
     """Para m2 con atención: devuelve el peso que el agregador dio a cada tránsito, (lote, 32)."""
-    capa = next(c for c in modelo.layers if isinstance(c, AtencionAgregadora))   # por tipo: el nombre puede variar
+    capa = next(
+        c for c in modelo.layers if isinstance(c, AtencionAgregadora)
+    )  # por tipo: el nombre puede variar
     salida = capa.output
     return keras.Model(modelo.inputs, Recorte(32, 64)(salida))
 

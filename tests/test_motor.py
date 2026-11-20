@@ -1,4 +1,5 @@
 """Pruebas del motor ya implementado: protocolo, métricas y estadística."""
+
 import numpy as np
 import pytest
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
@@ -16,6 +17,7 @@ def _datos(n=400, semilla=0):
 
 
 # ---------- protocolo ----------
+
 
 def test_protocolo_se_carga():
     pr = protocolo.cargar_protocolo("config/protocolo.json")
@@ -54,13 +56,16 @@ def test_detecta_estrella_repetida():
 
 # ---------- métricas ----------
 
+
 def test_auc_coincide_con_sklearn_incluso_con_empates():
     rng = np.random.default_rng(1)
     s = np.round(rng.random(300), 1)  # muchos empates
     pos = rng.random(300) < 0.4
     assert metricas.auc(s, pos) == pytest.approx(roc_auc_score(pos, s), abs=1e-12)
     w = rng.random(300) + 0.1
-    assert metricas.auc(s, pos, w) == pytest.approx(roc_auc_score(pos, s, sample_weight=w), abs=1e-12)
+    assert metricas.auc(s, pos, w) == pytest.approx(
+        roc_auc_score(pos, s, sample_weight=w), abs=1e-12
+    )
 
 
 def test_auc_planeta_fp_ignora_sin_senal():
@@ -133,6 +138,7 @@ def test_correccion_de_prior_recupera_la_calibracion():
 
 # ---------- estadística ----------
 
+
 def test_bootstrap_de_modelos_identicos_da_cero():
     p, y = _datos()
     grupos = np.repeat(np.arange(200), 2)
@@ -174,4 +180,6 @@ def test_bootstrap_falla_si_el_estrato_es_demasiado_pequeno():
     y = np.array([0, 1, 1, 1])
     s = np.array([0.9, 0.1, 0.2, 0.3])
     with pytest.raises(ValueError, match="demasiado pequeño"):
-        estadistica.bootstrap_por_estrella(grupos, lambda i: metricas.auc(s[i], y[i] == 0), n_remuestreos=200)
+        estadistica.bootstrap_por_estrella(
+            grupos, lambda i: metricas.auc(s[i], y[i] == 0), n_remuestreos=200
+        )

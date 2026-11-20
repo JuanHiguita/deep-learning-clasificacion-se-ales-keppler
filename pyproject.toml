@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["comun", "temporal", "fusion"]
+packages = ["comun", "temporal", "fusion", "informe"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -19,9 +19,17 @@ markers = ["lenta: pruebas que entrenan un modelo pequeño"]
 addopts = "-q -m 'not lenta'"
 
 [tool.ruff]
-line-length = 120
+line-length = 100
 target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "S"]
 ignore = ["S101"]
+
+[tool.ruff.lint.pycodestyle]
+# El formateador parte el código a 100 columnas; los textos que no se pueden partir
+# (cadenas de ayuda, mensajes, líneas de uso) pueden llegar a 120.
+max-line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/construir_notebook.py" = ["E501"]  # párrafos del notebook en una sola línea

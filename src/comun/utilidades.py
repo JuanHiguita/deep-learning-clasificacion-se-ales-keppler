@@ -1,4 +1,5 @@
 """Utilidades compartidas: hashes, manifiestos, validación de entradas y descargas seguras."""
+
 from __future__ import annotations
 
 import hashlib
@@ -11,11 +12,13 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-HOSTS_PERMITIDOS = frozenset({
-    "exoplanetarchive.ipac.caltech.edu",
-    "mast.stsci.edu",
-    "archive.stsci.edu",
-})
+HOSTS_PERMITIDOS = frozenset(
+    {
+        "exoplanetarchive.ipac.caltech.edu",
+        "mast.stsci.edu",
+        "archive.stsci.edu",
+    }
+)
 # Solo ASCII: un carácter no ASCII en la cabecera hace que el servidor responda 403.
 # Si el primero es rechazado (403), se prueba el siguiente; ambos identifican al proyecto.
 AGENTES = (
@@ -58,7 +61,13 @@ def ruta_dentro_de(base: str | Path, ruta: str | Path) -> Path:
 
 def _commit_git() -> str:
     try:
-        r = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, timeout=10, check=False)
+        r = subprocess.run(
+            ["git", "rev-parse", "HEAD"],  # noqa: S607 — git se busca en el PATH del usuario
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
+        )
         return r.stdout.strip() or "sin-git"
     except (OSError, subprocess.SubprocessError):
         return "sin-git"
@@ -75,14 +84,20 @@ def _versiones() -> dict:
     return versiones
 
 
-def escribir_manifiesto(ruta: str | Path, argumentos: dict, entradas: list[str | Path] | None = None,
-                        extra: dict | None = None) -> dict:
+def escribir_manifiesto(
+    ruta: str | Path,
+    argumentos: dict,
+    entradas: list[str | Path] | None = None,
+    extra: dict | None = None,
+) -> dict:
     """Escribe un manifiesto JSON con lo necesario para regenerar un resultado."""
     manifiesto = {
         "fecha_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "commit": _commit_git(),
         "argumentos": {k: str(v) for k, v in argumentos.items()},
-        "entradas": {Path(e).as_posix(): sha256_archivo(e) for e in (entradas or []) if Path(e).is_file()},
+        "entradas": {
+            Path(e).as_posix(): sha256_archivo(e) for e in (entradas or []) if Path(e).is_file()
+        },
         "versiones": _versiones(),
     }
     if extra:
@@ -127,7 +142,9 @@ def leer_url(url: str, espera_s: int = 120, reintentos: int = 3) -> bytes:
     raise ConnectionError(f"No se pudo descargar {url}: {ultimo}")
 
 
-def descargar_a_archivo(url: str, destino: str | Path, espera_s: int = 120, reintentos: int = 3) -> Path:
+def descargar_a_archivo(
+    url: str, destino: str | Path, espera_s: int = 120, reintentos: int = 3
+) -> Path:
     """Descarga a un archivo temporal y lo renombra al final (un corte no deja archivos a medias)."""
     destino = Path(destino)
     destino.parent.mkdir(parents=True, exist_ok=True)

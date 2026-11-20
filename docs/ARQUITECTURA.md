@@ -91,6 +91,7 @@ Proyecto_Final/
 │   ├── comun/                   capa 1 (tabla, particiones) y capa 2 (motor)
 │   ├── temporal/                capa 1 (curvas) y capa 3 (ramas 1, 2, 4)
 │   ├── fusion/                  capa 4
+│   ├── informe/                 capa 5: lectura de resultados y figuras del notebook (no entrena)
 │   └── demo/                    scripts originales de la demo, SIN modificar (referencia)
 ├── specs/NNN-nombre/            Spec Kit: spec.md, plan.md, tasks.md
 ├── tests/                       pytest; curvas sintéticas solo aquí
@@ -121,10 +122,14 @@ Proyecto_Final/
 | `temporal/exp_ramas.py` | 3 | E0–E2, selección del agregador, exportación v1 | spec 004 |
 | `temporal/exp_sesgos.py` | 3 | E3 (permutación), E4 (menos tránsitos), E5 (pooling) | spec 004 |
 | `fusion/codificador_imagen_v0.py` | 4 | Rama de imagen de la entrega (v0 de la demo, congelada) | spec 005 |
-| `fusion/fusion.py` | 4 | E6a, E6c, E7 y diagnóstico del apilado | spec 005 |
+| `fusion/fusionar.py` | 4 | E6a, E6c, E7 y diagnóstico del apilado | spec 005 |
 | `fusion/calibracion.py` | 4 | E8 (temperatura) y E9 (prior explícito) | spec 006 |
 | `fusion/incertidumbre.py` | 4 | E10 (MC Dropout vs ensamble) y E11 (errores) | spec 006 |
-| `fusion/consolidar_resultados.py` | 4 | Tablas y figuras finales | spec 007 |
+| `fusion/consolidar_resultados.py` | 4 | Tablas finales y veredicto de las hipótesis | spec 007 |
+| `informe/datos.py` | 5 | Carga única de dataset, tablas y predicciones (`Resultados`) | spec 007 |
+| `informe/graficos.py` | 5 | Gráfico de intervalos, diagrama de confiabilidad, vista de una señal | spec 007 |
+| `informe/secciones.py` | 5 | Una función por figura del notebook | spec 007 |
+| `informe/interactivo.py` | 5 | Controles (`ipywidgets`) con modo fijo y explorador de señales | spec 007 |
 
 ## 4. Flujo de datos y formatos
 

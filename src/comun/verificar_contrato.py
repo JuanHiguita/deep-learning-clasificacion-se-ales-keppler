@@ -5,6 +5,7 @@ No importa Keras: solo abre CSV, JSON y NPZ.
 
 Uso:  python -I src/comun/verificar_contrato.py --raiz .
 """
+
 from __future__ import annotations
 
 import argparse
@@ -30,7 +31,9 @@ def verificar_ejemplos(ejemplos: pd.DataFrame, protocolo: dict) -> list[str]:
         fallos.append("ejemplos.csv: hay id_ejemplo repetidos")
     malos = ejemplos.loc[~ejemplos["id_ejemplo"].astype(str).str.match(PATRON_ID), "id_ejemplo"]
     if len(malos):
-        fallos.append(f"ejemplos.csv: {len(malos)} id_ejemplo con formato inválido (ej. {malos.iloc[0]!r})")
+        fallos.append(
+            f"ejemplos.csv: {len(malos)} id_ejemplo con formato inválido (ej. {malos.iloc[0]!r})"
+        )
     if not set(ejemplos["clase"].unique()) <= {0, 1, 2}:
         fallos.append("ejemplos.csv: clases fuera de {0, 1, 2}")
     if not set(ejemplos["particion"].unique()) <= set(range(n)):
@@ -55,7 +58,11 @@ def verificar_manifiesto(raiz: Path) -> list[str]:
         return ["falta compartido/manifiesto_base.json"]
     esperado = json.loads(ruta.read_text(encoding="utf-8")).get("sha256_ejemplos")
     real = sha256_archivo(raiz / "compartido" / "ejemplos.csv")
-    return [] if esperado == real else ["ejemplos.csv no coincide con el SHA-256 de manifiesto_base.json"]
+    return (
+        []
+        if esperado == real
+        else ["ejemplos.csv no coincide con el SHA-256 de manifiesto_base.json"]
+    )
 
 
 def verificar_dataset_temporal(ruta: Path, ejemplos: pd.DataFrame, protocolo: dict) -> list[str]:
@@ -68,14 +75,18 @@ def verificar_dataset_temporal(ruta: Path, ejemplos: pd.DataFrame, protocolo: di
             fallos.append(f"{ruta.name}: id_ejemplo repetidos")
         fuera = set(ids) - validos
         if fuera:
-            fallos.append(f"{ruta.name}: {len(fuera)} ejemplos prerregistrados o desconocidos (ej. {sorted(fuera)[0]})")
+            fallos.append(
+                f"{ruta.name}: {len(fuera)} ejemplos prerregistrados o desconocidos (ej. {sorted(fuera)[0]})"
+            )
         for clave, forma in protocolo["formas"].items():
             if clave == "img":
                 continue
             if clave not in d.files:
                 fallos.append(f"{ruta.name}: falta la clave {clave}")
             elif tuple(d[clave].shape) != (n, *forma):
-                fallos.append(f"{ruta.name}: {clave} tiene forma {d[clave].shape}, se esperaba {(n, *forma)}")
+                fallos.append(
+                    f"{ruta.name}: {clave} tiene forma {d[clave].shape}, se esperaba {(n, *forma)}"
+                )
             elif not np.all(np.isfinite(d[clave])):
                 fallos.append(f"{ruta.name}: {clave} contiene NaN o infinitos")
         if "nombres_escalares" not in d.files:
@@ -85,7 +96,9 @@ def verificar_dataset_temporal(ruta: Path, ejemplos: pd.DataFrame, protocolo: di
             prohibidas = set(protocolo["columnas_prohibidas_como_entrada"])
             for nombre in nombres:
                 if nombre in prohibidas or nombre.startswith("koi_fpflag"):
-                    fallos.append(f"{ruta.name}: FUGA, el escalar {nombre} está prohibido como entrada")
+                    fallos.append(
+                        f"{ruta.name}: FUGA, el escalar {nombre} está prohibido como entrada"
+                    )
                 elif nombre not in protocolo["escalares_permitidos"]:
                     fallos.append(f"{ruta.name}: el escalar {nombre} no está en la lista permitida")
     return fallos
@@ -139,7 +152,9 @@ def verificar(raiz: Path, protocolo: dict) -> tuple[list[str], list[str]]:
     if not ruta_ej.is_file():
         return ["falta compartido/ejemplos.csv"], hechas
     ejemplos = pd.read_csv(ruta_ej, keep_default_na=False, na_values=[""], dtype={"tipo_fp": str})
-    ejemplos["prerregistrado"] = ejemplos["prerregistrado"].astype(str).str.lower().isin(["true", "1"])
+    ejemplos["prerregistrado"] = (
+        ejemplos["prerregistrado"].astype(str).str.lower().isin(["true", "1"])
+    )
     fallos += verificar_ejemplos(ejemplos, protocolo)
     hechas.append("ejemplos.csv")
     fallos += verificar_manifiesto(raiz)
