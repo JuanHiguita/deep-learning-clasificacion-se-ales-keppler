@@ -10,10 +10,10 @@
 | PT1 Base común | `specs/001-base-comun` | **Hecho con datos reales** (falta etiqueta `base-v1`) | D1–D2, `base-v1` | sáb 21-nov |
 | PT2 Dataset temporal | `specs/002-dataset-temporal` | **Dataset construido** (95,3 % disponible); faltan figura de inspección y EDA | D3 | dom 22-nov |
 | PT3 Motor | `specs/003-motor-experimentos` | **Hecho** | — | lun 23-nov |
-| PT4 Ramas | `specs/004-ramas-temporales` | En curso: M4 entrenada y exportada | D4, `ramas-v1` | jue 26-nov |
-| PT5 Fusión | `specs/005-fusion` | Pendiente | D5 (con imagen v0) | dom 29-nov |
-| PT6 Calibración | `specs/006-calibracion-incertidumbre` | Pendiente | D6 | mié 2-dic |
-| PT7 Consolidación | `specs/007-consolidacion` | Pendiente | D6 | mié 2-dic |
+| PT4 Ramas | `specs/004-ramas-temporales` | **Hecho (prioridad A)**; falta repetir E0 de M1 y M2 en el PC | D4, `ramas-v1` | jue 26-nov |
+| PT5 Fusión | `specs/005-fusion` | **Hecho (prioridad A)** | D5 (con imagen v0) | dom 29-nov |
+| PT6 Calibración | `specs/006-calibracion-incertidumbre` | **Hecho (prioridad A)** | D6 | mié 2-dic |
+| PT7 Consolidación | `specs/007-consolidacion` | Tablas y notebook hechos; falta la auditoría final | D6 | mié 2-dic |
 | PT8 Informe | `specs/008-informe` | Pendiente | D7, `curso-dl-v1` | sáb 5-dic |
 
 ## Decisiones abiertas (responde Juan)
@@ -75,6 +75,20 @@
 - **Presupuesto de cómputo:** confirmado como holgado; no hace falta recortar semillas.
 - **Exportado:** `modelos/escalares/v1/` (contrato verificado).
 - **Siguiente paso exacto:** spec 004 T4.1–T4.2 (M1 y los tres agregadores de la rama 2), E0 y E1–E2.
+
+### 2026-11-20 · Claude Fable 5.2 · PT4 a PT7 (ramas, fusión, calibración, consolidación y notebook)
+
+- **Hecho:** `temporal/modelos.py` (M1, M2 con tres agregadores, M4), `aumentacion.py`, `analisis_ramas.py`; `fusion/dataset_demo.py`, `modelos_demo.py`, `codificador_imagen_v0.py`, `vectores.py`, `fusionar.py`, `calibracion.py`, `incertidumbre.py`, `consolidar_resultados.py`; `scripts/construir_notebook.py`, `notebooks/informe_dl.ipynb` (ejecutado, 18 figuras), `docs/EXPLICACION_RESULTADOS.md`; scripts de la demo copiados sin cambios a `src/demo/` (commit de origen 6ffa66f).
+- **Pruebas:** 71 rápidas y 2 lentas pasan (Keras 3.12.4, Python 3.10). **Falta correrlas en el PC** (Keras 3.15.1, Python 3.13).
+- **Cordura (E0):** M4 pasó (AUC barajado 0,503). La corrida de E0 de M1 y M2 con atención se interrumpió por el límite de tiempo del entorno y **no quedó registrada**: volver a correr `exp_ramas.py --cordura` en el PC.
+- **P1 (AUC, media de 3 semillas):** AstroNet 0,864; promedio 0,863; GRU 0,862; atención 0,883; escalares 0,948. Diferencias pareadas no distinguibles salvo GRU − atención (−0,022 [−0,046; −0,000]). Permutación: promedio y atención 0,000; GRU cambia q en 0,048.
+- **Selección de la rama 2:** atención (NLL de validación 0,457 frente a 0,506 y 0,475; error estándar 0,021). Sin datos de prueba.
+- **Imagen v0 y demo vuelta a medir (222 KOIs con imagen):** imagen sola 0,918; curva de la demo 0,821; demo completa 0,939.
+- **P2:** fusión 0,985 [0,974; 0,994]; fusión tardía 0,976; sin vistas 0,978; sin tránsitos 0,984; sin imagen 0,981; sin escalares 0,969; ramas solas 0,913 / 0,894 / 0,909 / 0,954. **Alerta de apilado** (razón 3,59): con ajuste cruzado 0,975 (razón 1,38).
+- **P3:** temperaturas 1,06–1,93; ECE 0,033 → 0,022 y NLL 0,206 → 0,188 (no distinguible). Prior explícito: mejora distinguible para tasa ≤ 0,2. MC Dropout frente a ensamble: no distinguible. K00022.01 ahora sale planeta con 0,951.
+- **No hecho (prioridad B y C):** E4, E5, E1b, E2b, E6b, E7b, E10b. Tampoco el EDA de la spec 002 como notebook aparte (la sección 1 del notebook de resultados cubre lo esencial) ni el informe y la presentación (spec 008).
+- **Desviaciones nuevas:** el entorno de desarrollo corta cada comando a los 3 minutos, así que `entrenar_cv` guarda cada partición y se reanuda (`--presupuesto`); el script de fusión se llama `fusionar.py` (no `fusion.py`) para no chocar con el paquete; se agregó la configuración `e6a_ajuste_cruzado` como remedio del apilado.
+- **Siguiente paso exacto:** en el PC, `pytest -q`, `pytest -q -m lenta` y `scripts\\reproducir_todo.bat`; después, spec 008 (informe y presentación) cuando llegue la rúbrica.
 
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>
