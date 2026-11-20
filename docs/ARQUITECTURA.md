@@ -13,7 +13,7 @@ flowchart TD
     subgraph Externo
       A[NASA Exoplanet Archive · TAP]
       M[MAST · curvas PDCSAP y TPF]
-      V[Curso de Visión · modelos/imagen/v1]
+      V[TPF de Q5 · código de la demo]
     end
     subgraph "Capa 1 · Datos (src/comun, src/temporal)"
       D1[descargar_koi.py]
@@ -51,8 +51,7 @@ flowchart TD
     P --> E --> X1
     MO --> X1 --> X2
     X1 -- "modelos/<rama>/v1" --> F
-    V --> F
-    I0 --> F
+    V --> I0 --> F
     F --> C --> U --> R
     ME --> R
     ES --> R
@@ -81,7 +80,7 @@ Proyecto_Final/
 │   ├── llc/                     curvas PDCSAP Q1–Q17 + manifiesto_llc.csv
 │   ├── tpf/                     TPF de Q5 (solo imagen v0 y línea base de la demo)
 │   ├── dataset_temporal.npz     entradas de las ramas 1, 2 y 4
-│   └── dataset_imagen.npz       entrada de la rama 3 (de Visión, o v0 de la demo)
+│   └── dataset_demo.npz         entradas de la demo: imagen (rama 3 v0) y curva de 61 puntos (M0)
 ├── modelos/<rama>/v<N>/         rama ∈ {vistas, transitos, escalares, imagen}
 │   ├── particion_0..4.keras     codificador hasta la capa "embedding"
 │   ├── vectores_particion_0..4.npz   id_ejemplo y z para TODOS los ejemplos
@@ -121,7 +120,7 @@ Proyecto_Final/
 | `temporal/linea_base_demo.py` | 3 | M0: la demo con las particiones comunes | spec 004 |
 | `temporal/exp_ramas.py` | 3 | E0–E2, selección del agregador, exportación v1 | spec 004 |
 | `temporal/exp_sesgos.py` | 3 | E3 (permutación), E4 (menos tránsitos), E5 (pooling) | spec 004 |
-| `fusion/codificador_imagen_v0.py` | 4 | Respaldo de la rama de imagen | spec 005 |
+| `fusion/codificador_imagen_v0.py` | 4 | Rama de imagen de la entrega (v0 de la demo, congelada) | spec 005 |
 | `fusion/fusion.py` | 4 | E6a, E6c, E7 y diagnóstico del apilado | spec 005 |
 | `fusion/calibracion.py` | 4 | E8 (temperatura) y E9 (prior explícito) | spec 006 |
 | `fusion/incertidumbre.py` | 4 | E10 (MC Dropout vs ensamble) y E11 (errores) | spec 006 |
@@ -131,10 +130,10 @@ Proyecto_Final/
 
 | Artefacto | Productor | Consumidor | Formato |
 |---|---|---|---|
-| `compartido/ejemplos.csv` | `construir_ejemplos.py` | todo | CSV UTF-8; columnas del contrato §3 + `fp_nt, fp_ss, fp_co, fp_ec, n_koi_en_estrella` |
+| `compartido/ejemplos.csv` | `construir_ejemplos.py` | todo | CSV UTF-8; columnas del contrato §3 + `fp_nt, fp_ss, fp_co, fp_ec, n_koi_en_estrella, t0_bkjd, duracion_h` |
 | `data/dataset_temporal.npz` | `construir_dataset_temporal.py` | ramas 1, 2, 4 | claves del contrato §4 + `paridad_transitos`, `n_transitos_validos`, `consistencia`, `disponible_vistas`, `disponible_transitos`, `id_ejemplo` |
 | `modelos/<rama>/v1/*` | `exp_ramas.py` | `fusion.py` | contrato §5 |
-| `resultados/dl/<exp>/pred_semilla<s>.npz` | `entrenamiento.py` | calibración, consolidación | `id_ejemplo` (U), `particion` (int), `p_prueba` (n, 3), `p_validacion` (n, 3; NaN donde el ejemplo no es de validación de su partición) |
+| `resultados/dl/<exp>/pred_semilla<s>.npz` | `entrenamiento.py` | calibración, consolidación | `id_ejemplo` (U), `particion` (int), `p_prueba` (n, 3), `p_validacion` (n, 3) y `particion_modelo_validacion` (n,): predicción hecha por el modelo de la partición en que el ejemplo es validación interna |
 | `resultados/dl/tablas/*.csv` | `consolidar_resultados.py` | notebook e informe | una fila por modelo y métrica, con `estimacion, ic_inf, ic_sup, n` |
 
 Reglas de formato:
@@ -162,8 +161,8 @@ python -I src/temporal/exp_ramas.py --dataset data/dataset_temporal.npz --ejempl
 python -I src/temporal/exp_sesgos.py --dataset data/dataset_temporal.npz --ejemplos compartido/ejemplos.csv --resultados resultados/dl
 
 # Capa 4 · sistema
-python -I src/fusion/codificador_imagen_v0.py --dataset data/dataset_imagen.npz --ejemplos compartido/ejemplos.csv --salida modelos/imagen/v0
-python -I src/fusion/fusion.py --modelos modelos --version-imagen v1 --ejemplos compartido/ejemplos.csv --salida resultados/dl/fusion
+python -I src/fusion/codificador_imagen_v0.py --dataset data/dataset_demo.npz --ejemplos compartido/ejemplos.csv --salida modelos/imagen/v0
+python -I src/fusion/fusion.py --modelos modelos --version-imagen v0 --ejemplos compartido/ejemplos.csv --salida resultados/dl/fusion
 python -I src/fusion/calibracion.py --predicciones resultados/dl/fusion --koi data/koi_dr25.csv --salida resultados/dl/calibracion
 python -I src/fusion/incertidumbre.py --modelos modelos --predicciones resultados/dl/fusion --salida resultados/dl/incertidumbre
 python -I src/fusion/consolidar_resultados.py --resultados resultados/dl --salida resultados/dl/tablas
@@ -181,21 +180,21 @@ flowchart LR
     L["vista_local (201,4)"] --> R1["Rama 1 · CNN tipo AstroNet"] --> Z1["z₁ (32)"]
     T["transitos (32,61) + máscara"] --> PHI["φ compartido por tránsito"] --> AG["agregador: promedio | GRU | atención"] --> Z2["z₂ (32)"]
     CO["consistencia (4)"] --> AG
-    I["imagen (11,11,4)"] --> R3["Rama 3 · CNN 2D (curso de Visión, congelada)"] --> Z3["z₃ (32)"]
+    I["imagen (11,11,4)"] --> R3["Rama 3 · CNN 2D v0 de la demo (congelada)"] --> Z3["z₃ (32)"]
     S["escalares (7) + faltantes (7)"] --> R4["Rama 4 · densa"] --> Z4["z₄ (16)"]
     Z1 & Z2 & Z3 & Z4 --> CAT["concatenar + 4 banderas = 116"] --> H["Densa(64) → Dropout(0,3) → Densa(3, softmax)"]
     H --> CAL["temperatura → prior explícito"] --> OUT["P(planeta), P(FP), P(sin señal) + incertidumbre"]
 ```
 
 - Este curso construye las ramas 1, 2 y 4, la fusión y la calibración.
-- La rama 3 es del curso de Visión. Aquí entra **congelada**, con un codificador por partición, y se acredita.
+- La rama 3 **no es un aporte de este curso**. Para la entrega se usa el codificador v0 (código de la demo, anterior a los cursos), congelado y con un codificador por partición. El curso de Visión desarrolla esa rama por separado; los dos proyectos se unen después de las entregas.
 - Cada rama se entrena sola con su propia cabeza `Dense(3)`; a la fusión solo pasa el vector `embedding`.
 
 ## 7. Estrategia de pruebas
 
 | Nivel | Qué prueba | Dónde |
 |---|---|---|
-| Unitarias | Métricas contra `sklearn` y casos a mano; *bootstrap*; particiones sin solape | `tests/test_metricas.py`, `test_estadistica.py`, `test_protocolo.py` |
+| Unitarias | Métricas contra `sklearn` y casos a mano; *bootstrap*; particiones sin solape | `tests/test_motor.py` |
 | Extractor | Curvas sintéticas con una caja de profundidad conocida; alternancia par/impar; huecos | `tests/test_extractor.py` (spec 002) |
 | Contrato | Formas, identificadores, lista blanca, prerregistro | `src/comun/verificar_contrato.py` |
 | Cordura | Etiquetas barajadas ≈ 0,5; sobreajuste de un lote | `comun/entrenamiento.py` (spec 003) |
@@ -205,15 +204,15 @@ Las curvas sintéticas existen solo para probar código. Nunca producen una cifr
 
 ## 8. Relación con el repositorio de la tesis y con Visión
 
-Este repositorio es **independiente** del repositorio `Proyecto deteccion planetas` (tesis y Visión). Se conectan por archivos, no por código:
+Este repositorio es **independiente** del repositorio `Proyecto deteccion planetas` (tesis y Visión). **Para la entrega del curso no recibe nada de Visión.** La tabla describe la unión posterior, que se hace por archivos y no por código:
 
 | Qué cruza | Dirección | Cómo se garantiza que es lo mismo |
 |---|---|---|
 | `compartido/ejemplos.csv` y `manifiesto_base.json` | Se construye una vez y se copia al otro repositorio | SHA-256 en el manifiesto; `verificar_contrato.py` lo compara |
-| `modelos/imagen/v1/` | De Visión hacia aquí | `manifiesto.json` del codificador y verificación de `id_ejemplo` |
+| `modelos/imagen/v1/` | De Visión hacia aquí, **después de las entregas** | `manifiesto.json` del codificador y verificación de `id_ejemplo` |
 | Scripts de la demo | Copia sin modificar en `src/demo/` | Se anota el commit de origen en `src/demo/ORIGEN.md` |
 
-Nada de este repositorio viaja hacia Visión salvo la base común.
+Hacia Visión solo viaja, si Visión quiere usarla, la base común.
 
 ## 9. Seguridad
 

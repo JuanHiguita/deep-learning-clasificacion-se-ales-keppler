@@ -5,6 +5,7 @@
     "n": 5,
     "semilla": 0,
     "grupo": "kepid",
+    "metodo": "por clase, estrellas ordenadas por sha256('<semilla>:<kepid>') y repartidas por turnos",
     "validacion_interna": "(k + 1) mod n"
   },
   "semillas": [0, 1, 2],
@@ -42,7 +43,8 @@
     "escala_min_sigmas": 3.0,
     "recorte_relativo": 5.0,
     "desfase_sin_senal": 0.25,
-    "min_trimestres": 4
+    "min_trimestres": 4,
+    "min_transitos_para_rama": 4
   },
   "formas": {
     "vista_global": [2001, 1],

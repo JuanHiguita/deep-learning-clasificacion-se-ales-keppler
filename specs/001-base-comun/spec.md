@@ -21,7 +21,7 @@ Tener una sola tabla maestra de ejemplos, con etiquetas DR25, particiones por es
 - **RF-5** Genera dos filas por KOI: `<kepoi_name>|transito` (clase 0 o 1) y `<kepoi_name>|sin_senal` (clase 2).
 - **RF-6** Columnas: las del contrato §3 (`id_ejemplo, kepid, kepoi_name, clase, tipo_fp, periodo_d, mes, particion, prerregistrado`) más metadatos de reporte `fp_nt, fp_ss, fp_co, fp_ec, n_koi_en_estrella, t0_bkjd, duracion_h`.
 - **RF-7** `tipo_fp`: `no_transito`, `eclipse_secundario` o `centroide` si hay exactamente una bandera (`nt`, `ss`, `co`); `otro` si la única es `ec` o hay varias; vacío si no es FP.
-- **RF-8** `particion`: `StratifiedGroupKFold(5, shuffle=True, random_state=0)` con grupos `kepid` y estratos por clase del KOI. Las dos filas de un KOI comparten partición.
+- **RF-8** `particion`: 5 particiones agrupadas por `kepid` y estratificadas por clase, con un reparto propio y determinista: dentro de cada clase las estrellas se ordenan por SHA-256 de `"<semilla>:<kepid>"` (semilla 0) y se reparten por turnos. No se usa `StratifiedGroupKFold`: su resultado cambia con la versión de scikit-learn y puede quedar desbalanceado (visto el 20-nov: 9 planetas y 1 falso positivo en una partición de prueba). Las dos filas de un KOI comparten partición.
 - **RF-9** `prerregistrado`: verdadero si `koi_disposition` difiere entre DR25 y `cumulative` en la fecha de descarga. Si marca más del 10 % de la selección, el script termina con error (hay que consultar a Juan).
 - **RF-10** `lineas_base_tabulares.py` mide, con las mismas particiones y solo ejemplos `transito` no prerregistrados:
   - S3-B: `HistGradientBoostingClassifier` sobre `koi_period, koi_duration, koi_depth, koi_model_snr, koi_num_transits, koi_kepmag`.
@@ -47,7 +47,7 @@ Tener una sola tabla maestra de ejemplos, con etiquetas DR25, particiones por es
 ## Criterios de aceptación
 
 - [ ] `verificar_contrato.py` pasa.
-- [ ] Diferencia máxima de 3 ejemplos por clase entre particiones.
+- [ ] Diferencia máxima de 1 KOI por clase entre particiones.
 - [ ] `metricas.json` de líneas base generado, con intervalos.
 - [ ] Pruebas unitarias de RF-7, RF-8, RF-9 y RF-11 (casos que deben fallar) en verde.
 - [ ] Etiqueta git `base-v1`. Aviso a Visión (plan, anexo B).

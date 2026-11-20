@@ -3,3 +3,4 @@
 *.pdf binary
 *.npz binary
 *.keras binary
+*.bat text eol=crlf

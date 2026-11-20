@@ -4,8 +4,8 @@ Modelo sugerido: Sonnet implementa; Opus revisa T5.7. Duración: 2 días. T5.1�
 
 - [ ] T5.1 `codificador_imagen_v0.py` → `modelos/imagen/v0/`. `verificar_contrato.py`.
 - [ ] T5.2 `vectores.py` con pruebas.
-- [ ] T5.3 `fusion.py`: `cabeza`, `entrenar_fusion`. Ensayo con v0 (así la fusión queda probada antes de I2).
-- [ ] T5.4 Viernes 27-nov: ¿llegó `modelos/imagen/v1/`? Si sí: copiar, verificar, usar v1. Si no: seguir con v0 y anotarlo.
+- [ ] T5.3 `fusion.py`: `cabeza`, `entrenar_fusion`. Ensayo con v0.
+- [ ] T5.4 Confirmar que `modelos/imagen/v0/` cubre todos los ejemplos no prerregistrados. No se espera el codificador de Visión (DD-13).
 - [ ] T5.5 E6a (5 semillas) y E6c.
 - [ ] T5.6 `diagnostico_apilado`. Si se activa el ajuste cruzado: implementarlo, correrlo y anotar la desviación.
 - [ ] T5.7 Revisión (Opus): ¿la fusión supera a la mejor rama sola? ¿Algún AUC > 0,99? ¿El diagnóstico es coherente?

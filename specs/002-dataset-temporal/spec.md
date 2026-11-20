@@ -16,12 +16,12 @@ Convertir las curvas PDCSAP de Q1–Q17 de cada estrella en las entradas de las 
 
 ### Descarga
 
-- **RF-1** `descargar_llc.py` baja, por `kepid` de `ejemplos.csv`, todas las curvas de cadencia larga con `author="Kepler"`. Reanudable: si el archivo existe y su tamaño es > 0, no lo baja de nuevo. Tres reintentos con espera creciente. Pausa entre estrellas para no saturar MAST.
+- **RF-1** `descargar_mast.py --que llc` baja, por `kepid` de `ejemplos.csv`, todas las curvas de cadencia larga (`*_llc.fits`) directamente de `archive.stsci.edu`, sin `lightkurve`. Con `--que tpf` baja el TPF de Q5 de cada estrella. Reanudable: si el archivo existe y su tamaño es > 0, no lo baja de nuevo. Tres reintentos con espera creciente. Pausa entre estrellas para no saturar MAST.
 - **RF-2** Escribe `data/llc/manifiesto_llc.csv`: `kepid, trimestre, archivo, bytes, sha256`. Al final imprime cuántas estrellas tienen menos de 4 trimestres.
 
 ### Limpieza (por trimestre)
 
-- **RF-3** Flujo `pdcsap_flux`, `quality_bitmask="default"`, sin NaN, normalizado por su mediana.
+- **RF-3** Flujo `PDCSAP_FLUX`, solo cadencias con `SAP_QUALITY = 0` (más estricto que la máscara `default` de `lightkurve`), sin NaN, normalizado por su mediana.
 - **RF-4** Aplanado con Savitzky–Golay de 401 cadencias, enmascarando los tránsitos de **todos** los KOIs de la estrella (±0,75 duraciones a cada lado, es decir, 1,5 duraciones en total). Para el ejemplo `sin_senal` la máscara es la misma (la de las señales reales).
 - **RF-5** Recorte de atípicos solo hacia arriba (4σ). Ruido por trimestre: `σ = 1,4826 · MAD` de los puntos fuera de tránsito.
 
@@ -47,6 +47,7 @@ Convertir las curvas PDCSAP de Q1–Q17 de cada estrella en las entradas de las 
   2. (profundidad media impar − par) dividida por el error de esa diferencia;
   3. log10(1 + número de tránsitos válidos);
   4. mayor desviación absoluta de un tránsito respecto a la mediana, en unidades de su error.
+  Los estadísticos 1, 2 y 4 se comprimen con `sign(x)·log10(1 + |x|)`, porque en estrellas dobles brillantes valen miles de sigmas (así, 3σ ≈ 0,6 y 9σ ≈ 1,0).
   Con menos de 4 tránsitos válidos: `disponible_transitos = 0`.
 
 ### Rama 4 · escalares (decisión DD-09)

@@ -6,7 +6,7 @@ Guía para agentes de código (Opus, Sonnet u otro) que trabajen en este reposit
 
 Proyecto del curso de Deep Learning de Juan Sebastian Higuita Riascos (Especialización en IA, Universidad Nacional de Colombia). Entrega: **6 de diciembre de 2026**. Clasifica señales de tránsito de Kepler (planeta, falso positivo, sin señal) con una red de cuatro ramas, y estudia tres preguntas: qué arquitectura lee mejor la señal, cuánto aporta la fusión y si las probabilidades salen calibradas.
 
-Es una parte de un proyecto de tesis más grande. La rama de imagen pertenece al curso de Visión por Computador y aquí solo se usa congelada.
+Es una parte de un proyecto de tesis más grande. La entrega de este curso es **independiente** de la del curso de Visión por Computador: la rama de imagen que se usa aquí es el codificador v0 de la demo, congelado. Los dos proyectos se unen después de las entregas.
 
 ## Qué leer antes de tocar nada
 
@@ -41,7 +41,7 @@ En Windows (PowerShell): `$env:KERAS_BACKEND="jax"`. La secuencia completa de sc
 - Una prueba de cordura falla, o aparece un AUC > 0,99.
 - Faltan datos, una columna no existe o un *hash* no coincide.
 - Para avanzar habría que mirar la prueba para elegir algo.
-- Necesitarías un resultado del curso de Visión distinto del codificador de imagen.
+- Necesitarías cualquier cosa del curso de Visión (las entregas son independientes).
 - El prerregistro marca más del 10 % de la selección.
 - La inspección de K03615.01 no muestra alternancia par/impar.
 

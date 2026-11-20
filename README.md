@@ -15,7 +15,7 @@
 | Parte | Origen |
 |---|---|
 | Ramas 1 (vistas), 2 (tránsitos) y 4 (escalares); fusión; calibración e incertidumbre | **Este curso** |
-| Rama 3 (imagen de diferencia, CNN 2D) | Curso de Visión por Computador. Aquí se usa congelada |
+| Rama 3 (imagen de diferencia, CNN 2D) | Código de la demo, anterior a los cursos (codificador v0). Aquí se usa congelada. El curso de Visión por Computador la desarrolla por separado; los proyectos se unen después de las entregas |
 | Tabla de ejemplos, particiones y líneas base tabulares | Base común de los dos cursos |
 
 ## Instalación

@@ -1,0 +1,7 @@
+# Mínimo para descargar datos, construir la base y correr las pruebas rápidas (sin Keras).
+numpy
+pandas
+scipy
+scikit-learn
+astropy
+pytest

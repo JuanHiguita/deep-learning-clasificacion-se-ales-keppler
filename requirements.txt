@@ -4,6 +4,7 @@ matplotlib
 scikit-learn
 lightkurve>=2.4
 astropy
+scipy
 jax[cpu]
 keras>=3
 pytest

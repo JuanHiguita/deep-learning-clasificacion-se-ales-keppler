@@ -8,17 +8,16 @@ Unir los vectores de las cuatro ramas en una sola decisión y medir cuánto apor
 
 ## Entradas
 
-`modelos/{vistas,transitos,escalares}/v1/` (spec 004) y `modelos/imagen/<versión>/`:
+`modelos/{vistas,transitos,escalares}/v1/` (spec 004) y `modelos/imagen/v0/`.
 
-- **v1:** la entrega el curso de Visión (I2, viernes 27-nov). Se copia a este repositorio y se verifica.
-- **v0 (respaldo):** se construye aquí con la rama 2D de la demo.
+**Decisión DD-13 (19-nov): entregas independientes.** La entrega del curso usa como rama de imagen el **codificador v0**: la rama 2D de la demo, código anterior a los cursos, entrenada aquí por partición y congelada. No se espera nada del curso de Visión. Sustituirla por el codificador de Visión es trabajo de la unión posterior (tesis).
 
 ## Requisitos funcionales
 
 ### Imagen v0
 
 - **RF-1** `codificador_imagen_v0.py` usa la rama 2D de `src/demo/demo_cnn.py` (3 × Conv2D 3×3 sin pooling → Flatten → Dropout(0,4) → Dense(32, name="embedding")) con una cabeza `Dense(3)`, entrenada con el motor (spec 003), aumentación por rotaciones de 90° y ruido 0,05, semilla 0.
-- **RF-2** Fuente de imágenes: `data/dataset_imagen.npz` si Visión lo publicó; si no, `img` de `data/dataset_demo.npz` (spec 004, T4.6).
+- **RF-2** Fuente de imágenes: `img` de `data/dataset_demo.npz` (spec 004, T4.6), construido con `src/demo/demo_dataset.py` desde los TPF de Q5. Si no hay TPF y no se pueden descargar: la fusión se entrega con 3 ramas y se declara.
 - **RF-3** Su `manifiesto.json` incluye: `"origen": "v0 · código de la demo (base común) · no es resultado de ningún curso"`.
 - **RF-4** Este curso no modifica la arquitectura de la imagen ni reporta su desempeño como resultado propio. La rama sola aparece en la tabla de ablación únicamente como referencia, con su origen.
 
@@ -37,7 +36,7 @@ Unir los vectores de las cuatro ramas en una sola decisión y medir cuánto apor
 - **RF-12** `resultados/dl/tablas/p2_fusion.csv`: fusión E6a, E6c, cada ablación y cada rama sola; AUC, NLL, ECE, exactitud, con intervalos; diferencias pareadas: E6a − mejor rama sola, E6a − M0 completo, E6a − E6c, E6a − (sin cada rama).
 - **RF-13** Las mismas diferencias por bandera de FP (`fp_ss`, `fp_co`, `fp_nt`) y por tercil de MES, con `n`.
 - **RF-14** Comparación con S3-B, S3-C y `koi_score` (este último marcado como comparador externo que contiene la decisión del Robovetter).
-- **RF-15** `resultados/dl/fusion/manifiesto.json` registra la versión de la imagen (v0 o v1) y el SHA-256 de sus vectores.
+- **RF-15** `resultados/dl/fusion/manifiesto.json` registra la versión de la imagen (v0) y el SHA-256 de sus vectores.
 
 ## Criterios de aceptación
 
@@ -45,7 +44,6 @@ Unir los vectores de las cuatro ramas en una sola decisión y medir cuánto apor
 - [ ] Diagnóstico del apilado escrito en `metricas.json` y en la bitácora.
 - [ ] `verificar_contrato.py` pasa con `modelos/imagen/`.
 - [ ] La predicción final del sistema (`resultados/dl/fusion/e6a/pred_semilla*.npz`) existe con `p_prueba` y `p_validacion`: es la entrada de la spec 006.
-- [ ] Si llega v1 después de haber corrido con v0: repetir E6–E7 y la spec 006 (solo cabezas; es barato) y conservar los resultados de v0 en una carpeta aparte.
 
 ## Fuera de alcance
 

@@ -1,6 +1,6 @@
 # Plan de ejecución del curso de Deep Learning
 
-**Versión:** 1.0 · **Fecha:** 19 de noviembre de 2026 · **Entrega:** domingo 6 de diciembre de 2026 (quedan 17 días)
+**Versión:** 1.1 · **Fecha:** 19 de noviembre de 2026 · **Entrega:** domingo 6 de diciembre de 2026 (quedan 17 días)
 **Título provisional:** *Clasificación calibrada de señales de tránsito de Kepler con una red multirrama y un codificador por tránsito con atención* (pendiente de confirmación de Juan).
 **Reemplaza a:** el calendario y el detalle de `roadmap_curso_deep_learning.md`. El alcance y las reglas del roadmap siguen vigentes; donde este plan dice algo distinto, manda este plan, y por encima de ambos manda `00_ESTADO_Y_DECISIONES.md`.
 **Nombre en el repositorio:** `docs/planeacion/04_plan_ejecucion_deep_learning.md` (repositorio del curso: `D:\Proyectos Especializacion\Deep Learning\Proyecto_Final`). La arquitectura del repositorio está en `docs/ARQUITECTURA.md` y cada paquete de trabajo tiene su especificación en `specs/`.
@@ -40,7 +40,7 @@ Supuestos que el PT0 debe comprobar antes de seguir:
 | El PC de Juan llega a MAST y al Exoplanet Archive | Descargar desde el navegador o en Colab (`CLAUDE.md`) |
 | Los TPF de Q5 de la demo están en `data/tpf/` | Descargarlos de nuevo con `lightkurve` (solo hacen falta para la imagen v0 y la línea base de la demo) |
 | Keras 3 + JAX en CPU funciona en el PC | Usar Colab en CPU; no cambiar de framework |
-| El curso de Visión no ha construido todavía `compartido/ejemplos.csv` | Si ya existe, **no reconstruirlo**: verificarlo y reutilizarlo (PT1) |
+| El curso de Visión no ha empezado (confirmado el 19-nov) | — |
 
 ---
 
@@ -62,16 +62,17 @@ Supuestos que el PT0 debe comprobar antes de seguir:
 | DD-10 | **La ablación principal reentrena la cabeza de fusión sin la rama.** Apagar la rama con la bandera de disponibilidad es solo un análisis secundario. | Una cabeza entrenada con las cuatro ramas nunca vio un vector en ceros; apagarlo en prueba mide otra cosa. |
 | DD-11 | No se comparan resultados con el "modelo combinado" del curso de Visión. La referencia es la demo vuelta a medir sobre la base común. | Doble entrega; además los resultados de Visión llegan el mismo día. |
 | DD-12 | **Repositorio propio del curso** en `D:\Proyectos Especializacion\Deep Learning\Proyecto_Final`, separado del repositorio de la tesis y de Visión. Se conectan por archivos: `compartido/` (base común, con SHA-256) y `modelos/imagen/v1/`. | Lo pidió Juan el 19-nov. Cambia el "un solo repositorio" de `03_plan_integrado_cursos.md` §6; la base común sigue siendo una sola. |
+| DD-13 | **Entregas independientes.** Para la entrega del curso, este proyecto no depende de nada del curso de Visión: construye su propia base y usa como rama de imagen el **codificador v0** (código de la demo, anterior a los cursos), congelado. No hay punto I2. Los dos proyectos se unen **después** de las entregas, en la tesis. | Lo decidió Juan el 19-nov; los dos profesores aceptaron el proyecto. La regla de doble entrega sigue vigente: la imagen se acredita a la demo y no se estudia ni se reporta como aporte de este curso. |
 
 ### 2.2 Decisiones abiertas (el agente usa el valor por defecto y lo deja anotado)
 
 | ID | Pregunta para Juan | Valor por defecto |
 |---|---|---|
-| DA-1 | ¿Los dos profesores aceptaron el proyecto compartido? | Seguir, y dejar el riesgo en la bitácora. **Es lo único que puede invalidar la entrega: confirmarlo ya.** |
-| DA-2 | ¿El chat de Visión ya fijó una definición del conjunto prerregistrado o construyó parte de la base? | Usar la definición del PT1 y avisar a Visión con el anexo B. |
-| DA-3 | ¿Fecha de I2 (codificador de imagen v1)? | Viernes 27 de noviembre. Si no llega, se entrega con v0 y el informe lo dice. |
+| DA-1 | ¿Los dos profesores aceptaron el proyecto compartido? | **Resuelta (19-nov): sí aceptaron.** |
+| DA-2 | ¿El chat de Visión ya fijó una definición del conjunto prerregistrado o construyó parte de la base? | **Resuelta (19-nov): Visión no ha empezado.** Este curso construye su base con la definición del PT1. |
+| DA-3 | ¿Fecha de I2 (codificador de imagen v1)? | **Ya no aplica (DD-13):** la entrega usa v0. |
 | DA-4 | ¿Formato de entrega: los cuatro (informe, notebook, presentación, repositorio) o uno? | Los cuatro. |
-| DA-5 | ¿Enunciado y rúbrica oficiales? | No están en el proyecto. Al subirlos, revisar la sección 11 contra la rúbrica. |
+| DA-5 | ¿Enunciado y rúbrica oficiales? | Juan aún no tiene la rúbrica (19-nov). Cuando llegue, revisar la sección 11 y la spec 008 contra ella. |
 | DA-6 | Título definitivo. | El provisional de la cabecera. |
 
 ---
@@ -111,7 +112,7 @@ La meta "mejora clara en estrellas dobles" del documento de divulgación se trat
 ### 4.1 Datos y particiones
 
 - **Ejemplos:** dos por KOI: `transito` (clase 0 o 1) y `sin_senal` (clase 2, época `t0 + 0,25·P`). Se esperan unos 520 ejemplos; el número exacto lo fija PT1.
-- **Particiones:** `StratifiedGroupKFold(5, shuffle=True, random_state=0)`, grupos por `kepid`, estratos por clase del KOI. Se guardan en `compartido/ejemplos.csv` y **no se regeneran nunca**.
+- **Particiones:** 5, agrupadas por `kepid` y estratificadas por clase del KOI, con un reparto determinista por SHA-256 de `"0:<kepid>"` (spec 001, RF-8). No se usa `StratifiedGroupKFold`, porque su resultado depende de la versión de scikit-learn. Se guardan en `compartido/ejemplos.csv` y **no se regeneran nunca**.
 - **Para la partición de prueba *k*:** entrenamiento = las 3 particiones restantes; validación interna = partición *(k+1) mod 5* (DD-05); prueba = *k*.
 - **Prerregistrados:** fuera de todo (entrenamiento, validación, prueba, EDA de resultados).
 
@@ -313,7 +314,7 @@ Cada PT indica el modelo sugerido: **Opus** para diseño delicado y auditorías;
 
 ### PT5 · Fusión y ablación (`specs/005-fusion`) (Sonnet implementa, Opus audita · 2 días)
 
-**Imagen v0** (`src/fusion/codificador_imagen_v0.py`): la rama 2D de `demo_cnn.py` hasta su Dense(32), entrenada por partición con el protocolo 4.1 sobre `data/dataset_imagen.npz` si Visión ya lo publicó, o sobre la imagen que genera `demo_dataset.py` desde los TPF de Q5. Su manifiesto dice: "v0, código de la demo (base común), no es resultado de ningún curso". Cuando llegue v1 de Visión, se reemplazan los vectores y se repite PT5–PT6 (es barato).
+**Imagen v0** (`src/fusion/codificador_imagen_v0.py`): la rama 2D de `demo_cnn.py` hasta su Dense(32), entrenada por partición con el protocolo 4.1 sobre la imagen que genera `demo_dataset.py` desde los TPF de Q5. Su manifiesto dice: "v0, código de la demo (base común), no es resultado de ningún curso". **La entrega del curso se hace con v0 (DD-13).** Cambiarla por el codificador de Visión es trabajo de la unión posterior: solo cambian los vectores de entrada.
 
 **Experimentos**
 
@@ -329,7 +330,7 @@ Cada PT indica el modelo sugerido: **Opus** para diseño delicado y auditorías;
 
 **Reporte:** tabla de la sección 3 (P2); ablación por bandera de FP y por tercil de MES; comparación con M0-completo, S3-B, S3-C y `koi_score` (comparador externo). Qué versión de la imagen se usó.
 
-**Aceptación:** E6a, E6c y E7 completos; diagnóstico del apilado en el informe; la sección de arquitectura acredita la rama 3 a Visión (o a la demo, si es v0).
+**Aceptación:** E6a, E6c y E7 completos; diagnóstico del apilado en el informe; la sección de arquitectura acredita la rama 3 a la demo (v0).
 
 ### PT6 · Calibración e incertidumbre (`specs/006-calibracion`) (Opus · 2 días)
 
@@ -366,8 +367,8 @@ Estructura en la sección 11. Antes de entregar: comprobar las referencias con l
 | Bloque | Fechas | Paquetes | Hito de cierre |
 |---|---|---|---|
 | A | vie 20 – dom 22 nov | PT0, PT1, PT2 (la descarga arranca el viernes) | **D1–D3:** `base-v1` y `dataset_temporal.npz` verificados (dom 22) |
-| B | lun 23 – jue 26 nov | PT3 (lun), PT4: E0–E3 (mar–jue); imagen v0 en paralelo | **D4:** tabla comparativa y `ramas-v1` (jue 26) |
-| C | vie 27 – dom 29 nov | I2: imagen v1 (vie 27). PT5: E6a, E6c, E7. PT4 prioridad B: E4, E5 | **D5:** fusión y ablación (dom 29) |
+| B | lun 23 – jue 26 nov | PT3 (lun), PT4: E0–E3 (mar–jue); imagen v0 en paralelo (obligatoria) | **D4:** tabla comparativa y `ramas-v1` (jue 26) |
+| C | vie 27 – dom 29 nov | PT5 con imagen v0: E6a, E6c, E7. PT4 prioridad B: E4, E5 | **D5:** fusión y ablación (dom 29) |
 | D | lun 30 nov – mié 2 dic | PT6: E8–E11. PT7 | **D6:** resultados congelados (mié 2). **Desde aquí no se entrena nada.** |
 | E | jue 3 – sáb 5 dic | PT8 | **D7:** etiqueta `curso-dl-v1` y entrega subida (sáb 5) |
 | — | dom 6 dic | Colchón | Fecha límite |
@@ -396,16 +397,15 @@ Son modelos de pocos miles de parámetros sobre unos 310 ejemplos de entrenamien
 6. Semillas: de 3 a 2.
 7. Vista global de 2001 puntos: reducir a 401 (anotar la desviación del contrato y avisar a Visión; no les afecta porque el vector sigue siendo de 32).
 
-**No se recorta nunca:** particiones por estrella, pruebas de cordura, control atención vs promedio (E2), E3, ablación E7, E8–E10, intervalos por *bootstrap* y la acreditación a Visión.
+**No se recorta nunca:** particiones por estrella, pruebas de cordura, control atención vs promedio (E2), E3, ablación E7, E8–E10, intervalos por *bootstrap* y la acreditación del origen de la rama de imagen.
 
 ## 10. Riesgos
 
 | Riesgo | Señal | Respuesta |
 |---|---|---|
-| Un profesor no acepta el proyecto compartido | DA-1 sin confirmar | Confirmar hoy. Es el único riesgo que no se arregla con trabajo. |
 | La descarga de curvas falla o es lenta | Menos del 80 % el sábado 21 | Colab; respaldo con TPF de Q5 (PT2) |
-| Visión construye otra base distinta | `ejemplos.csv` distinto en el otro chat | Anexo B en los documentos del proyecto; una sola base |
-| Imagen v1 no llega | Viernes 27 sin vectores | Entregar con v0 y declararlo |
+| Al unir los proyectos, las bases de los dos cursos no coinciden | Visión construye su propia `ejemplos.csv` | Ofrecerle esta base (anexo B). Si usa otra, la unión reentrena los codificadores sobre una base única; las cifras de los dos informes no se comparan entre sí |
+| No hay TPF de Q5 para la imagen v0 | Falla T0.7 | Descargarlos con `lightkurve` (260 archivos). Si no se puede, la fusión se entrega con 3 ramas y se declara |
 | Diferencias dentro del ruido | Intervalos que incluyen el 0 | Es un resultado; se reporta así. No se buscan hiperparámetros para "ganar" |
 | Fuga | AUC > 0,99 o prueba de etiquetas barajadas ≠ 0,5 | Detener y auditar |
 | Sobreajuste del apilado | NLL de validación ≫ entrenamiento en la cabeza | Ajuste cruzado (PT5) |
@@ -421,8 +421,8 @@ Son modelos de pocos miles de parámetros sobre unos 310 ejemplos de entrenamien
 
 1. Resumen, con las tres respuestas y sus intervalos.
 2. Problema y trabajo previo: AstroNet, ExoMiner, Robovetter. La novedad se redacta como "no encontramos".
-3. Datos y base común. Declarar que la base se comparte con el curso de Visión.
-4. Arquitectura del sistema: qué rama es de este curso y cuál viene de Visión (o de la demo).
+3. Datos y base. Declarar que el problema y los datos son los mismos del proyecto del curso de Visión, y que las entregas son independientes.
+4. Arquitectura del sistema: qué ramas son de este curso y que la de imagen es el codificador v0 de la demo, congelado.
 5. Protocolo experimental (sección 4 de este plan).
 6. P1: comparación de arquitecturas y sesgos inductivos (E1–E5).
 7. P2: fusión y ablación (E6–E7).
@@ -465,7 +465,7 @@ Una tabla de estado por PT (pendiente, en curso, terminado, bloqueado) y, debajo
 - Una prueba de cordura falla o aparece un AUC > 0,99.
 - Faltan datos, una columna de la tabla no existe o un archivo descargado no coincide con su *hash*.
 - Para avanzar habría que mirar la prueba (elegir un modelo, un umbral o un hiperparámetro).
-- Se necesitaría un resultado del curso de Visión distinto del codificador de imagen.
+- Se necesitaría cualquier cosa del curso de Visión (las entregas son independientes).
 - El prerregistro marca más del 10 % de la selección.
 - Una cifra del informe no se puede regenerar.
 
@@ -479,23 +479,23 @@ No rellena NaN con 0 sin su aviso. No cambia hiperparámetros para mejorar la pr
 
 **Añadir al final de la sección 4:**
 
-> - **Calendario real (actualizado el 19-nov-2026):** entrega de los dos cursos el 6 de diciembre de 2026. El plan de 9 semanas se comprimió. Para Deep Learning manda `04_plan_ejecucion_deep_learning.md`: base común `base-v1` el 22-nov, ramas propias `ramas-v1` el 26-nov, I2 (imagen v1) el 27-nov, resultados congelados el 2-dic.
+> - **Calendario real (actualizado el 19-nov-2026):** entrega de los dos cursos el 6 de diciembre de 2026. El plan de 9 semanas se comprimió. Para Deep Learning manda `04_plan_ejecucion_deep_learning.md`: base `base-v1` el 22-nov, ramas propias `ramas-v1` el 26-nov, fusión el 29-nov, resultados congelados el 2-dic.
+> - **Entregas independientes (19-nov-2026):** para las entregas de los cursos, los dos proyectos son independientes y se unen después, en la tesis. Deep Learning usa como rama de imagen el codificador v0 de la demo; ya no existe el punto I2 ni la dependencia de Deep Learning respecto a Visión. Los dos profesores aceptaron el proyecto. Esto reemplaza el calendario común y la sección de dependencias de `03_plan_integrado_cursos.md`. Deep Learning trabaja en un repositorio propio (`D:\Proyectos Especializacion\Deep Learning\Proyecto_Final`).
 > - **Decisiones del curso de Deep Learning (19-nov-2026):** base = selección de la demo (260 KOIs) con etiquetas DR25; vistas y ventanas por tránsito desde PDCSAP Q1–Q17; normalización por forma con escala común por ejemplo (no SNR recortado); validación interna de la partición *k* = partición *(k+1) mod 5*; hiperparámetros fijados de antemano; la pregunta 1 se contesta con un codificador por tránsito compartido y tres agregadores (promedio, GRU, atención).
 
 **Añadir a la sección 9, nivel 4:** `04_plan_ejecucion_deep_learning.md` (en el repositorio, `docs/planeacion/04_plan_ejecucion_deep_learning.md`); prevalece sobre `roadmap_curso_deep_learning.md` en calendario y detalle.
 
 **Añadir a la sección 10:**
 
-> - 2026-11-19: plan de ejecución del curso de Deep Learning (`04_plan_ejecucion_deep_learning.md`). Pendiente: confirmación de los dos profesores, enunciado y rúbrica oficiales, y definición del conjunto prerregistrado.
+> - 2026-11-19: plan de ejecución del curso de Deep Learning (`04_plan_ejecucion_deep_learning.md`). Los profesores aceptaron; entregas independientes. Pendiente: rúbrica oficial y definición final del conjunto prerregistrado.
 
 ## Anexo B · Lo que debe saber el chat de Visión
 
-1. **Una sola base.** `compartido/ejemplos.csv` se construye una vez (PT1 de este plan o su equivalente en Visión, lo que ocurra primero) y el otro curso la reutiliza.
-2. **Propuesta de contrato v1.1 (no rompe la v1.0):** la validación interna de la partición *k* es la partición *(k+1) mod 5*. Si el codificador de imagen se entrena con otra validación interna, la prueba sigue limpia, pero la calibración de la fusión queda algo optimista y Deep Learning lo declara.
-3. **I2 propuesto:** viernes 27 de noviembre, `modelos/imagen/v1/` con los archivos del contrato §5.
-4. Deep Learning **no** hará experimentos de pooling en la CNN 2D ni comparará contra el modelo combinado de Visión.
-5. Columnas extra de `ejemplos.csv` solo para reportar: `fp_nt, fp_ss, fp_co, fp_ec, n_koi_en_estrella, t0_bkjd, duracion_h`.
-6. El curso de Deep Learning trabaja en un **repositorio propio** (`D:\Proyectos Especializacion\Deep Learning\Proyecto_Final`). La base común se copia entre repositorios y se comprueba con el SHA-256 de `manifiesto_base.json`. El codificador de imagen v1 se entrega como carpeta `modelos/imagen/v1/`.
+1. **Entregas independientes (decisión de Juan, 19-nov).** Cada curso entrega su proyecto sin depender del otro. Deep Learning no espera el codificador de imagen: usa el v0 de la demo. No hay punto I2 ni calendario común. Los dos profesores aceptaron.
+2. **Base disponible, no obligatoria.** Deep Learning construye `compartido/ejemplos.csv` (selección de la demo, etiquetas DR25, 5 particiones por `kepid`, prerregistro) en su repositorio `D:\Proyectos Especializacion\Deep Learning\Proyecto_Final`. Visión puede copiarla tal cual, y conviene: así la unión posterior no exige reentrenar. Si Visión construye otra, no pasa nada para las entregas.
+3. **Para que la unión sea barata**, conviene que Visión respete el contrato v1.0 (vector de 32 con capa `embedding`, un codificador por partición, `id_ejemplo`) y la convención de validación interna *(k+1) mod 5*.
+4. **Doble entrega:** Deep Learning no hace experimentos sobre la CNN 2D ni reporta su desempeño como aporte propio; la usa congelada y la acredita a la demo. Visión no reporta fusión de 4 ramas, calibración ni comparación de arquitecturas temporales.
+5. La unión (codificador de Visión dentro de la fusión, base única, reentrenamiento) es trabajo de la tesis, después del 6 de diciembre.
 
 ## Anexo C · Referencias (verificar con `citation-check` antes de entregar)
 
