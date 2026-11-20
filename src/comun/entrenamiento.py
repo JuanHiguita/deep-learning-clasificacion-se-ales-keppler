@@ -26,6 +26,10 @@ from comun.utilidades import escribir_manifiesto  # noqa: E402
 Entradas = dict[str, np.ndarray]
 
 
+class Incompleto(RuntimeError):
+    """Se agotó el presupuesto de tiempo; lo ya entrenado quedó guardado y la corrida se puede reanudar."""
+
+
 @dataclass(frozen=True)
 class Experimento:
     nombre: str
@@ -151,12 +155,16 @@ def evaluar_predicciones(p: np.ndarray, tabla: pd.DataFrame, protocolo: dict, co
 
 def entrenar_cv(exp: Experimento, entradas: Entradas, ejemplos: pd.DataFrame, protocolo: dict,
                 semillas: Sequence[int], salida: str | Path, exportar: str | Path | None = None,
-                version: str = "v1", guardar_modelos: bool = False, con_intervalos: bool = True) -> dict:
+                version: str = "v1", guardar_modelos: bool = False, con_intervalos: bool = True,
+                presupuesto_s: float | None = None) -> dict:
     """Validación cruzada completa de un experimento. Escribe predicciones, historiales y métricas.
 
     entradas: dataset completo (incluye 'id_ejemplo'). Si `exportar` se da, la semilla congelada del
     protocolo se exporta como codificador por partición según el contrato §5.
+    Cada partición terminada se guarda en `parciales/`; si se vuelve a llamar, no se repite. Con
+    `presupuesto_s`, se lanza `Incompleto` antes de empezar una partición que ya no cabe en el tiempo.
     """
+    inicio, duraciones = time.perf_counter(), []
     salida = Path(salida) / exp.nombre
     salida.mkdir(parents=True, exist_ok=True)
     ids = np.array([str(i) for i in entradas["id_ejemplo"]], dtype="U")
@@ -177,6 +185,20 @@ def entrenar_cv(exp: Experimento, entradas: Entradas, ejemplos: pd.DataFrame, pr
         for k in range(n_part):
             sep = separar(particion, k, n_part)
             comprobar_sin_solape(kepid, sep)
+            cache = salida / "parciales" / f"semilla{semilla}_particion{k}.npz"
+            if cache.is_file():
+                with np.load(cache, allow_pickle=False) as c:
+                    p_prueba[sep.prueba], p_val[sep.validacion] = c["p_prueba"], c["p_validacion"]
+                    historiales.append(json.loads(str(c["historial"])))
+                    segundos.append(float(c["segundos"]))
+                    n_param = int(c["parametros"])
+                modelo_val[sep.validacion] = k
+                continue
+            if presupuesto_s is not None:
+                usado = time.perf_counter() - inicio
+                if usado + 1.3 * (max(duraciones) if duraciones else 0.0) > presupuesto_s:
+                    raise Incompleto(f"{exp.nombre}: pausa antes de semilla {semilla}, partición {k}")
+            t_particion = time.perf_counter()
             i_ent, i_val = np.flatnonzero(sep.entrenamiento & disponible), np.flatnonzero(sep.validacion & disponible)
             i_pru = np.flatnonzero(sep.prueba)
             x = dict(entradas)
@@ -206,6 +228,10 @@ def entrenar_cv(exp: Experimento, entradas: Entradas, ejemplos: pd.DataFrame, pr
                 modelo.save(salida / "modelos" / f"particion_{k}_semilla_{semilla}.keras")
             if exportar is not None and semilla == semilla_congelada:
                 _exportar_particion(modelo, x, exp, ids, k, estadisticas, Path(exportar) / version)
+            cache.parent.mkdir(exist_ok=True)
+            np.savez(cache, p_prueba=p_prueba[sep.prueba], p_validacion=p_val[sep.validacion],
+                     historial=np.array(json.dumps(historiales[-1])), segundos=segundos[-1], parametros=n_param)
+            duraciones.append(time.perf_counter() - t_particion)
         np.savez_compressed(salida / f"pred_semilla{semilla}.npz", id_ejemplo=ids, particion=particion,
                             p_prueba=p_prueba.astype(np.float32), p_validacion=p_val.astype(np.float32),
                             particion_modelo_validacion=modelo_val)

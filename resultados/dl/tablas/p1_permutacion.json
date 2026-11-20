@@ -1,0 +1,17 @@
+{
+ "m2_promedio": {
+  "cambio_medio_abs_de_q": 0.0,
+  "cambio_de_auc": -0.0,
+  "permutaciones": 10
+ },
+ "m2_atencion": {
+  "cambio_medio_abs_de_q": 0.0,
+  "cambio_de_auc": -0.0,
+  "permutaciones": 10
+ },
+ "m2_gru": {
+  "cambio_medio_abs_de_q": 0.04757,
+  "cambio_de_auc": -0.0049,
+  "permutaciones": 10
+ }
+}

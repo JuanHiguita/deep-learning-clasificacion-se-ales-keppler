@@ -1,0 +1,23 @@
+{
+ "candidatos": {
+  "m2_promedio": {
+   "nll_validacion": 0.5064,
+   "error_estandar": 0.0218,
+   "n": 15
+  },
+  "m2_atencion": {
+   "nll_validacion": 0.457,
+   "error_estandar": 0.0206,
+   "n": 15
+  },
+  "m2_gru": {
+   "nll_validacion": 0.4754,
+   "error_estandar": 0.0211,
+   "n": 15
+  }
+ },
+ "menor_nll": "m2_atencion",
+ "elegido": "m2_atencion",
+ "regla": "menor NLL de validación interna; si uno más simple queda a menos de 1 error estándar, gana el más simple",
+ "usa_datos_de_prueba": false
+}
