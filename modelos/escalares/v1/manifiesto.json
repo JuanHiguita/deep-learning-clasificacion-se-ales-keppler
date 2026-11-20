@@ -1,0 +1,26 @@
+{
+ "argumentos": {
+  "experimento": "m4_escalares",
+  "semilla": "0",
+  "version": "v1"
+ },
+ "commit": "1e67cc686d3194148059f89e0b6ad0674942447d",
+ "entradas": {},
+ "entradas_modelo": [
+  "escalares",
+  "faltantes"
+ ],
+ "estandarizadas": [
+  "escalares"
+ ],
+ "fecha_utc": "2026-11-20T08:05:34Z",
+ "versiones": {
+  "astropy": "6.1.7",
+  "keras": "3.12.4",
+  "lightkurve": null,
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "sklearn": "1.7.2"
+ }
+}

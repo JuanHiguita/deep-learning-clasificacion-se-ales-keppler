@@ -16,3 +16,5 @@ __pycache__/
 .ruff_cache/
 *.egg-info/
 .ipynb_checkpoints/
+*.keras
+__pycache__/

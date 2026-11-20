@@ -9,8 +9,8 @@
 | PT0 Entorno | `specs/000-entorno` | Hecho en el PC (Python 3.13, Keras 3.15.1 con JAX) | — | vie 20-nov |
 | PT1 Base común | `specs/001-base-comun` | **Hecho con datos reales** (falta etiqueta `base-v1`) | D1–D2, `base-v1` | sáb 21-nov |
 | PT2 Dataset temporal | `specs/002-dataset-temporal` | **Dataset construido** (95,3 % disponible); faltan figura de inspección y EDA | D3 | dom 22-nov |
-| PT3 Motor | `specs/003-motor-experimentos` | En curso: T3.1–T3.3 hechas | — | lun 23-nov |
-| PT4 Ramas | `specs/004-ramas-temporales` | Pendiente | D4, `ramas-v1` | jue 26-nov |
+| PT3 Motor | `specs/003-motor-experimentos` | **Hecho** | — | lun 23-nov |
+| PT4 Ramas | `specs/004-ramas-temporales` | En curso: M4 entrenada y exportada | D4, `ramas-v1` | jue 26-nov |
 | PT5 Fusión | `specs/005-fusion` | Pendiente | D5 (con imagen v0) | dom 29-nov |
 | PT6 Calibración | `specs/006-calibracion-incertidumbre` | Pendiente | D6 | mié 2-dic |
 | PT7 Consolidación | `specs/007-consolidacion` | Pendiente | D6 | mié 2-dic |
@@ -65,6 +65,16 @@
 - **Pruebas:** 61 pasan.
 - **Decisión de Juan (20-nov):** se siguen los planes establecidos. La rama 4 conserva el centroide (7 escalares, spec 002 RF-16 y `ROADMAP_PROYECTO` 4.4). No se agregan la variante sin centroide ni la prueba de circularidad al alcance del curso. El informe declara que S3-C ya da 0,98–0,99 en esta muestra y que hay circularidad parcial con las etiquetas (`00_ESTADO` §5).
 - **Siguiente paso exacto:** etiqueta `base-v1`; spec 003 T3.4 (motor de entrenamiento).
+
+### 2026-11-20 · Claude Fable 5.2 · PT3 (motor) y primera rama
+
+- **Hecho:** `comun/entrenamiento.py` (validación cruzada, parada temprana, estandarización por partición, exportación de codificadores, pruebas de cordura, métricas con intervalos); `temporal/modelos.py` (M4); `temporal/exp_ramas.py`; `tests/test_entrenamiento.py`, `tests/conftest.py`.
+- **Pruebas:** 63 rápidas y 2 lentas pasan (entorno de desarrollo: Keras 3.12.4 con JAX, Python 3.10; en el PC hay Keras 3.15.1 y Python 3.13: **volver a correr `pytest -q` y `pytest -q -m lenta` allí**).
+- **E0 de M4 (cordura):** AUC con etiquetas barajadas 0,503; memoriza un lote con exactitud 1,000. Pasa.
+- **E1 de M4 (rama 4, escalares con centroide), tal como salió:** AUC planeta vs FP 0,9573 / 0,9415 / 0,9449 en las semillas 0, 1 y 2 (media 0,948; desviación 0,007). Semilla 0: AUC 0,957 [0,927–0,982], NLL 0,200 [0,153–0,256], ECE 0,017, exactitud de 3 clases 0,933. Matriz de confusión (filas reales): [[124, 6, 0], [11, 98, 6], [0, 10, 235]]. 1.059 parámetros; 0,007 s por época; el experimento completo (15 corridas y exportación) tarda 29 s.
+- **Presupuesto de cómputo:** confirmado como holgado; no hace falta recortar semillas.
+- **Exportado:** `modelos/escalares/v1/` (contrato verificado).
+- **Siguiente paso exacto:** spec 004 T4.1–T4.2 (M1 y los tres agregadores de la rama 2), E0 y E1–E2.
 
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>
