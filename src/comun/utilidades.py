@@ -16,7 +16,12 @@ HOSTS_PERMITIDOS = frozenset({
     "mast.stsci.edu",
     "archive.stsci.edu",
 })
-AGENTE = "transitos-kepler-dl/0.1 (proyecto académico UNAL)"
+# Solo ASCII: un carácter no ASCII en la cabecera hace que el servidor responda 403.
+# Si el primero es rechazado (403), se prueba el siguiente; ambos identifican al proyecto.
+AGENTES = (
+    "transitos-kepler-dl/0.1 (proyecto academico UNAL; python-urllib)",
+    "Mozilla/5.0 (compatible; transitos-kepler-dl/0.1; proyecto academico UNAL)",
+)
 
 
 def sha256_archivo(ruta: str | Path) -> str:
@@ -102,18 +107,23 @@ def leer_url(url: str, espera_s: int = 120, reintentos: int = 3) -> bytes:
     """Descarga el contenido de una URL permitida, con reintentos y espera creciente."""
     comprobar_url(url)
     ultimo: Exception | None = None
-    for intento in range(reintentos):
+    agente = 0
+    for intento in range(reintentos + len(AGENTES) - 1):
         try:
-            peticion = urllib.request.Request(url, headers={"User-Agent": AGENTE})  # noqa: S310 - URL validada
+            cabeceras = {"User-Agent": AGENTES[agente], "Accept": "*/*"}
+            peticion = urllib.request.Request(url, headers=cabeceras)  # noqa: S310 - URL validada
             with urllib.request.urlopen(peticion, timeout=espera_s) as r:  # noqa: S310
                 return r.read()
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 raise
             ultimo = e
+            if e.code == 403 and agente + 1 < len(AGENTES):
+                agente += 1
+                continue
         except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
             ultimo = e
-        time.sleep(5 * (intento + 1))
+        time.sleep(min(5 * (intento + 1), 20))
     raise ConnectionError(f"No se pudo descargar {url}: {ultimo}")
 
 
