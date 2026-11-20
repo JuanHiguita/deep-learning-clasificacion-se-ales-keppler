@@ -10,7 +10,7 @@
 | PT1 Base común | `specs/001-base-comun` | **Hecho con datos reales** (falta etiqueta `base-v1`) | D1–D2, `base-v1` | sáb 21-nov |
 | PT2 Dataset temporal | `specs/002-dataset-temporal` | **Dataset construido** (95,3 % disponible); faltan figura de inspección y EDA | D3 | dom 22-nov |
 | PT3 Motor | `specs/003-motor-experimentos` | **Hecho** | — | lun 23-nov |
-| PT4 Ramas | `specs/004-ramas-temporales` | **Hecho (prioridad A)**; falta repetir E0 de M1 y M2 en el PC | D4, `ramas-v1` | jue 26-nov |
+| PT4 Ramas | `specs/004-ramas-temporales` | **Hecho (prioridad A)** | D4, `ramas-v1` | jue 26-nov |
 | PT5 Fusión | `specs/005-fusion` | **Hecho (prioridad A)** | D5 (con imagen v0) | dom 29-nov |
 | PT6 Calibración | `specs/006-calibracion-incertidumbre` | **Hecho (prioridad A)** | D6 | mié 2-dic |
 | PT7 Consolidación | `specs/007-consolidacion` | Tablas y notebook hechos; falta la auditoría final | D6 | mié 2-dic |
@@ -80,7 +80,7 @@
 
 - **Hecho:** `temporal/modelos.py` (M1, M2 con tres agregadores, M4), `aumentacion.py`, `analisis_ramas.py`; `fusion/dataset_demo.py`, `modelos_demo.py`, `codificador_imagen_v0.py`, `vectores.py`, `fusionar.py`, `calibracion.py`, `incertidumbre.py`, `consolidar_resultados.py`; `scripts/construir_notebook.py`, `notebooks/informe_dl.ipynb` (ejecutado, 18 figuras), `docs/EXPLICACION_RESULTADOS.md`; scripts de la demo copiados sin cambios a `src/demo/` (commit de origen 6ffa66f).
 - **Pruebas:** 71 rápidas y 2 lentas pasan (Keras 3.12.4, Python 3.10). **Falta correrlas en el PC** (Keras 3.15.1, Python 3.13).
-- **Cordura (E0):** M4 pasó (AUC barajado 0,503). La corrida de E0 de M1 y M2 con atención se interrumpió por el límite de tiempo del entorno y **no quedó registrada**: volver a correr `exp_ramas.py --cordura` en el PC.
+- **Cordura (E0), AUC con etiquetas barajadas:** M4 0,503; M1 0,527; M2 con atención 0,475. Los tres memorizan un lote con exactitud 1,000. Pasan.
 - **P1 (AUC, media de 3 semillas):** AstroNet 0,864; promedio 0,863; GRU 0,862; atención 0,883; escalares 0,948. Diferencias pareadas no distinguibles salvo GRU − atención (−0,022 [−0,046; −0,000]). Permutación: promedio y atención 0,000; GRU cambia q en 0,048.
 - **Selección de la rama 2:** atención (NLL de validación 0,457 frente a 0,506 y 0,475; error estándar 0,021). Sin datos de prueba.
 - **Imagen v0 y demo vuelta a medir (222 KOIs con imagen):** imagen sola 0,918; curva de la demo 0,821; demo completa 0,939.

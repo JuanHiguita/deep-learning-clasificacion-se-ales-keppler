@@ -76,7 +76,7 @@ imagen de píxeles ──► Rama 3: CNN 2D de la demo (congelada) ────�
 - Particiones por estrella, también para los codificadores congelados (uno por partición).
 - **La prueba no decide nada:** la parada temprana, la elección del agregador y la temperatura se fijan con una validación interna distinta de la prueba.
 - Hiperparámetros **fijados de antemano** (`config/protocolo.json`); no hubo búsqueda.
-- Pruebas de cordura antes de entrenar: con las etiquetas barajadas el AUC queda en 0,50; el modelo puede memorizar un lote.
+- Pruebas de cordura: con las etiquetas barajadas el AUC queda cerca del azar (0,50 en escalares, 0,53 en vistas y 0,48 en tránsitos con atención), y cada modelo puede memorizar un lote.
 
 ## 5. Resultados
 
