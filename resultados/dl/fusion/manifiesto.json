@@ -1,0 +1,27 @@
+{
+ "argumentos": {
+  "dataset": "data/dataset_temporal.npz",
+  "ejemplos": "compartido/ejemplos.csv",
+  "modelos": "modelos",
+  "presupuesto": "120.0",
+  "protocolo": "config/protocolo.json",
+  "resultados": "resultados/dl"
+ },
+ "commit": "1d674c6e68760fdcf0b6adb317c2e1e4e6af6d7a",
+ "entradas": {},
+ "fecha_utc": "2026-11-20T09:26:39Z",
+ "imagen": "v0 · código de la demo (base común) · no es resultado de ningún curso",
+ "rama_2": "m2_atencion",
+ "sha256_vectores_particion_0": {
+  "escalares": "ad6890400a7de392e8815b7ba942da0c774afe5e1733941e74a8680be86e1591",
+  "imagen": "14f13147819fb6e398bb472d79809102b22b2a21e1fe9d2028f644a3669f439c",
+  "transitos": "ad44e44f22e8cbc7243875e9fba6ff36bb41dc58b4ec0d08e4820a39fe0adeb8",
+  "vistas": "d96e6386498e518ef6797f8d1cf85a4e09bf09fff1b55ad2ae5fee5e0962fb70"
+ },
+ "versiones": {
+  "escalares": "v1",
+  "imagen": "v0",
+  "transitos": "v1",
+  "vistas": "v1"
+ }
+}

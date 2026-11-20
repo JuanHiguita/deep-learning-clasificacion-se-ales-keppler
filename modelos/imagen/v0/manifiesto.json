@@ -1,0 +1,24 @@
+{
+ "argumentos": {
+  "experimento": "imagen_v0",
+  "semilla": "0",
+  "version": "v0"
+ },
+ "commit": "1d674c6e68760fdcf0b6adb317c2e1e4e6af6d7a",
+ "entradas": {},
+ "entradas_modelo": [
+  "img"
+ ],
+ "estandarizadas": [],
+ "fecha_utc": "2026-11-20T09:20:18Z",
+ "origen": "v0 · código de la demo (base común, commit 6ffa66f) · no es resultado de ningún curso",
+ "versiones": {
+  "astropy": "6.1.7",
+  "keras": "3.12.4",
+  "lightkurve": "2.6.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "sklearn": "1.7.2"
+ }
+}
