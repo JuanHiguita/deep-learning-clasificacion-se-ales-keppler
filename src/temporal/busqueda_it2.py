@@ -48,9 +48,13 @@ _FIJO = {"tasa_aprendizaje": 1e-3, "weight_decay": 1e-4, "lote": 128, "perdida":
 _RED = {"activacion": ["relu", "tanh"], "capas_extra": [0, 1, 2]}
 _RED_FIJA = {"activacion": "relu", "capas_extra": 0}
 # Rama 2: sin normalización por lote, porque los tránsitos vacíos (ceros) entrarían en sus medias.
+# Profundidad hasta +1 bloque (no +2): φ se aplica a 32 tránsitos por ejemplo, y la prueba de humo
+# (datos aleatorios, antes de entrenar nada de la rama 2) midió 12–14 s por cada 1.024 ejemplos y
+# época con ancho 4 y +2 bloques, es decir, horas por partición. Ver evidencias/prueba_de_humo.json.
 _RAMA_2 = {
     **_ENTRENAMIENTO,
     **_RED,
+    "capas_extra": [0, 1],
     "dropout": [0.1, 0.3, 0.5],
     "ancho": [1.0, 2.0, 4.0],
     "normalizacion": [None, "capa"],

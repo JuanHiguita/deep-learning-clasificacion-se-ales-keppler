@@ -1,0 +1,114 @@
+{
+ "motor": "torch",
+ "redes": {
+  "m4_escalares": {
+   "configuracion_mayor": "cfg08",
+   "parametros": [
+    1059,
+    4547,
+    4547,
+    141123,
+    10371,
+    2307,
+    1123,
+    3363,
+    142659,
+    2051,
+    10755,
+    21571
+   ],
+   "segundos_por_epoca_1024_ejemplos": 0.11,
+   "diferencia_al_recargar": 0.0
+  },
+  "m1_astronet": {
+   "configuracion_mayor": "cfg02",
+   "parametros": [
+    57747,
+    224931,
+    3451075,
+    3445443,
+    226211,
+    890563,
+    224931,
+    890563,
+    864675,
+    3451075,
+    867491,
+    219283
+   ],
+   "segundos_por_epoca_1024_ejemplos": 0.985,
+   "diferencia_al_recargar": 0.0
+  },
+  "m2_promedio": {
+   "configuracion_mayor": "cfg05",
+   "parametros": [
+    5027,
+    56995,
+    56995,
+    13859,
+    47267,
+    881059,
+    16579,
+    5027,
+    56995,
+    13859,
+    226147,
+    13859
+   ],
+   "segundos_por_epoca_1024_ejemplos": 11.941,
+   "diferencia_al_recargar": 0.0
+  },
+  "m2_gru": {
+   "configuracion_mayor": "cfg01",
+   "parametros": [
+    18723,
+    1012643,
+    189027,
+    147939,
+    229667,
+    136611,
+    71139,
+    1010723,
+    136707,
+    30051,
+    188579,
+    97699
+   ],
+   "segundos_por_epoca_1024_ejemplos": 14.402,
+   "diferencia_al_recargar": 0.0
+  },
+  "m2_atencion": {
+   "configuracion_mayor": "cfg10",
+   "parametros": [
+    13604,
+    223652,
+    66020,
+    13604,
+    65572,
+    66020,
+    13700,
+    22628,
+    13604,
+    55460,
+    233764,
+    24932
+   ],
+   "segundos_por_epoca_1024_ejemplos": 0.626,
+   "diferencia_al_recargar": 0.0
+  }
+ },
+ "plegado": {
+  "promedio": {
+   "time_distributed": 0.494,
+   "plegado": 0.112
+  },
+  "gru": {
+   "time_distributed": 1.346,
+   "plegado": 0.847
+  },
+  "atencion": {
+   "time_distributed": 0.519,
+   "plegado": 0.159
+  }
+ }
+}
