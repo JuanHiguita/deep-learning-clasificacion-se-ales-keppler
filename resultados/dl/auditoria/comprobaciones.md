@@ -5,7 +5,7 @@
 | fugas | las columnas prohibidas solo se nombran en los archivos autorizados | ✔ | autorizados: comun/lineas_base_tabulares.py; comun/construir_ejemplos.py; comun/descargar_koi.py; comun/verificar_contrato.py; fusion/auditoria.py; informe/secciones.py; cuaderno_demo/flujo.py |
 | particiones | cada estrella está en una sola partición | ✔ | 245 estrellas |
 | particiones | ningún ejemplo prerregistrado entra a los datasets | ✔ | 0 prerregistrados |
-| particiones | todas las predicciones usan la partición de compartido/ejemplos.csv | ✔ | 180 archivos revisados |
+| particiones | todas las predicciones usan la partición de compartido/ejemplos.csv | ✔ | 191 archivos revisados |
 | datos | las entradas no contienen NaN ni infinitos | ✔ |  |
 | datos | todo escalar que falta vale 0 Y tiene su bandera de faltante | ✔ | 597 valores faltantes marcados |
 | datos | compartido/ejemplos.csv coincide con la huella de su manifiesto | ✔ | deb694da52428d07… |

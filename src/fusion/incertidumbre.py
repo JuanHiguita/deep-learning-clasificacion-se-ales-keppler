@@ -101,7 +101,13 @@ def cargar_miembros(fusion: Path, semillas) -> np.ndarray:
 
 
 def pasadas_mc_dropout(
-    modelos: Path, fusion: Path, dataset: dict, particion, p_determinista, protocolo: dict
+    modelos: Path,
+    fusion: Path,
+    dataset: dict,
+    particion,
+    p_determinista,
+    protocolo: dict,
+    versiones: dict | None = None,
 ) -> np.ndarray:
     """Pasadas de MC Dropout de la cabeza de la semilla 0 sobre su prueba: (pasadas, n, clases)."""
     n_part = protocolo["particiones"]["n"]
@@ -110,7 +116,9 @@ def pasadas_mc_dropout(
     for k in range(n_part):
         sep = separar(particion, k, n_part)
         i_ent = np.flatnonzero(sep.entrenamiento)
-        x = entrada_de_particion(modelos, k, dataset["id_ejemplo"], dataset, RAMAS, i_ent)
+        x = entrada_de_particion(
+            modelos, k, dataset["id_ejemplo"], dataset, RAMAS, i_ent, versiones
+        )
         ruta = fusion / "cabezas" / f"particion_{k}.keras"
         # La capa Dropout toma su semilla al crearse (es decir, al cargar el modelo): hay que
         # fijar la semilla ANTES de cargar para que las pasadas se puedan regenerar.

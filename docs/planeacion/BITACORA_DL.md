@@ -123,6 +123,14 @@
 - **Sin probar en Windows.**
 - **Siguiente paso exacto:** decisión sobre la rama 1; `pytest -q` en el PC; spec 008 cuando llegue la rúbrica.
 
+### 2026-11-20 · Fable 5.2 · Spec 013: copia experimental con la rama 1 mejorada, y guía paso a paso
+- **Decisión de Juan:** adoptar una variante de la rama 1, pero como copia experimental.
+- **Hecho:** `fusion/experimental_v2.py`; `modelos/vistas/v2/` (tanh, elegida por menor NLL de validación: 0,2753 frente a 0,3847); `resultados/dl/experimental_v2/`. El codificador v2 reproduce la variante ya entrenada. `scripts/verificar.bat`, `scripts/experimentos_extra.bat` y `docs/GUIA_PASO_A_PASO.md`.
+- **Resultados (tal como salieron), media de 5 semillas de cabeza, v1 → v2 [diferencia e IC 95 %]:** AUC 0,9852 → 0,9849 [−0,0003; −0,0067 a +0,0058]; NLL 0,2100 → 0,2121 [+0,0021; −0,0282 a +0,0328]; ECE 0,0298 → 0,0311 [+0,0013; −0,0090 a +0,0108]; exactitud 0,9269 → 0,9298 [+0,0029; −0,0102 a +0,0159]. Rama 1 sola con la cabeza: 0,9132 → 0,9212. Temperaturas v2: 1,619 · 1,166 · 0,927 · 2,203 · 1,085; tras calibrar, ECE 0,0345 → 0,0258 y NLL 0,2138 → 0,1794 (diferencia −0,0343 [−0,0707 a −0,0069]). NLL ensamble − MC Dropout +0,0051 [−0,0173 a +0,0367].
+- **Conclusión:** mejorar la rama 1 no mejora el sistema. El resultado principal se mantiene. `git status` confirma que no cambió ningún resultado principal.
+- **Sin probar en Windows:** los `.bat` nuevos.
+- **Siguiente paso exacto:** `scripts\\verificar.bat` en el PC; spec 008 cuando llegue la rúbrica.
+
 <!-- Plantilla de entrada
 ### AAAA-MM-DD · <modelo> · PT<n>
 - **Hecho:**

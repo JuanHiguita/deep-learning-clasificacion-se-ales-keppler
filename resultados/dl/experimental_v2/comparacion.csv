@@ -1,0 +1,5 @@
+metrica,principal_v1,experimental_v2,v2_ic_inf,v2_ic_sup,diferencia_v2_menos_v1,ic_inf,ic_sup,distinguible
+auc_planeta_fp,0.9852,0.9849,0.9739,0.9934,-0.0003,-0.0067,0.0058,False
+nll,0.21,0.2121,0.1327,0.3055,0.0021,-0.0282,0.0328,False
+ece_top,0.0298,0.0311,0.0224,0.0504,0.0013,-0.009,0.0108,False
+exactitud,0.9269,0.9298,0.9078,0.951,0.0029,-0.0102,0.0159,False

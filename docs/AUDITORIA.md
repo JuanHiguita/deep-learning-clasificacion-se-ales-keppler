@@ -39,7 +39,7 @@ La primera pasada de esta auditoría encontró tres fallos, los tres de la propi
 
 | # | Hallazgo | Gravedad | Estado |
 |---|---|---|---|
-| 1 | **La rama 1 del protocolo no era la mejor opción.** Tres variantes (tanh, suavizado de etiquetas, *z-score*) la mejoran de forma distinguible y confirmada con 3 semillas (spec 010). El resultado principal no las usa. | Alta: afecta a qué se reporta como "el modelo" | **Abierto.** Decide Juan si se adopta una variante y se rehace fusión, calibración e incertidumbre |
+| 1 | **La rama 1 del protocolo no era la mejor opción.** Tres variantes (tanh, suavizado de etiquetas, *z-score*) la mejoran de forma distinguible y confirmada con 3 semillas (spec 010). El resultado principal no las usa. | Alta: afecta a qué se reporta como "el modelo" | **Cerrado (spec 013).** Se probó en una copia experimental: la fusión no mejora (AUC v2 − v1 = −0,000 [−0,007 a +0,006]). El resultado principal se mantiene |
 | 2 | Las variantes de la rama 1 que se confirmaron se eligieron mirando la prueba de la semilla 0. | Media | Declarado. La confirmación sin la semilla 0 también se sostiene, pero usa las mismas estrellas. Si se adopta una, debe elegirse con la validación |
 | 3 | MC Dropout no era regenerable (la semilla se fijaba después de cargar el modelo). | Media | **Corregido** en la refactorización; cambió cifras, no el veredicto |
 | 4 | El entrenamiento solo es reproducible bit a bit con la misma máquina y configuración de hilos. Un cambio de hilos movió un intervalo que rozaba el 0 (spec 009). | Media | Declarado. Por eso los pesos se guardan y se versionan |

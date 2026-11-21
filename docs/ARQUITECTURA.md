@@ -135,6 +135,7 @@ Proyecto_Final/
 | `comun/estudio.py`, `temporal/estudio_diseno.py` | 2–3 | Estudio de decisiones de diseño (una variante cambia una cosa) y su confirmación con 3 semillas | spec 010 |
 | `temporal/e4_menos_transitos.py` | 3 | E4: AUC por agregador con menos tránsitos en prueba | spec 010 |
 | `fusion/sistema.py` | 4 | Sistema conjunto: codificadores → cabeza → temperatura → prior; `empaquetar` y `Sistema.responder` | spec 011 |
+| `fusion/experimental_v2.py` | 4 | Copia experimental del sistema con la rama 1 mejorada; no toca el resultado principal | spec 013 |
 | `fusion/auditoria.py` | 4 | Auditoría automática (fugas, particiones, datos, reproducibilidad, cifras, redacción) | spec 011 |
 | `informe/diseno.py` | 5 | Figuras del notebook 03 | spec 010 |
 | `informe/exploracion.py`, `informe/experimentacion.py` | 5 | Figuras de los notebooks exploratorios | spec 009 |

@@ -1,0 +1,26 @@
+{
+ "argumentos": {
+  "dataset": "data/dataset_temporal.npz",
+  "ejemplos": "compartido/ejemplos.csv",
+  "modelos": "modelos",
+  "presupuesto": "110.0",
+  "protocolo": "config/protocolo.json",
+  "resultados": "resultados/dl"
+ },
+ "commit": "5102cc12bba1dc700bf5ea70d392bef641a862bc",
+ "entradas": {},
+ "fecha_utc": "2026-11-21T00:30:20Z",
+ "ramas": [
+  "vistas",
+  "transitos",
+  "imagen",
+  "escalares"
+ ],
+ "variante_rama_1": "act_tanh",
+ "versiones": {
+  "escalares": "v1",
+  "imagen": "v0",
+  "transitos": "v1",
+  "vistas": "v2"
+ }
+}

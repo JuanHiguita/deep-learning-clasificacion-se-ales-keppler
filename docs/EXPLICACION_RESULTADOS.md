@@ -218,6 +218,19 @@ Cada variante cambia **una sola cosa** respecto al protocolo (semilla 0, mismo m
 
 `fusion/sistema.py` encadena los 4 codificadores congelados, la cabeza de fusión, la temperatura y el prior explícito. `scripts/prueba_e2e.py` recorre todo el camino desde los FITS de Kepler para 10 estrellas elegidas al azar (2 por partición, semilla 7) y reproduce lo publicado: entradas idénticas, vectores con diferencia máxima 2e-6 y probabilidad calibrada con diferencia máxima 2e-7. La imagen de píxeles se toma del archivo de la demo y no se vuelve a derivar. La auditoría automática (`fusion/auditoria.py`) pasa sus 22 comprobaciones; ver `docs/AUDITORIA.md`.
 
+### 5.9 Copia experimental: el sistema con la rama 1 mejorada (spec 013)
+
+Se construyó una segunda versión del sistema en la que **solo cambia la rama 1** (tanh en vez de ReLU, la variante con menor pérdida de validación). Vive aparte, en `modelos/vistas/v2/` y `resultados/dl/experimental_v2/`; el resultado principal no se tocó.
+
+| Medida (media de 5 semillas de cabeza) | Principal (v1) | Experimental (v2) | Diferencia v2 − v1 [IC 95 %] |
+|---|---|---|---|
+| AUC planeta vs FP | 0,985 | 0,985 | −0,000 [−0,007 a +0,006] |
+| NLL | 0,210 | 0,212 | +0,002 [−0,028 a +0,033] |
+| ECE | 0,030 | 0,031 | +0,001 [−0,009 a +0,011] |
+| Exactitud | 0,927 | 0,930 | +0,003 [−0,010 a +0,016] |
+
+**Mejorar la rama 1 no mejora el sistema.** La rama sola sube (con la misma cabeza, 0,913 → 0,921), pero la fusión queda igual: lo que la rama 1 gana ya lo aportaban las otras ramas. Es un resultado negativo y se reporta como tal. **El resultado principal sigue siendo el del protocolo fijo.**
+
 ## 6. Qué significa y qué no
 
 **Lo que el trabajo muestra**
@@ -231,7 +244,7 @@ Cada variante cambia **una sola cosa** respecto al protocolo (semilla 0, mismo m
 
 - Que la fusión supere al modelo tabular con centroide.
 - Que la atención sea mejor que promediar cuando el promedio recibe los estadísticos entre tránsitos (sin ellos, sí lo es).
-- Que mejorar la rama 1 mejore el sistema: no se rehízo la fusión.
+- Que mejorar la rama 1 mejore el sistema: se probó en una copia experimental y la fusión queda igual (sección 5.9).
 - Nada sobre el régimen de zona habitable: todas las señales son de periodo corto, con muchos tránsitos.
 
 **Limitaciones declaradas**

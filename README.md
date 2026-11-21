@@ -2,7 +2,9 @@
 
 **Red multirrama con un codificador por tránsito con atención** · Proyecto del curso de Deep Learning · Especialización en Inteligencia Artificial, Universidad Nacional de Colombia · Juan Sebastian Higuita Riascos · Entrega: 6 de diciembre de 2026.
 
-> Título provisional. Estado: planeación completa y núcleo del motor implementado. Todavía no hay resultados.
+> Título provisional. Estado (20-nov-2026): ramas, fusión, calibración, incertidumbre, estudios complementarios, sistema conjunto y auditoría hechos. Falta el informe y la presentación.
+>
+> **¿Por dónde empezar?** `docs/GUIA_PASO_A_PASO.md`: cómo correrlo, cómo recorrerlo y cómo leer los resultados.
 
 ## Preguntas
 

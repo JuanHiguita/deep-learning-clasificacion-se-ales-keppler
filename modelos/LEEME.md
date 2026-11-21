@@ -5,6 +5,7 @@ Todos los pesos de esta carpeta se versionan en git (son pequeños) para poder v
 | Carpeta | Qué contiene | Para qué |
 |---|---|---|
 | `vistas/v1`, `transitos/v1`, `escalares/v1` | Codificador por partición (hasta la capa `embedding`), sus vectores y su estandarización | Ramas del **resultado principal** (protocolo fijo) |
+| `vistas/v2` | Codificador de la rama 1 con tanh (copia experimental, spec 013) | **No es el resultado principal.** La fusión con él no mejora |
 | `imagen/v0` | Codificador de imagen de la demo, por partición | Rama 3 (código anterior a los cursos; no es un aporte de este curso) |
 | `../resultados/dl/fusion/e6a_cuatro_ramas/cabezas/` | Cabeza de fusión por partición (semilla 0) | Decisión final del resultado principal |
 | `sistema/` | Lo que faltaba para predecir sin los datos de entrenamiento: cabezas, estandarización de su entrada, temperatura y tasa de entrenamiento por partición, con huellas | **Sistema conjunto** (`fusion/sistema.py`) |

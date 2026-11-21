@@ -75,12 +75,14 @@ def cabeza(dim_entrada: int, semilla: int, dropout: float = 0.3, oculta: int = 6
     )
 
 
-def entrada_de_particion(modelos: Path, k: int, ids, dataset: dict, ramas, i_ent) -> np.ndarray:
+def entrada_de_particion(
+    modelos: Path, k: int, ids, dataset: dict, ramas, i_ent, versiones: dict | None = None
+) -> np.ndarray:
     """Entrada de la cabeza para la partición k: vectores estandarizados + banderas de presencia.
 
     Los vectores se estandarizan con el entrenamiento; las banderas (1 = la rama tiene dato) no.
     """
-    vectores, banderas = cargar_vectores(modelos, VERSIONES, k, ids, dataset)
+    vectores, banderas = cargar_vectores(modelos, versiones or VERSIONES, k, ids, dataset)
     x = armar_entrada(vectores, banderas, ramas)
     n_vectores = x.shape[1] - len(ramas)
     media, desv = ent.estadisticas_estandarizacion(x[i_ent, :n_vectores])
@@ -194,7 +196,12 @@ def _resumen_del_apilado(carpeta: Path) -> dict | None:
 
 
 def preparar_particiones(
-    ramas, modelos: Path, dataset: dict, tabla: pd.DataFrame, n_particiones: int
+    ramas,
+    modelos: Path,
+    dataset: dict,
+    tabla: pd.DataFrame,
+    n_particiones: int,
+    versiones: dict | None = None,
 ) -> dict[int, _Particion]:
     """Entrada de la cabeza de cada partición, con los vectores del codificador de esa partición."""
     particion, kepid = tabla["particion"].to_numpy(), tabla["kepid"].to_numpy()
@@ -203,7 +210,9 @@ def preparar_particiones(
         sep = separar(particion, k, n_particiones)
         comprobar_sin_solape(kepid, sep)
         i_ent = np.flatnonzero(sep.entrenamiento)
-        x = entrada_de_particion(modelos, k, dataset["id_ejemplo"], dataset, ramas, i_ent)
+        x = entrada_de_particion(
+            modelos, k, dataset["id_ejemplo"], dataset, ramas, i_ent, versiones
+        )
         particiones[k] = _Particion(sep, x)
     return particiones
 
@@ -218,6 +227,7 @@ def entrenar_fusion(
     salida: Path,
     limite: float | None = None,
     inicio: float = 0.0,
+    versiones: dict | None = None,
 ) -> dict | None:
     """Entrena la cabeza para una configuración de ramas, con 5 semillas. Reanudable por semilla.
 
@@ -232,7 +242,7 @@ def entrenar_fusion(
     n_particiones = protocolo["particiones"]["n"]
     semillas = protocolo["semillas_cabeza_fusion"]
 
-    particiones = preparar_particiones(ramas, modelos, dataset, tabla, n_particiones)
+    particiones = preparar_particiones(ramas, modelos, dataset, tabla, n_particiones, versiones)
 
     for semilla in semillas:
         ruta = carpeta / f"pred_semilla{semilla}.npz"
