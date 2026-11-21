@@ -1,0 +1,144 @@
+{
+ "version": "2.0-iteracion-2",
+ "clases": [
+  "planeta",
+  "falso_positivo",
+  "sin_senal"
+ ],
+ "particiones": {
+  "n": 5,
+  "semilla": 0,
+  "grupo": "kepid",
+  "metodo": "por clase, estrellas ordenadas por sha256('<semilla>:<kepid>') y repartidas por turnos",
+  "validacion_interna": "(k + 1) mod n"
+ },
+ "semillas": [
+  0,
+  1,
+  2
+ ],
+ "semilla_codificador_congelado": 0,
+ "semillas_cabeza_fusion": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "entrenamiento": {
+  "optimizador": "adamw",
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001,
+  "lote": 128,
+  "epocas_max": 150,
+  "paciencia": 15,
+  "dropout_rama": 0.3,
+  "dropout_escalares": 0.2,
+  "dropout_fusion": 0.3
+ },
+ "aumentacion": {
+  "ruido_sigma": 0.05,
+  "desplazamiento_max_puntos": 2,
+  "prob_conservar_transito": 0.8,
+  "min_transitos": 4
+ },
+ "extractor": {
+  "ventana_aplanado_cadencias": 401,
+  "mascara_transito_duraciones": 1.5,
+  "recorte_atipicos_sigma_superior": 4.0,
+  "vista_global_puntos": 2001,
+  "vista_local_puntos": 201,
+  "vista_local_semiancho_duraciones": 4.0,
+  "transito_puntos": 61,
+  "transito_semiancho_duraciones": 2.5,
+  "max_transitos": 32,
+  "min_fraccion_cadencias": 0.7,
+  "min_fraccion_visible": 0.5,
+  "tolerancia_mismo_periodo": 0.01,
+  "min_cadencias_en_transito": 2,
+  "escala_min_sigmas": 3.0,
+  "recorte_relativo": 5.0,
+  "desfase_sin_senal": 0.25,
+  "min_trimestres": 4,
+  "min_transitos_para_rama": 4
+ },
+ "formas": {
+  "vista_global": [
+   2001,
+   1
+  ],
+  "vista_local": [
+   201,
+   4
+  ],
+  "transitos": [
+   32,
+   61
+  ],
+  "mascara_transitos": [
+   32
+  ],
+  "consistencia": [
+   4
+  ],
+  "escalares": [
+   7
+  ],
+  "faltantes": [
+   7
+  ],
+  "img": [
+   11,
+   11,
+   4
+  ]
+ },
+ "dimension_vector": {
+  "vistas": 32,
+  "transitos": 32,
+  "imagen": 32,
+  "escalares": 16
+ },
+ "escalares_permitidos": [
+  "log10_periodo_d",
+  "log10_duracion_h",
+  "profundidad_medida_ppm",
+  "snr_medido",
+  "log10_n_transitos_validos",
+  "koi_dikco_msky",
+  "koi_dicco_msky"
+ ],
+ "columnas_prohibidas_como_entrada": [
+  "koi_score",
+  "koi_pdisposition",
+  "koi_disposition",
+  "koi_fpflag_nt",
+  "koi_fpflag_ss",
+  "koi_fpflag_co",
+  "koi_fpflag_ec"
+ ],
+ "metricas": {
+  "ece_intervalos": 15,
+  "bootstrap_remuestreos": 2000,
+  "bootstrap_semilla": 20261206,
+  "ic_percentiles": [
+   2.5,
+   97.5
+  ],
+  "min_n_estrato": 20
+ },
+ "calibracion": {
+  "rejilla_tasa_base": [
+   0.5,
+   0.2,
+   0.1,
+   0.05,
+   0.02
+  ],
+  "mc_dropout_pasadas": 50
+ },
+ "muestras_al_azar": {
+  "semilla": 7
+ },
+ "nota_iteracion_2": "Igual que config/protocolo.json salvo el lote (128 en vez de 32): hay 18 veces más ejemplos y se entrena en GPU. Las reglas (particiones por estrella, validación interna, columnas prohibidas) no cambian."
+}

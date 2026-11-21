@@ -57,7 +57,7 @@ def predecir_mc_dropout(
 ) -> np.ndarray:
     """`pasadas` predicciones con el dropout encendido. Devuelve (pasadas, n, clases)."""
     keras.utils.set_random_seed(semilla)
-    return np.stack([np.asarray(cabeza(x, training=True)) for _ in range(pasadas)])
+    return np.stack([keras.ops.convert_to_numpy(cabeza(x, training=True)) for _ in range(pasadas)])
 
 
 def _aciertos(p: np.ndarray, y: np.ndarray) -> np.ndarray:

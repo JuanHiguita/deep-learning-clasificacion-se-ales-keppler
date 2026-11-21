@@ -1,0 +1,41 @@
+{
+ "n_kois_evaluados": 4471,
+ "n_kois_extra_tabla_completa": 2077,
+ "modelos": {
+  "S3-B (seleccion)": {
+   "auc": 0.921,
+   "ic_inf": 0.9128,
+   "ic_sup": 0.9287,
+   "n": 4471,
+   "n_sin_valor": 0
+  },
+  "S3-B (tabla_completa)": {
+   "auc": 0.9239,
+   "ic_inf": 0.9159,
+   "ic_sup": 0.9313,
+   "n": 4471,
+   "n_sin_valor": 0
+  },
+  "S3-C (seleccion)": {
+   "auc": 0.989,
+   "ic_inf": 0.9861,
+   "ic_sup": 0.9915,
+   "n": 4471,
+   "n_sin_valor": 0
+  },
+  "S3-C (tabla_completa)": {
+   "auc": 0.9903,
+   "ic_inf": 0.9877,
+   "ic_sup": 0.9926,
+   "n": 4471,
+   "n_sin_valor": 0
+  },
+  "koi_score (comparador externo, contiene la decisión del Robovetter)": {
+   "auc": 0.9965,
+   "ic_inf": 0.9946,
+   "ic_sup": 0.9982,
+   "n": 4471,
+   "n_sin_valor": 0
+  }
+ }
+}

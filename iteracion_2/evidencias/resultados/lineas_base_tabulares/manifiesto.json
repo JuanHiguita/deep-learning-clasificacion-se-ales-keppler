@@ -1,0 +1,26 @@
+{
+ "argumentos": {
+  "acumulada": "data/koi_cumulative.csv",
+  "ejemplos": "iteracion_2/datos/ejemplos.csv",
+  "koi": "data/koi_dr25.csv",
+  "protocolo": "config/protocolo.json",
+  "salida": "iteracion_2/evidencias/resultados/lineas_base_tabulares"
+ },
+ "commit": "e126d149bf3c26f9e4d61be2375dd326c73d83b8",
+ "entradas": {
+  "config/protocolo.json": "691cbd66f7a2ee5f5ee9abe30a546c5ab9ec8b74e04991acb30b70f353c93f4e",
+  "data/koi_cumulative.csv": "201b52138748edbae7a921b5d1a5dbaccee951e6a34455bb7a857a4879d3d8a1",
+  "data/koi_dr25.csv": "4e720cce3366827692beeffec479b81152745bcdeb6d279e606705f1db95c2b1",
+  "iteracion_2/datos/ejemplos.csv": "80e11a455e9532e113f19f172dcc60f31827ee5d4aef3d5a36392fdc6289dd17"
+ },
+ "fecha_utc": "2026-11-21T06:25:59Z",
+ "versiones": {
+  "astropy": "6.1.7",
+  "keras": "3.12.4",
+  "lightkurve": "2.6.0",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "sklearn": "1.7.2"
+ }
+}

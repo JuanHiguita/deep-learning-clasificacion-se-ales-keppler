@@ -1,0 +1,34 @@
+{
+ "argumentos": {
+  "ejemplos": "iteracion_2\\datos\\ejemplos.csv",
+  "koi": "data\\koi_dr25.csv",
+  "llc": "iteracion_2\\datos\\llc",
+  "procesos": "6",
+  "protocolo": "config\\protocolo.json",
+  "salida": "iteracion_2\\datos\\dataset_temporal.npz"
+ },
+ "commit": "e126d149bf3c26f9e4d61be2375dd326c73d83b8",
+ "entradas": {
+  "config/protocolo.json": "691cbd66f7a2ee5f5ee9abe30a546c5ab9ec8b74e04991acb30b70f353c93f4e",
+  "data/koi_dr25.csv": "4e720cce3366827692beeffec479b81152745bcdeb6d279e606705f1db95c2b1",
+  "iteracion_2/datos/ejemplos.csv": "80e11a455e9532e113f19f172dcc60f31827ee5d4aef3d5a36392fdc6289dd17"
+ },
+ "fecha_utc": "2026-11-21T06:07:38Z",
+ "resumen": {
+  "disponible_transitos": 8705,
+  "disponible_vistas": 8649,
+  "estrellas_con_menos_trimestres_que_el_minimo": 93,
+  "n_ejemplos": 8942,
+  "sin_senal_con_snr_mayor_que_5": 120
+ },
+ "sha256": "be12f5fb9ae94d58d9100eb812cb4834f44be78cdf517330ebd30f788ad9f566",
+ "versiones": {
+  "astropy": "8.0.3",
+  "keras": null,
+  "lightkurve": null,
+  "numpy": "2.5.5",
+  "pandas": "3.1.1",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.1"
+ }
+}
