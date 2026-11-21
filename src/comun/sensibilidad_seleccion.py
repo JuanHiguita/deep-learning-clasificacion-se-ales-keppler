@@ -87,6 +87,9 @@ def analizar(carpeta: Path, ejemplos: pd.DataFrame, protocolo: dict) -> dict:
     def nll(a):
         return lambda i: metricas.nll(p[a][i], y[i])
 
+    def exactitud(a):
+        return lambda i: metricas.exactitud(p[a][i], y[i])
+
     resultado = {
         "caracter": "exploratorio: añadido después de ver resultados; el criterio principal es NLL",
         "n_configuraciones": len(nombres),
@@ -97,6 +100,14 @@ def analizar(carpeta: Path, ejemplos: pd.DataFrame, protocolo: dict) -> dict:
             "seleccion_por_nll": intervalo(auc("nll")),
             "seleccion_por_auc": intervalo(auc("auc")),
             "auc_menos_nll": intervalo(lambda i: auc("auc")(i) - auc("nll")(i)),
+        },
+        # Fracción de ejemplos cuya clase más probable (de las tres) es la correcta.
+        "exactitud_prueba": {
+            "fijo": intervalo(exactitud("fijo")),
+            "seleccion_por_nll": intervalo(exactitud("nll")),
+            "seleccion_por_auc": intervalo(exactitud("auc")),
+            "nll_menos_fijo": intervalo(lambda i: exactitud("nll")(i) - exactitud("fijo")(i)),
+            "auc_menos_nll": intervalo(lambda i: exactitud("auc")(i) - exactitud("nll")(i)),
         },
         "nll_prueba": {
             "fijo": intervalo(nll("fijo")),

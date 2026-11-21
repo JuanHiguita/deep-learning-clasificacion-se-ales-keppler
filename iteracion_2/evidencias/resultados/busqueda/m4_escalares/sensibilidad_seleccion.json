@@ -40,6 +40,33 @@
    "ic_sup": 0.0001
   }
  },
+ "exactitud_prueba": {
+  "fijo": {
+   "estimacion": 0.9474,
+   "ic_inf": 0.9423,
+   "ic_sup": 0.9523
+  },
+  "seleccion_por_nll": {
+   "estimacion": 0.9526,
+   "ic_inf": 0.9478,
+   "ic_sup": 0.9571
+  },
+  "seleccion_por_auc": {
+   "estimacion": 0.9526,
+   "ic_inf": 0.9478,
+   "ic_sup": 0.9573
+  },
+  "nll_menos_fijo": {
+   "estimacion": 0.0051,
+   "ic_inf": 0.0026,
+   "ic_sup": 0.0077
+  },
+  "auc_menos_nll": {
+   "estimacion": 0.0,
+   "ic_inf": -0.001,
+   "ic_sup": 0.001
+  }
+ },
  "nll_prueba": {
   "fijo": {
    "estimacion": 0.1444,
