@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import numpy as np
@@ -124,6 +125,42 @@ def construir(
     return datos, pd.DataFrame(registro)
 
 
+def _construir_un_bloque(argumentos) -> tuple[dict, pd.DataFrame]:
+    """Función de nivel de módulo para que los procesos hijos puedan recibirla (Windows)."""
+    ejemplos, koi, carpeta_llc, protocolo = argumentos
+    return construir(ejemplos, koi, carpeta_llc, protocolo)
+
+
+def construir_en_paralelo(
+    ejemplos: pd.DataFrame, koi: pd.DataFrame, carpeta_llc: Path, protocolo: dict, procesos: int
+) -> tuple[dict, pd.DataFrame]:
+    """Igual que `construir`, repartiendo las estrellas en bloques que corren a la vez.
+
+    Los bloques son tramos consecutivos de estrellas ordenadas por `kepid` y se unen en ese
+    mismo orden: el resultado es idéntico al de un solo proceso.
+    """
+    if procesos <= 1:
+        return construir(ejemplos, koi, carpeta_llc, protocolo)
+    estrellas = np.array(sorted(ejemplos["kepid"].unique()))
+    bloques = [b for b in np.array_split(estrellas, min(8 * procesos, len(estrellas))) if len(b)]
+    tareas = [
+        (ejemplos[ejemplos["kepid"].isin(b)], koi[koi["kepid"].isin(b)], carpeta_llc, protocolo)
+        for b in bloques
+    ]
+    partes = []
+    with ProcessPoolExecutor(max_workers=procesos) as grupo:
+        for i, parte in enumerate(grupo.map(_construir_un_bloque, tareas), 1):
+            partes.append(parte)
+            print(f"== bloque {i} de {len(tareas)} terminado ==", flush=True)
+    datos = {}
+    for clave in partes[0][0]:
+        if clave == "nombres_escalares":  # igual en todos los bloques
+            datos[clave] = partes[0][0][clave]
+        else:
+            datos[clave] = np.concatenate([parte[0][clave] for parte in partes])
+    return datos, pd.concat([parte[1] for parte in partes], ignore_index=True)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--llc", type=Path, required=True)
@@ -131,10 +168,13 @@ def main(argv=None) -> int:
     ap.add_argument("--koi", type=Path, required=True)
     ap.add_argument("--salida", type=Path, required=True)
     ap.add_argument("--protocolo", type=Path, default=Path("config/protocolo.json"))
+    ap.add_argument("--procesos", type=int, default=1, help="procesos en paralelo")
     a = ap.parse_args(argv)
 
     protocolo = cargar_protocolo(a.protocolo)
-    datos, registro = construir(pd.read_csv(a.ejemplos), pd.read_csv(a.koi), a.llc, protocolo)
+    datos, registro = construir_en_paralelo(
+        pd.read_csv(a.ejemplos), pd.read_csv(a.koi), a.llc, protocolo, a.procesos
+    )
     a.salida.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(a.salida, **datos)
     ruta_registro = a.salida.with_name(a.salida.stem + "_registro.csv")
