@@ -1,0 +1,29 @@
+{
+ "argumentos": {
+  "experimento": "m2_promedio",
+  "semillas": "[0]"
+ },
+ "commit": "ab2687b9aa2e294a0b311160c524d06a3ba7ff6e",
+ "entradas": {},
+ "fecha_utc": "2026-11-21T06:56:47Z",
+ "protocolo": {
+  "dropout_escalares": 0.2,
+  "dropout_fusion": 0.3,
+  "dropout_rama": 0.3,
+  "epocas_max": 150,
+  "lote": 128,
+  "optimizador": "adamw",
+  "paciencia": 15,
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001
+ },
+ "versiones": {
+  "astropy": "8.0.3",
+  "keras": "3.15.1",
+  "lightkurve": null,
+  "numpy": "2.5.5",
+  "pandas": "3.1.1",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.1"
+ }
+}

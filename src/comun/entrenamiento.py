@@ -521,6 +521,11 @@ def _particion_entrenada(corrida: _Corrida, sep: Separacion, semilla: int) -> _R
 
     _guardar_parcial(ruta_parcial, resultado)
     corrida.duraciones.append(time.perf_counter() - inicio)
+    if os.environ.get("MOSTRAR_PROGRESO") == "1":  # corridas largas lanzadas a mano (iteración 2)
+        print(
+            f"  {exp.nombre} · semilla {semilla} · partición {k}: {corrida.duraciones[-1]:.0f} s",
+            flush=True,
+        )
     return resultado
 
 

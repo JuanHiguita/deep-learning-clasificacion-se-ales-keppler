@@ -1,0 +1,108 @@
+{
+ "experimento": "m1_astronet",
+ "semillas": [
+  0
+ ],
+ "n_no_disponibles": 293,
+ "por_semilla": {
+  "0": {
+   "auc_planeta_fp": 0.9513,
+   "nll": 0.188,
+   "nll_validacion": 0.1871,
+   "epocas": [
+    24,
+    17,
+    27,
+    22,
+    27
+   ],
+   "segundos_por_epoca": 1.137
+  }
+ },
+ "parametros": 57747,
+ "auc_media_semillas": 0.9513,
+ "auc_desviacion_semillas": 0.0,
+ "nll_validacion_media": 0.1871,
+ "semilla_0": {
+  "n": 8942,
+  "matriz_confusion": [
+   [
+    1849,
+    181,
+    30
+   ],
+   [
+    306,
+    1986,
+    119
+   ],
+   [
+    5,
+    32,
+    4434
+   ]
+  ],
+  "global": {
+   "auc_planeta_fp": {
+    "estimacion": 0.9513,
+    "ic_inf": 0.9454,
+    "ic_sup": 0.9573
+   },
+   "nll": {
+    "estimacion": 0.188,
+    "ic_inf": 0.1752,
+    "ic_sup": 0.2004
+   },
+   "brier": {
+    "estimacion": 0.1087,
+    "ic_inf": 0.1016,
+    "ic_sup": 0.1156
+   },
+   "ece_top": {
+    "estimacion": 0.0151,
+    "ic_inf": 0.0115,
+    "ic_sup": 0.02
+   },
+   "exactitud": {
+    "estimacion": 0.9247,
+    "ic_inf": 0.9194,
+    "ic_sup": 0.9303
+   },
+   "ece_binario_q": {
+    "estimacion": 0.0309
+   }
+  },
+  "acierto_fp_por_bandera": {
+   "fp_ss": {
+    "n": 1404,
+    "aciertos": 1249
+   },
+   "fp_co": {
+    "n": 1130,
+    "aciertos": 866
+   },
+   "fp_nt": {
+    "n": 342,
+    "aciertos": 281
+   },
+   "fp_ec": {
+    "n": 731,
+    "aciertos": 623
+   }
+  },
+  "auc_por_tercil_mes": {
+   "bajo": {
+    "n": 1491,
+    "estimacion": 0.9
+   },
+   "medio": {
+    "n": 1490,
+    "estimacion": 0.9427
+   },
+   "alto": {
+    "n": 1490,
+    "estimacion": 0.9747
+   }
+  }
+ }
+}

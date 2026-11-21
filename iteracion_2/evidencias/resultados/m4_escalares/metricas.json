@@ -1,0 +1,108 @@
+{
+ "experimento": "m4_escalares",
+ "semillas": [
+  0
+ ],
+ "n_no_disponibles": 0,
+ "por_semilla": {
+  "0": {
+   "auc_planeta_fp": 0.9795,
+   "nll": 0.1444,
+   "nll_validacion": 0.1441,
+   "epocas": [
+    63,
+    147,
+    146,
+    134,
+    148
+   ],
+   "segundos_por_epoca": 0.271
+  }
+ },
+ "parametros": 1059,
+ "auc_media_semillas": 0.9795,
+ "auc_desviacion_semillas": 0.0,
+ "nll_validacion_media": 0.1441,
+ "semilla_0": {
+  "n": 8942,
+  "matriz_confusion": [
+   [
+    1966,
+    94,
+    0
+   ],
+   [
+    196,
+    2134,
+    81
+   ],
+   [
+    0,
+    99,
+    4372
+   ]
+  ],
+  "global": {
+   "auc_planeta_fp": {
+    "estimacion": 0.9795,
+    "ic_inf": 0.9751,
+    "ic_sup": 0.9836
+   },
+   "nll": {
+    "estimacion": 0.1444,
+    "ic_inf": 0.1313,
+    "ic_sup": 0.1586
+   },
+   "brier": {
+    "estimacion": 0.0757,
+    "ic_inf": 0.0691,
+    "ic_sup": 0.0825
+   },
+   "ece_top": {
+    "estimacion": 0.01,
+    "ic_inf": 0.0073,
+    "ic_sup": 0.0141
+   },
+   "exactitud": {
+    "estimacion": 0.9474,
+    "ic_inf": 0.9423,
+    "ic_sup": 0.9523
+   },
+   "ece_binario_q": {
+    "estimacion": 0.0127
+   }
+  },
+  "acierto_fp_por_bandera": {
+   "fp_ss": {
+    "n": 1404,
+    "aciertos": 1256
+   },
+   "fp_co": {
+    "n": 1130,
+    "aciertos": 1023
+   },
+   "fp_nt": {
+    "n": 342,
+    "aciertos": 295
+   },
+   "fp_ec": {
+    "n": 731,
+    "aciertos": 643
+   }
+  },
+  "auc_por_tercil_mes": {
+   "bajo": {
+    "n": 1491,
+    "estimacion": 0.9742
+   },
+   "medio": {
+    "n": 1490,
+    "estimacion": 0.9782
+   },
+   "alto": {
+    "n": 1490,
+    "estimacion": 0.9728
+   }
+  }
+ }
+}

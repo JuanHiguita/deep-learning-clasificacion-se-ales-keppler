@@ -1,0 +1,7 @@
+[21/11/2026  1:28:00.93] INICIO 
+[21/11/2026  1:32:32.77] m4_escalares terminado, codigo 0 
+[21/11/2026  1:56:48.90] m2_promedio terminado, codigo 0 
+[21/11/2026  2:19:16.30] m2_atencion terminado, codigo 0 
+[21/11/2026  4:05:51.89] m2_gru terminado, codigo 0 
+[21/11/2026  4:12:13.21] m1_astronet terminado, codigo 0 
+[21/11/2026  4:12:13.22] FIN 

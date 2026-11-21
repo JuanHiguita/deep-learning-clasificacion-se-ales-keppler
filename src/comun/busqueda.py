@@ -27,7 +27,7 @@ from comun.protocolo import cargar_protocolo
 
 SEMILLA_DE_BUSQUEDA = 20261120
 # Hiperparámetros de entrenamiento: van al protocolo. El resto va al constructor del modelo.
-DE_ENTRENAMIENTO = ("tasa_aprendizaje", "weight_decay", "lote")
+DE_ENTRENAMIENTO = ("tasa_aprendizaje", "weight_decay", "lote", "perdida")
 
 
 def muestrear(espacio: dict, fija: dict, n: int, indice_arquitectura: int) -> list[dict]:

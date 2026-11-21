@@ -90,15 +90,21 @@ _CONSTRUCTOR = {
 }
 
 
-def configuraciones_de(arquitectura: str, n: int = N_CONFIGURACIONES) -> list[dict]:
-    espacio, fija = ESPACIOS[arquitectura]
+def configuraciones_de(
+    arquitectura: str, n: int = N_CONFIGURACIONES, espacios: dict | None = None
+) -> list[dict]:
+    espacio, fija = (espacios or ESPACIOS)[arquitectura]
     return busqueda.muestrear(espacio, fija, n, list(ESPACIOS).index(arquitectura))
 
 
-def experimento_de(arquitectura: str, indice: int, configuracion: dict) -> ent.Experimento:
+def experimento_de(
+    arquitectura: str, indice: int, configuracion: dict, constructores: dict | None = None
+) -> ent.Experimento:
     """El experimento del protocolo, con otro constructor y otro nombre (cfgNN)."""
     base = EXPERIMENTOS[arquitectura][0]
-    constructor = partial(_CONSTRUCTOR[arquitectura], **busqueda.de_arquitectura(configuracion))
+    constructor = partial(
+        (constructores or _CONSTRUCTOR)[arquitectura], **busqueda.de_arquitectura(configuracion)
+    )
     return ent.Experimento(
         busqueda.nombre_de(indice),
         constructor,
@@ -128,8 +134,15 @@ def ejecutar(
     n: int = N_CONFIGURACIONES,
     presupuesto_s: float | None = None,
     referencia: Path | None = None,
+    espacios: dict | None = None,
+    constructores: dict | None = None,
+    guardar_modelos: bool = False,
 ) -> dict:
     """Entrena las configuraciones que falten (semilla 0) y resume. Lo ya entrenado no se repite.
+
+    espacios, constructores: otro espacio de búsqueda (iteración 2); por defecto, los de la spec 009.
+    guardar_modelos: guarda el modelo de cada partición mientras busca (necesario en GPU, donde
+        reentrenar no reproduce los mismos pesos).
 
     referencia: carpeta de resultados del protocolo fijo (`resultados/dl`). La configuración 0 ES
         ese experimento (mismo código, misma semilla), así que se copia en vez de reentrenarla.
@@ -137,7 +150,7 @@ def ejecutar(
     """
     carpeta = Path(salida) / arquitectura
     carpeta.mkdir(parents=True, exist_ok=True)
-    configuraciones = configuraciones_de(arquitectura, n)
+    configuraciones = configuraciones_de(arquitectura, n, espacios)
     (carpeta / "configuraciones.json").write_text(
         json.dumps(configuraciones, indent=1) + "\n", encoding="utf-8"
     )
@@ -151,12 +164,13 @@ def ejecutar(
         if restante is not None and restante <= 0:
             raise ent.Incompleto(f"{arquitectura}: pausa antes de {busqueda.nombre_de(indice)}")
         ent.entrenar_cv(
-            experimento_de(arquitectura, indice, configuracion),
+            experimento_de(arquitectura, indice, configuracion, constructores),
             dataset,
             ejemplos,
             busqueda.protocolo_con(protocolo, configuracion),
             [0],
             carpeta,
+            guardar_modelos=guardar_modelos,
             con_intervalos=False,
             presupuesto_s=restante,
         )

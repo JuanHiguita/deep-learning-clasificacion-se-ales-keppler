@@ -78,6 +78,35 @@ class AtencionAgregadora(layers.Layer):
 
 
 @keras.saving.register_keras_serializable(package="temporal")
+class PlegarTransitos(layers.Layer):
+    """(lote, T, L) → (lote·T, L, 1): cada tránsito pasa a ser un ejemplo del lote."""
+
+    def call(self, x):
+        return ops.reshape(x, (-1, x.shape[-1], 1))
+
+    def compute_output_shape(self, forma):
+        return (None, forma[-1], 1)
+
+
+@keras.saving.register_keras_serializable(package="temporal")
+class DesplegarTransitos(layers.Layer):
+    """(lote·T, C) → (lote, T, C): deshace `PlegarTransitos` después de aplicar φ."""
+
+    def __init__(self, transitos: int, **kw):
+        super().__init__(**kw)
+        self.transitos = transitos
+
+    def call(self, x):
+        return ops.reshape(x, (-1, self.transitos, x.shape[-1]))
+
+    def compute_output_shape(self, forma):
+        return (None, self.transitos, forma[-1])
+
+    def get_config(self):
+        return {**super().get_config(), "transitos": self.transitos}
+
+
+@keras.saving.register_keras_serializable(package="temporal")
 class Recorte(layers.Layer):
     """x[:, inicio:fin]."""
 
@@ -113,13 +142,13 @@ def _normalizar(x, normalizacion: str | None):
 
 
 def _con_profundidad(filtros: tuple[int, ...], capas_extra: int) -> tuple[int, ...]:
-    """Quita el último bloque (−1), deja igual (0) o añade uno con el doble de filtros (+1)."""
+    """Quita el último bloque (−1), deja igual (0) o añade 1–3 bloques, cada uno con el doble de filtros."""
     if capas_extra == -1:
         return filtros[:-1] if len(filtros) > 1 else filtros
-    if capas_extra == 1:
-        return (*filtros, 2 * filtros[-1])
-    if capas_extra != 0:
+    if capas_extra not in (0, 1, 2, 3):
         raise ValueError(capas_extra)
+    for _ in range(capas_extra):
+        filtros = (*filtros, 2 * filtros[-1])
     return filtros
 
 
@@ -232,8 +261,13 @@ def m2(
     activacion: str = "relu",
     normalizacion: str | None = None,
     capas_extra: int = 0,
+    plegado: bool = False,
 ) -> keras.Model:
     """Rama 2: φ compartido por tránsito + agregador. Solo cambia cómo se combinan los tránsitos.
+
+    `plegado` aplica φ a los 32 tránsitos de una sola vez (se pliegan en el lote) en lugar de con
+    `TimeDistributed`, que en PyTorch recorre los tránsitos uno por uno. Es la misma función con
+    los mismos pesos; solo cambia la velocidad. Por defecto queda como en la iteración 1.
 
     Hiperparámetros de arquitectura (los valores por defecto son los del protocolo):
     `ancho` (filtros de φ), `unidades_gru` (solo GRU) y `cabezas` de atención (solo atención).
@@ -244,10 +278,11 @@ def m2(
     tr = keras.Input((32, 61), name="transitos")
     mk = keras.Input((32,), name="mascara_transitos")
     co = keras.Input((4,), name="consistencia")
-    h = layers.TimeDistributed(
-        codificador_por_transito(ancho, activacion, normalizacion, capas_extra),
-        name="phi_por_transito",
-    )(layers.Reshape((32, 61, 1))(tr))
+    phi = codificador_por_transito(ancho, activacion, normalizacion, capas_extra)
+    if plegado:
+        h = DesplegarTransitos(32, name="phi_por_transito")(phi(PlegarTransitos()(tr)))
+    else:
+        h = layers.TimeDistributed(phi, name="phi_por_transito")(layers.Reshape((32, 61, 1))(tr))
     h = AplicarMascara()([h, mk])
     if agregador == "promedio":
         v = MediaEnmascarada(name="agregador")([h, mk])
