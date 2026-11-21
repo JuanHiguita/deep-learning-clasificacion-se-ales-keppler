@@ -31,8 +31,14 @@ import keras  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
+from comun import busqueda as busqueda_comun  # noqa: E402
 from comun import entrenamiento as ent  # noqa: E402
-from comun import estadistica, lineas_base_tabulares, metricas  # noqa: E402
+from comun import (  # noqa: E402
+    estadistica,
+    lineas_base_tabulares,
+    metricas,
+    sensibilidad_seleccion,
+)
 from comun.protocolo import cargar_protocolo, separar  # noqa: E402
 from comun.utilidades import sha256_archivo  # noqa: E402
 from fusion import fusionar  # noqa: E402
@@ -69,26 +75,64 @@ def _escribir_json(ruta: Path, contenido) -> None:
 # ---------------------------------------------------------------------------------------------
 
 
-def elegir(busqueda: Path, rama: str, n_particiones: int) -> list[dict]:
-    """Para cada partición, la (red, configuración) con menor NLL en SU validación interna."""
+def _puntaje_de_validacion(
+    carpeta: Path, criterio: str, ejemplos: pd.DataFrame, n_particiones: int
+) -> pd.DataFrame:
+    """Una fila por configuración con su puntaje de validación por partición (menor es mejor)."""
+    tabla = pd.read_csv(carpeta / "configuraciones.csv")
+    columnas = [f"nll_val_k{k}" for k in range(n_particiones)]
+    if criterio == "nll":
+        return tabla[["configuracion", "parametros", *columnas]]
+    filas = []
+    for _, fila in tabla.iterrows():
+        pred = busqueda_comun._cargar_predicciones(carpeta / fila["configuracion"])
+        y = ent.alinear(ejemplos, np.array([str(i) for i in pred["id_ejemplo"]], dtype="U"))
+        y = y["clase"].to_numpy().astype(int)
+        auc = sensibilidad_seleccion.auc_de_validacion_por_particion(pred, y, n_particiones)
+        filas.append(
+            {
+                "configuracion": fila["configuracion"],
+                "parametros": fila["parametros"],
+                **{c: -a for c, a in zip(columnas, auc, strict=True)},  # −AUC: menor es mejor
+            }
+        )
+    return pd.DataFrame(filas)
+
+
+def elegir(
+    busqueda: Path,
+    rama: str,
+    n_particiones: int,
+    criterio: str = "nll",
+    ejemplos: pd.DataFrame | None = None,
+) -> list[dict]:
+    """Para cada partición, la (red, configuración) mejor en SU validación interna.
+
+    criterio: "nll" (el declarado antes de entrenar, principal) o "auc" (exploratorio, añadido
+    después de ver que la NLL penaliza al suavizado de etiquetas). La prueba nunca decide.
+    """
+    if criterio not in ("nll", "auc"):
+        raise ValueError(criterio)
     candidatas = []
     for red in REDES_DE_RAMA[rama]:
-        ruta = Path(busqueda) / red / "configuraciones.csv"
-        if not (Path(busqueda) / red / "resumen.json").is_file():
-            raise FileNotFoundError(f"La búsqueda de {red} no ha terminado ({ruta.parent})")
-        tabla = pd.read_csv(ruta)
+        carpeta = Path(busqueda) / red
+        if not (carpeta / "resumen.json").is_file():
+            raise FileNotFoundError(f"La búsqueda de {red} no ha terminado ({carpeta})")
+        tabla = _puntaje_de_validacion(carpeta, criterio, ejemplos, n_particiones)
         tabla.insert(0, "red", red)
         candidatas.append(tabla)
     candidatas = pd.concat(candidatas, ignore_index=True)
     elegidas = []
     for k in range(n_particiones):
         fila = candidatas.loc[candidatas[f"nll_val_k{k}"].idxmin()]  # empate: la primera
+        puntaje = float(fila[f"nll_val_k{k}"])
         elegidas.append(
             {
                 "particion": k,
                 "red": fila["red"],
                 "configuracion": fila["configuracion"],
-                "nll_validacion": float(fila[f"nll_val_k{k}"]),
+                "criterio": criterio,
+                "puntaje_validacion": puntaje if criterio == "nll" else -puntaje,
                 "parametros": int(fila["parametros"]),
             }
         )
@@ -246,6 +290,12 @@ def main(argv=None) -> int:
         "--busqueda", type=Path, default=RAIZ / "evidencias" / "resultados" / "busqueda"
     )
     ap.add_argument(
+        "--criterio",
+        choices=("nll", "auc"),
+        default="nll",
+        help="nll: principal. auc: exploratorio (usar con otras carpetas en --modelos y --salida)",
+    )
+    ap.add_argument(
         "--referencia",
         type=Path,
         default=RAIZ / "evidencias" / "resultados",
@@ -263,7 +313,7 @@ def main(argv=None) -> int:
 
     for rama in a.ramas:
         print(f"=== Elegir y exportar: {rama} ===", flush=True)
-        elegidas = elegir(a.busqueda, rama, n_particiones)
+        elegidas = elegir(a.busqueda, rama, n_particiones, a.criterio, ejemplos)
         exportar(rama, elegidas, a.busqueda, dataset, ejemplos, protocolo, a.modelos, a.referencia)
 
     # La rama de imagen (y cualquier otra no pedida) queda como ausente, no se inventa.
@@ -282,6 +332,10 @@ def main(argv=None) -> int:
 
     print("=== Comparación con los modelos tabulares ===", flush=True)
     resultado = comparar(a.salida, hechas, ejemplos, a.koi, protocolo)
+    if a.criterio != "nll":
+        resultado["caracter"] = "exploratorio: modelos elegidos por AUC de validación, no por NLL"
+        resultado.pop("criterio_declarado", None)
+        _escribir_json(a.salida / "comparacion_con_tabulares.json", resultado)
     print(json.dumps(resultado, ensure_ascii=False, indent=1))
     return 0
 
