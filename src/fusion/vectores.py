@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 
 RAMAS = ("vistas", "transitos", "imagen", "escalares")
+DIMENSION = {"vistas": 32, "transitos": 32, "imagen": 32, "escalares": 16}  # contrato §5
 DISPONIBLE = {"vistas": "disponible_vistas", "transitos": "disponible_transitos"}
 
 
@@ -18,6 +19,9 @@ def cargar_vectores(
     pos_ds = {str(i): j for j, i in enumerate(dataset["id_ejemplo"])}
     vectores, banderas = {}, np.zeros((len(ids), len(RAMAS)), np.float32)
     for r, rama in enumerate(RAMAS):
+        if versiones[rama] is None:  # rama aún no entregada: vector en cero y bandera en 0
+            vectores[rama] = np.zeros((len(ids), DIMENSION[rama]), np.float32)
+            continue
         with np.load(
             Path(modelos) / rama / versiones[rama] / f"vectores_particion_{k}.npz",
             allow_pickle=False,
