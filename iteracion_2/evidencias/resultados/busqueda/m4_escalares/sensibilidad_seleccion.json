@@ -1,0 +1,65 @@
+{
+ "caracter": "exploratorio: añadido después de ver resultados; el criterio principal es NLL",
+ "n_configuraciones": 12,
+ "elegida_por_particion": {
+  "nll": [
+   "cfg05",
+   "cfg06",
+   "cfg01",
+   "cfg05",
+   "cfg01"
+  ],
+  "auc": [
+   "cfg05",
+   "cfg06",
+   "cfg01",
+   "cfg01",
+   "cfg01"
+  ]
+ },
+ "particiones_con_la_misma_eleccion": 4,
+ "auc_prueba": {
+  "fijo": {
+   "estimacion": 0.9795,
+   "ic_inf": 0.9751,
+   "ic_sup": 0.9836
+  },
+  "seleccion_por_nll": {
+   "estimacion": 0.983,
+   "ic_inf": 0.9794,
+   "ic_sup": 0.9863
+  },
+  "seleccion_por_auc": {
+   "estimacion": 0.9826,
+   "ic_inf": 0.9788,
+   "ic_sup": 0.986
+  },
+  "auc_menos_nll": {
+   "estimacion": -0.0004,
+   "ic_inf": -0.001,
+   "ic_sup": 0.0001
+  }
+ },
+ "nll_prueba": {
+  "fijo": {
+   "estimacion": 0.1444,
+   "ic_inf": 0.1313,
+   "ic_sup": 0.1586
+  },
+  "seleccion_por_nll": {
+   "estimacion": 0.1206,
+   "ic_inf": 0.1097,
+   "ic_sup": 0.1321
+  },
+  "seleccion_por_auc": {
+   "estimacion": 0.1231,
+   "ic_inf": 0.1118,
+   "ic_sup": 0.1353
+  },
+  "auc_menos_nll": {
+   "estimacion": 0.0025,
+   "ic_inf": 0.0007,
+   "ic_sup": 0.0046
+  }
+ }
+}

@@ -1,0 +1,134 @@
+[
+ {
+  "tasa_aprendizaje": 0.001,
+  "weight_decay": 0.0001,
+  "lote": 128,
+  "perdida": "ce",
+  "activacion": "relu",
+  "capas_extra": 0,
+  "dropout": 0.2,
+  "oculta": 32,
+  "normalizacion": null
+ },
+ {
+  "tasa_aprendizaje": 0.00239,
+  "weight_decay": 1e-05,
+  "lote": 128,
+  "perdida": "ce",
+  "activacion": "tanh",
+  "capas_extra": 0,
+  "dropout": 0.2,
+  "oculta": 128,
+  "normalizacion": "lote"
+ },
+ {
+  "tasa_aprendizaje": 0.000955,
+  "weight_decay": 0.0,
+  "lote": 256,
+  "perdida": "suavizado",
+  "activacion": "relu",
+  "capas_extra": 0,
+  "dropout": 0.1,
+  "oculta": 128,
+  "normalizacion": "lote"
+ },
+ {
+  "tasa_aprendizaje": 0.000849,
+  "weight_decay": 0.0,
+  "lote": 128,
+  "perdida": "suavizado",
+  "activacion": "tanh",
+  "capas_extra": 2,
+  "dropout": 0.1,
+  "oculta": 256,
+  "normalizacion": "capa"
+ },
+ {
+  "tasa_aprendizaje": 0.000493,
+  "weight_decay": 1e-05,
+  "lote": 256,
+  "perdida": "suavizado",
+  "activacion": "tanh",
+  "capas_extra": 2,
+  "dropout": 0.4,
+  "oculta": 64,
+  "normalizacion": null
+ },
+ {
+  "tasa_aprendizaje": 0.00277,
+  "weight_decay": 1e-05,
+  "lote": 256,
+  "perdida": "ce",
+  "activacion": "tanh",
+  "capas_extra": 0,
+  "dropout": 0.4,
+  "oculta": 64,
+  "normalizacion": "lote"
+ },
+ {
+  "tasa_aprendizaje": 0.0024,
+  "weight_decay": 0.0001,
+  "lote": 256,
+  "perdida": "ce",
+  "activacion": "tanh",
+  "capas_extra": 0,
+  "dropout": 0.1,
+  "oculta": 32,
+  "normalizacion": "capa"
+ },
+ {
+  "tasa_aprendizaje": 0.00258,
+  "weight_decay": 0.0,
+  "lote": 128,
+  "perdida": "ce",
+  "activacion": "tanh",
+  "capas_extra": 2,
+  "dropout": 0.2,
+  "oculta": 32,
+  "normalizacion": "capa"
+ },
+ {
+  "tasa_aprendizaje": 0.000666,
+  "weight_decay": 1e-05,
+  "lote": 128,
+  "perdida": "suavizado",
+  "activacion": "relu",
+  "capas_extra": 2,
+  "dropout": 0.4,
+  "oculta": 256,
+  "normalizacion": "lote"
+ },
+ {
+  "tasa_aprendizaje": 0.00152,
+  "weight_decay": 0.0,
+  "lote": 256,
+  "perdida": "ce",
+  "activacion": "tanh",
+  "capas_extra": 0,
+  "dropout": 0.2,
+  "oculta": 64,
+  "normalizacion": null
+ },
+ {
+  "tasa_aprendizaje": 0.000359,
+  "weight_decay": 1e-05,
+  "lote": 128,
+  "perdida": "ce",
+  "activacion": "tanh",
+  "capas_extra": 2,
+  "dropout": 0.4,
+  "oculta": 64,
+  "normalizacion": "capa"
+ },
+ {
+  "tasa_aprendizaje": 0.00184,
+  "weight_decay": 1e-05,
+  "lote": 256,
+  "perdida": "suavizado",
+  "activacion": "tanh",
+  "capas_extra": 1,
+  "dropout": 0.4,
+  "oculta": 128,
+  "normalizacion": "lote"
+ }
+]
