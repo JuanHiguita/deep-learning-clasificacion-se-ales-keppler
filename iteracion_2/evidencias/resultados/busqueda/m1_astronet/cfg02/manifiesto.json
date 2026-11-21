@@ -1,0 +1,30 @@
+{
+ "argumentos": {
+  "experimento": "cfg02",
+  "semillas": "[0]"
+ },
+ "commit": "e3cbf97174e3c589e2a26e83811688261b148ac7",
+ "entradas": {},
+ "fecha_utc": "2026-11-21T13:19:34Z",
+ "protocolo": {
+  "dropout_escalares": 0.2,
+  "dropout_fusion": 0.3,
+  "dropout_rama": 0.3,
+  "epocas_max": 150,
+  "lote": 256,
+  "optimizador": "adamw",
+  "paciencia": 15,
+  "perdida": "suavizado",
+  "tasa_aprendizaje": 0.00119,
+  "weight_decay": 0.0001
+ },
+ "versiones": {
+  "astropy": "8.0.3",
+  "keras": "3.15.1",
+  "lightkurve": null,
+  "numpy": "2.5.5",
+  "pandas": "3.1.1",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.1"
+ }
+}

@@ -31,3 +31,7 @@ resultados/dl/busqueda_demo/
 .venv_gpu/
 iteracion_2/datos/llc/
 iteracion_2/datos/*.npz
+
+# Iteración 2: los modelos de cada configuración de la búsqueda pesan cientos de MB; se versionan
+# solo los elegidos (iteracion_2/modelos_finales) y las predicciones y métricas de todas.
+iteracion_2/evidencias/resultados/busqueda/*/cfg*/modelos/
