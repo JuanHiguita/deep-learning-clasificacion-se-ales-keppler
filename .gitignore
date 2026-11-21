@@ -26,3 +26,8 @@ resultados/dl/busqueda_demo/
 !modelos/**/*.keras
 !modelos/**/*.npz
 !resultados/dl/fusion/e6a_cuatro_ramas/cabezas/*.keras
+
+# iteración 2: entorno y datos grandes fuera de git; selección, ejemplos y evidencias sí se versionan
+.venv_gpu/
+iteracion_2/datos/llc/
+iteracion_2/datos/*.npz

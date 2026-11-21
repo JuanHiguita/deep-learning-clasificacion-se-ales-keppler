@@ -1,0 +1,14 @@
+# Entorno de la iteración 2 (GPU). PyTorch con CUDA se instala aparte, desde su propio índice.
+keras>=3
+numpy
+pandas
+scipy
+scikit-learn
+astropy
+matplotlib
+jupyterlab
+ipywidgets
+nbconvert
+nbformat
+jinja2
+pytest

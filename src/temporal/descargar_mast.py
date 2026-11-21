@@ -14,9 +14,11 @@ from __future__ import annotations
 import argparse
 import csv
 import re
+import shutil
 import sys
 import time
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import pandas as pd
@@ -53,17 +55,39 @@ def nombre_tpf_q5(kepid: int) -> str:
     return f"kplr{validar_kepid(kepid):09d}-{MARCA_Q5}_lpd-targ.fits.gz"
 
 
-def bajar_llc(kepid: int, destino: Path, pausa: float) -> list[Path]:
-    url = carpeta_remota("lightcurves", kepid)
-    nombres = archivos_llc(leer_url(url).decode("utf-8", "replace"), kepid)
-    rutas = []
-    for nombre in nombres:
-        ruta = ruta_dentro_de(destino, Path(f"{kepid:09d}") / nombre)
-        if not (ruta.is_file() and ruta.stat().st_size > 0):
-            descargar_a_archivo(url + nombre, ruta)
-            time.sleep(pausa)
-        rutas.append(ruta)
-    return rutas
+def _ya_esta(ruta: Path) -> bool:
+    return ruta.is_file() and ruta.stat().st_size > 0
+
+
+def bajar_llc(
+    kepid: int, destino: Path, pausa: float, reutilizar: Path | None = None
+) -> list[Path]:
+    """Curvas de cadencia larga de una estrella. Reanudable por estrella y por archivo.
+
+    Una estrella terminada deja un archivo `.completa`: al reanudar no se vuelve a consultar MAST.
+    reutilizar: otra carpeta `llc/` ya descargada; lo que esté allí se copia en vez de bajarse.
+    """
+    carpeta = ruta_dentro_de(destino, f"{kepid:09d}")
+    marca = carpeta / ".completa"
+    if marca.is_file():
+        return sorted(carpeta.glob("*_llc.fits"))
+    carpeta.mkdir(parents=True, exist_ok=True)
+    anterior = None if reutilizar is None else reutilizar / f"{kepid:09d}"
+    if anterior is not None and any(anterior.glob("*_llc.fits")):
+        # La carpeta a reutilizar es de una descarga ya terminada: se copia tal cual
+        for origen in sorted(anterior.glob("*_llc.fits")):
+            ruta = ruta_dentro_de(destino, Path(f"{kepid:09d}") / origen.name)
+            if not _ya_esta(ruta):
+                shutil.copyfile(origen, ruta)
+    else:
+        url = carpeta_remota("lightcurves", kepid)
+        for nombre in archivos_llc(leer_url(url).decode("utf-8", "replace"), kepid):
+            ruta = ruta_dentro_de(destino, Path(f"{kepid:09d}") / nombre)
+            if not _ya_esta(ruta):
+                descargar_a_archivo(url + nombre, ruta)
+                time.sleep(pausa)
+    marca.write_text("ok\n", encoding="utf-8")
+    return sorted(carpeta.glob("*_llc.fits"))
 
 
 def bajar_tpf(kepid: int, destino: Path, pausa: float) -> list[Path]:
@@ -89,28 +113,42 @@ def main(argv=None) -> int:
         "--pausa", type=float, default=0.2, help="segundos entre archivos, para no saturar MAST"
     )
     ap.add_argument("--max-estrellas", type=int, default=None, help="para pruebas")
+    ap.add_argument("--hilos", type=int, default=1, help="estrellas en paralelo (máximo 8)")
+    ap.add_argument(
+        "--reutilizar", type=Path, default=None, help="carpeta llc/ ya descargada, para copiar"
+    )
+    ap.add_argument("--sin-huellas", action="store_true", help="no calcular SHA-256 (más rápido)")
     a = ap.parse_args(argv)
 
     tabla = pd.read_csv(a.ejemplos or a.seleccion)
     kepids = sorted({validar_kepid(k) for k in tabla["kepid"]})[: a.max_estrellas]
     carpeta = a.destino / a.que
     carpeta.mkdir(parents=True, exist_ok=True)
-    bajar = bajar_llc if a.que == "llc" else bajar_tpf
+    if not 1 <= a.hilos <= 8:
+        raise SystemExit("--hilos debe estar entre 1 y 8 (para no saturar MAST)")
+
+    def de_una_estrella(kepid: int):
+        """(kepid, rutas, error). Un fallo de red no detiene a las demás estrellas."""
+        try:
+            if a.que == "llc":
+                return kepid, bajar_llc(kepid, carpeta, a.pausa, a.reutilizar), None
+            return kepid, bajar_tpf(kepid, carpeta, a.pausa), None
+        except urllib.error.HTTPError as e:
+            return kepid, [], f"HTTP {e.code}"
+        except (ConnectionError, OSError) as e:
+            return kepid, [], repr(e)[:80]
 
     filas, fallidas = [], []
-    for i, kepid in enumerate(kepids, 1):
-        try:
-            rutas = bajar(kepid, carpeta, a.pausa)
+    with ThreadPoolExecutor(max_workers=a.hilos) as hilos:
+        for i, (kepid, rutas, error) in enumerate(hilos.map(de_una_estrella, kepids), 1):
+            if error is not None:
+                fallidas.append((kepid, error))
+                print(f"[{i}/{len(kepids)}] KIC {kepid}: FALLO {error}", flush=True)
+                continue
             for r in rutas:
-                filas.append([kepid, r.name, r.stat().st_size, sha256_archivo(r)])
+                huella = "" if a.sin_huellas else sha256_archivo(r)
+                filas.append([kepid, r.name, r.stat().st_size, huella])
             print(f"[{i}/{len(kepids)}] KIC {kepid}: {len(rutas)} archivo(s)", flush=True)
-        except urllib.error.HTTPError as e:
-            fallidas.append((kepid, f"HTTP {e.code}"))
-            print(f"[{i}/{len(kepids)}] KIC {kepid}: FALLO HTTP {e.code}", flush=True)
-        except (ConnectionError, OSError) as e:
-            fallidas.append((kepid, repr(e)[:80]))
-            print(f"[{i}/{len(kepids)}] KIC {kepid}: FALLO {repr(e)[:80]}", flush=True)
-
     with open(carpeta / f"manifiesto_{a.que}.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f, lineterminator="\n")
         w.writerow(["kepid", "archivo", "bytes", "sha256"])
