@@ -1,0 +1,92 @@
+{
+ "caracter": "exploratorio: añadido después de ver resultados; el criterio principal es NLL",
+ "n_configuraciones": 12,
+ "elegida_por_particion": {
+  "nll": [
+   "cfg00",
+   "cfg00",
+   "cfg06",
+   "cfg00",
+   "cfg00"
+  ],
+  "auc": [
+   "cfg01",
+   "cfg03",
+   "cfg06",
+   "cfg00",
+   "cfg00"
+  ]
+ },
+ "particiones_con_la_misma_eleccion": 3,
+ "auc_prueba": {
+  "fijo": {
+   "estimacion": 0.9403,
+   "ic_inf": 0.9334,
+   "ic_sup": 0.9465
+  },
+  "seleccion_por_nll": {
+   "estimacion": 0.9399,
+   "ic_inf": 0.9331,
+   "ic_sup": 0.9461
+  },
+  "seleccion_por_auc": {
+   "estimacion": 0.9381,
+   "ic_inf": 0.9314,
+   "ic_sup": 0.9443
+  },
+  "auc_menos_nll": {
+   "estimacion": -0.0018,
+   "ic_inf": -0.0045,
+   "ic_sup": 0.001
+  }
+ },
+ "exactitud_prueba": {
+  "fijo": {
+   "estimacion": 0.8238,
+   "ic_inf": 0.8162,
+   "ic_sup": 0.8322
+  },
+  "seleccion_por_nll": {
+   "estimacion": 0.8252,
+   "ic_inf": 0.818,
+   "ic_sup": 0.8334
+  },
+  "seleccion_por_auc": {
+   "estimacion": 0.8251,
+   "ic_inf": 0.8174,
+   "ic_sup": 0.8333
+  },
+  "nll_menos_fijo": {
+   "estimacion": 0.0015,
+   "ic_inf": -0.0012,
+   "ic_sup": 0.0043
+  },
+  "auc_menos_nll": {
+   "estimacion": -0.0001,
+   "ic_inf": -0.0043,
+   "ic_sup": 0.0041
+  }
+ },
+ "nll_prueba": {
+  "fijo": {
+   "estimacion": 0.4522,
+   "ic_inf": 0.4367,
+   "ic_sup": 0.4669
+  },
+  "seleccion_por_nll": {
+   "estimacion": 0.4536,
+   "ic_inf": 0.4383,
+   "ic_sup": 0.4678
+  },
+  "seleccion_por_auc": {
+   "estimacion": 0.4633,
+   "ic_inf": 0.4478,
+   "ic_sup": 0.4784
+  },
+  "auc_menos_nll": {
+   "estimacion": 0.0097,
+   "ic_inf": 0.0047,
+   "ic_sup": 0.0148
+  }
+ }
+}
