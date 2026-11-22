@@ -1,0 +1,62 @@
+{
+ "rama": "vistas",
+ "version": "v1",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "particion": 0,
+   "red": "m1_astronet",
+   "configuracion": "cfg00",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1659,
+   "parametros": 57747,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/m1_astronet/modelos/particion_0_semilla_0.keras",
+   "sha256_modelo_de_origen": "2ebb53cab3b864f74d3c3e7c6abcc67e3470c96031d8ed17560b51e590ec6123",
+   "sha256_codificador": "1f9d9b2ccb6ea3054db15eb75747095bd864851db4a1d161321cfbb8f8387a73"
+  },
+  "1": {
+   "particion": 1,
+   "red": "m1_astronet",
+   "configuracion": "cfg00",
+   "criterio": "nll",
+   "puntaje_validacion": 0.2061,
+   "parametros": 57747,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/m1_astronet/modelos/particion_1_semilla_0.keras",
+   "sha256_modelo_de_origen": "1983605448a73916ac51fe0ddfe581f9356506ea56b6486c0d0b37485765e30c",
+   "sha256_codificador": "d7d0bd48fed88b2812642132e0cc533daeeee47a8f56957c99e34c17dfbf5c6f"
+  },
+  "2": {
+   "particion": 2,
+   "red": "m1_astronet",
+   "configuracion": "cfg01",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1819,
+   "parametros": 224931,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m1_astronet/cfg01/modelos/particion_2_semilla_0.keras",
+   "sha256_modelo_de_origen": "9d82d59e75c64e9db25f5355f2974e7c413909b79d62ba3a24408aabd69757a9",
+   "sha256_codificador": "a7532b748d4ead384f8f02efa55cc311f5fe73f2f445d659bc2df619e56c4e76"
+  },
+  "3": {
+   "particion": 3,
+   "red": "m1_astronet",
+   "configuracion": "cfg00",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1807,
+   "parametros": 57747,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/m1_astronet/modelos/particion_3_semilla_0.keras",
+   "sha256_modelo_de_origen": "75bedd7e17d08aac6658481eb2f4e4069efa034c9d2ff1822a004404e503435b",
+   "sha256_codificador": "78e122c4edf562ce3a8ac297597b7e130a884553eff4a55ded047d6275c88b2f"
+  },
+  "4": {
+   "particion": 4,
+   "red": "m1_astronet",
+   "configuracion": "cfg00",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1935,
+   "parametros": 57747,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/m1_astronet/modelos/particion_4_semilla_0.keras",
+   "sha256_modelo_de_origen": "63cf2aa3f49b7da127aace11cd8e45734b3eb53f8106c930099a29e7f4cbebf7",
+   "sha256_codificador": "bf6f679d2057a0fab829ae9b79cc814e1538364812552e2f4418b244332eb333"
+  }
+ }
+}

@@ -1,0 +1,6 @@
+[22/11/2026  3:09:47.88] INICIO 
+[22/11/2026  3:11:55.70] sensibilidad, codigo 0 
+[22/11/2026  3:29:15.38] fusion principal, codigo 1073807364 
+[22/11/2026 13:09:09.84] INICIO 
+[22/11/2026 13:11:24.19] sensibilidad, codigo 0 
+[22/11/2026 13:31:22.06] fusion principal, codigo 0 

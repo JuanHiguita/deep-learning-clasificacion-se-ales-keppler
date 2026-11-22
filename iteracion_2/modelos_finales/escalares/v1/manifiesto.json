@@ -1,0 +1,62 @@
+{
+ "rama": "escalares",
+ "version": "v1",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "particion": 0,
+   "red": "m4_escalares",
+   "configuracion": "cfg05",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1216,
+   "parametros": 2307,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg05/modelos/particion_0_semilla_0.keras",
+   "sha256_modelo_de_origen": "d6c5be090bef3bd82818177242ed0fa4d19aaa14b179305d60a8f301099cb5ae",
+   "sha256_codificador": "b68ce3dff1207a4c21940e62786e2891b5ddc18a57e72d5252bfe6f0a06755df"
+  },
+  "1": {
+   "particion": 1,
+   "red": "m4_escalares",
+   "configuracion": "cfg06",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1357,
+   "parametros": 1123,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg06/modelos/particion_1_semilla_0.keras",
+   "sha256_modelo_de_origen": "a55d5bfbfdf47f97f1692d62bfcaf3964ec0dc676fb3b63af2931144c1485f48",
+   "sha256_codificador": "7ecddd862c9896e69c23b22648242bcb52eab0498beb76543466387f084ee2ca"
+  },
+  "2": {
+   "particion": 2,
+   "red": "m4_escalares",
+   "configuracion": "cfg01",
+   "criterio": "nll",
+   "puntaje_validacion": 0.116,
+   "parametros": 4547,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg01/modelos/particion_2_semilla_0.keras",
+   "sha256_modelo_de_origen": "d06564815b4b6055452f62b573672eddbc3300089d7b1c50dca6637e6a9e688f",
+   "sha256_codificador": "46ea1915ea5420db69c37a962e0522ff8f00afc1f6ac3f36bd5ee7b9fcd6f9de"
+  },
+  "3": {
+   "particion": 3,
+   "red": "m4_escalares",
+   "configuracion": "cfg05",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1031,
+   "parametros": 2307,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg05/modelos/particion_3_semilla_0.keras",
+   "sha256_modelo_de_origen": "3a9c2f7f2524c04e5501cb4ebb05880d7ebdd2c123979b22b7c57956d64b3645",
+   "sha256_codificador": "2d3894572d3a8359743cc555d93c3853d7eeeb2648f3024a514565662095d15d"
+  },
+  "4": {
+   "particion": 4,
+   "red": "m4_escalares",
+   "configuracion": "cfg01",
+   "criterio": "nll",
+   "puntaje_validacion": 0.1214,
+   "parametros": 4547,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg01/modelos/particion_4_semilla_0.keras",
+   "sha256_modelo_de_origen": "59d387aa88c2a6b0eeb024edc919cb4749d2ad397c62c4d2ec5bfdfd4b96e22a",
+   "sha256_codificador": "572723776fc3ba32d10c7935d300e3cc993c41028ad16145ded2dfa131a7646a"
+  }
+ }
+}

@@ -35,3 +35,8 @@ iteracion_2/datos/*.npz
 # Iteración 2: los modelos de cada configuración de la búsqueda pesan cientos de MB; se versionan
 # solo los elegidos (iteracion_2/modelos_finales) y las predicciones y métricas de todas.
 iteracion_2/evidencias/resultados/busqueda/*/cfg*/modelos/
+# Iteración 2: sí se versionan los modelos finales (codificadores elegidos y sus vectores) y la fusión.
+!iteracion_2/modelos_finales/**/*.keras
+!iteracion_2/modelos_finales/**/*.npz
+!iteracion_2/evidencias/resultados/fusion/**/*.keras
+!iteracion_2/evidencias/resultados/fusion/**/*.npz

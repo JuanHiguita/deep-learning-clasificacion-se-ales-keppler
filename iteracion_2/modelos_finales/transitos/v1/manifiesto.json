@@ -1,0 +1,62 @@
+{
+ "rama": "transitos",
+ "version": "v1",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "particion": 0,
+   "red": "m2_atencion",
+   "configuracion": "cfg07",
+   "criterio": "nll",
+   "puntaje_validacion": 0.4005,
+   "parametros": 22628,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_atencion/cfg07/modelos/particion_0_semilla_0.keras",
+   "sha256_modelo_de_origen": "1db4cb25950a7a5e977ce8cd50177950a8ebac63e9fe7328cb10a183b3d75041",
+   "sha256_codificador": "19586c05ab6bbba030501b87f058784e4d9155e3415d4144dcf944ab119918d7"
+  },
+  "1": {
+   "particion": 1,
+   "red": "m2_promedio",
+   "configuracion": "cfg10",
+   "criterio": "nll",
+   "puntaje_validacion": 0.4328,
+   "parametros": 57443,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_promedio/cfg10/modelos/particion_1_semilla_0.keras",
+   "sha256_modelo_de_origen": "3001781692cd998e5d38fe742edb7101eeb05057f347880ea3b49e65c36e2f8f",
+   "sha256_codificador": "7bfaad3e2bd8c574f1226df1ae5b5a951586ed2caa0c197e70641cc5cccd23f9"
+  },
+  "2": {
+   "particion": 2,
+   "red": "m2_promedio",
+   "configuracion": "cfg10",
+   "criterio": "nll",
+   "puntaje_validacion": 0.4456,
+   "parametros": 57443,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_promedio/cfg10/modelos/particion_2_semilla_0.keras",
+   "sha256_modelo_de_origen": "13ed5889dc7eb958535dd32789812a33b265dadce09ba24b6712cb18abc2a07e",
+   "sha256_codificador": "f9e7d7d855413add9fddcfec99ced88e70687d1701e4fa385576d2664ab1a5d5"
+  },
+  "3": {
+   "particion": 3,
+   "red": "m2_atencion",
+   "configuracion": "cfg00",
+   "criterio": "nll",
+   "puntaje_validacion": 0.4014,
+   "parametros": 13604,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/m2_atencion/modelos/particion_3_semilla_0.keras",
+   "sha256_modelo_de_origen": "42f2a5470da5d9f8b94afed457e3b8c0b77da6992cf5115da1035e33c711483b",
+   "sha256_codificador": "dc18d3c1e9c596d09fd9cdc4c4324939cadeb02ac6563b304da1d88eca431ee1"
+  },
+  "4": {
+   "particion": 4,
+   "red": "m2_gru",
+   "configuracion": "cfg00",
+   "criterio": "nll",
+   "puntaje_validacion": 0.4301,
+   "parametros": 18723,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/m2_gru/modelos/particion_4_semilla_0.keras",
+   "sha256_modelo_de_origen": "05c88c24a91958a535161e9cac16fb17aa88ed1b86aedf190524acc65c67322e",
+   "sha256_codificador": "e34e78fb1f0f988f5a804e72b841362fa4264542c123362928fcd715179bb9da"
+  }
+ }
+}

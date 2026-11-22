@@ -1,0 +1,117 @@
+{
+ "n_kois": 4471,
+ "n_kois_sin_prediccion_de_la_fusion": 0,
+ "auc": {
+  "tabular_sin_centroide": {
+   "estimacion": 0.9197,
+   "ic_inf": 0.9116,
+   "ic_sup": 0.9273
+  },
+  "tabular_con_centroide": {
+   "estimacion": 0.9892,
+   "ic_inf": 0.9863,
+   "ic_sup": 0.9917
+  },
+  "tres_ramas": {
+   "estimacion": 0.994,
+   "ic_inf": 0.9924,
+   "ic_sup": 0.9955
+  },
+  "tres_ramas_ajuste_cruzado": {
+   "estimacion": 0.9934,
+   "ic_inf": 0.9916,
+   "ic_sup": 0.9951
+  },
+  "solo_curvas": {
+   "estimacion": 0.9706,
+   "ic_inf": 0.9663,
+   "ic_sup": 0.9747
+  },
+  "solo_vistas": {
+   "estimacion": 0.9544,
+   "ic_inf": 0.9486,
+   "ic_sup": 0.9603
+  },
+  "solo_transitos": {
+   "estimacion": 0.9472,
+   "ic_inf": 0.941,
+   "ic_sup": 0.9531
+  },
+  "solo_escalares": {
+   "estimacion": 0.9828,
+   "ic_inf": 0.9791,
+   "ic_sup": 0.9861
+  }
+ },
+ "diferencias": {
+  "tres_ramas - tabular_sin_centroide": {
+   "estimacion": 0.0743,
+   "ic_inf": 0.0668,
+   "ic_sup": 0.0822
+  },
+  "tres_ramas - tabular_con_centroide": {
+   "estimacion": 0.0048,
+   "ic_inf": 0.0025,
+   "ic_sup": 0.0073
+  },
+  "tres_ramas_ajuste_cruzado - tabular_sin_centroide": {
+   "estimacion": 0.0738,
+   "ic_inf": 0.0662,
+   "ic_sup": 0.0817
+  },
+  "tres_ramas_ajuste_cruzado - tabular_con_centroide": {
+   "estimacion": 0.0043,
+   "ic_inf": 0.0022,
+   "ic_sup": 0.0066
+  },
+  "solo_curvas - tabular_sin_centroide": {
+   "estimacion": 0.051,
+   "ic_inf": 0.0438,
+   "ic_sup": 0.0588
+  },
+  "solo_curvas - tabular_con_centroide": {
+   "estimacion": -0.0185,
+   "ic_inf": -0.023,
+   "ic_sup": -0.0139
+  },
+  "solo_vistas - tabular_sin_centroide": {
+   "estimacion": 0.0348,
+   "ic_inf": 0.0271,
+   "ic_sup": 0.0432
+  },
+  "solo_vistas - tabular_con_centroide": {
+   "estimacion": -0.0347,
+   "ic_inf": -0.0405,
+   "ic_sup": -0.0288
+  },
+  "solo_transitos - tabular_sin_centroide": {
+   "estimacion": 0.0275,
+   "ic_inf": 0.0197,
+   "ic_sup": 0.0357
+  },
+  "solo_transitos - tabular_con_centroide": {
+   "estimacion": -0.042,
+   "ic_inf": -0.0486,
+   "ic_sup": -0.0358
+  },
+  "solo_escalares - tabular_sin_centroide": {
+   "estimacion": 0.0631,
+   "ic_inf": 0.0553,
+   "ic_sup": 0.0713
+  },
+  "solo_escalares - tabular_con_centroide": {
+   "estimacion": -0.0064,
+   "ic_inf": -0.0094,
+   "ic_sup": -0.0036
+  }
+ },
+ "criterio_declarado": {
+  "regla": "la fusión supera de forma distinguible al tabular sin centroide",
+  "diferencia": {
+   "estimacion": 0.0743,
+   "ic_inf": 0.0668,
+   "ic_sup": 0.0822
+  },
+  "se_cumple": true
+ }
+}

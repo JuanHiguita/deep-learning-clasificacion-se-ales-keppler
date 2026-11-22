@@ -1,0 +1,32 @@
+[
+ {
+  "particion": 0,
+  "epocas": 14,
+  "nll_entrenamiento": 0.114,
+  "nll_validacion": 0.1658
+ },
+ {
+  "particion": 1,
+  "epocas": 19,
+  "nll_entrenamiento": 0.1358,
+  "nll_validacion": 0.2136
+ },
+ {
+  "particion": 2,
+  "epocas": 8,
+  "nll_entrenamiento": 0.1375,
+  "nll_validacion": 0.1815
+ },
+ {
+  "particion": 3,
+  "epocas": 29,
+  "nll_entrenamiento": 0.1239,
+  "nll_validacion": 0.1797
+ },
+ {
+  "particion": 4,
+  "epocas": 8,
+  "nll_entrenamiento": 0.1038,
+  "nll_validacion": 0.2075
+ }
+]
