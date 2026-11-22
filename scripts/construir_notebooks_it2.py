@@ -655,7 +655,37 @@ display(pd.DataFrame({"elegidos por NLL (principal)": {apoyo.FUSIONES[k]: r["auc
 Las ramas que leen curvas mejoran un poco eligiendo por AUC, pero **la fusión completa no**. El criterio
 declarado (NLL) queda respaldado a nivel de sistema.
 
-## 6. Conclusiones y límites
+## 6. La evaluación única de las señales prerregistradas
+
+Las 76 señales apartadas antes de entrenar resultaron ser, todas, FALSE POSITIVE en DR25 y CANDIDATE
+en la tabla acumulada: señales que alguien reabrió. **No tienen respuesta correcta**, así que no se
+miden aciertos. La pregunta, declarada por escrito antes de ejecutar
+(`evidencias/prerregistro_declaracion.md`), fue: ¿el sistema, entrenado con etiquetas DR25, les da
+más probabilidad de planeta que a los falsos positivos que nadie ha reabierto?
+""")
+    c.codigo("""
+pre = apoyo.leer_json(apoyo.RESULTADOS / "prerregistrados" / "resultado.json")
+g = pre["global"]
+print("A = P(una prerregistrada puntúa más que un falso positivo normal):", apoyo.con_intervalo(g["A"]))
+print("Hipótesis A > 0,5 →", g["hipotesis_A_mayor_que_0.5"])
+display(pd.DataFrame({"mediana de q": g["mediana_q"], "fracción con q > 0,5": g["fraccion_q_mayor_que_0.5"], "señales": g["n"]}))
+display(pd.DataFrame(pre["por_tipo_de_fp_dr25"]).T)
+detalle = pd.read_csv(apoyo.RESULTADOS / "prerregistrados" / "detalle.csv")
+fig, eje = plt.subplots(figsize=(6, 2.6))
+eje.hist(detalle["q_planeta"], bins=20, color="#2166ac")
+eje.set_xlabel("q = P(planeta | planeta o falso positivo)"); eje.set_ylabel("señales prerregistradas")
+eje.set_title("Cómo puntúa la fusión a las 76 señales reabiertas", loc="left")
+apoyo.guardar(fig, "05_prerregistradas")
+print("Con curva utilizable:", pre["disponibilidad"], "de", g["n"]["prerregistradas"])
+""")
+    c.texto("""
+**Lectura, con cuidado.** La hipótesis queda respaldada: el sistema puntúa a las señales reabiertas
+claramente por encima de los falsos positivos normales. Es coherente con que mire algo real en los
+datos y no repita la etiqueta del catálogo. **No es una validación:** «candidato» no es «planeta»,
+la mayoría de las 76 sigue recibiendo q bajo, y quienes reabrieron estas señales pudieron fijarse en
+rasgos parecidos a los que ve la red. La evaluación se ejecutó una sola vez; el script se niega a repetirla.
+
+## 7. Conclusiones y límites
 
 **Lo que los datos sostienen**
 
@@ -672,7 +702,8 @@ declarado (NLL) queda respaldado a nivel de sistema.
 - Los codificadores usan una sola semilla; no se midió su variación.
 - `koi_score`, el comparador externo que contiene la decisión del Robovetter, sigue por encima; no es
   una comparación justa (ve lo que aquí está prohibido), pero es el techo de referencia.
-- Las señales prerregistradas aún no se evalúan: se hará una sola vez, al final.
+- Las señales prerregistradas no tienen etiqueta verdadera: su evaluación es descriptiva, no una
+  validación ni una prueba de calibración.
 - Los aciertos de tres clases incluyen la clase *sin señal*, que la rama 4 reconoce por un atajo (nunca
   tiene centroide; ver cuaderno 1). La conclusión se apoya en el AUC planeta vs. falso positivo, que no lo usa.
 - La rama de imagen no participa. Nada aquí habla de habitabilidad ni de atmósferas.

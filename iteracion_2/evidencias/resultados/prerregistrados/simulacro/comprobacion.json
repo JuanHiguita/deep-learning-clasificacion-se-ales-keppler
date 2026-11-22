@@ -1,0 +1,9 @@
+{
+ "ejemplos_normales_rehechos": 46,
+ "diferencia_maxima_en_entradas": 0.0,
+ "diferencia_maxima_en_probabilidad": 0.00010639429092407227,
+ "diferencia_mediana_en_probabilidad": 2.939486876130104e-09,
+ "ejemplos_con_diferencia_mayor_que_1e-4": 1,
+ "tolerancia": 0.001,
+ "supera": true
+}

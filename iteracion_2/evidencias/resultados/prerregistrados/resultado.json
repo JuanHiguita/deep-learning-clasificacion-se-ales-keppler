@@ -1,0 +1,67 @@
+{
+ "es_simulacro": false,
+ "declaracion": "iteracion_2/evidencias/prerregistro_declaracion.md",
+ "configuracion": "tres_ramas",
+ "comprobacion": {
+  "ejemplos_normales_rehechos": 46,
+  "diferencia_maxima_en_entradas": 0.0,
+  "diferencia_maxima_en_probabilidad": 0.00010639429092407227,
+  "diferencia_mediana_en_probabilidad": 2.939486876130104e-09,
+  "ejemplos_con_diferencia_mayor_que_1e-4": 1,
+  "tolerancia": 0.001,
+  "supera": true
+ },
+ "n_ejemplos_prerregistrados": 152,
+ "disponibilidad": {
+  "vistas": 68,
+  "transitos": 68
+ },
+ "global": {
+  "A": {
+   "estimacion": 0.7997,
+   "ic_inf": 0.7491,
+   "ic_sup": 0.8431
+  },
+  "hipotesis_A_mayor_que_0.5": "respaldada: reciben más probabilidad de planeta que los falsos positivos normales",
+  "mediana_q": {
+   "prerregistradas": 0.0435,
+   "falsos_positivos_normales": 0.0002
+  },
+  "fraccion_q_mayor_que_0.5": {
+   "prerregistradas": 0.2632,
+   "falsos_positivos_normales": 0.0311
+  },
+  "n": {
+   "prerregistradas": 76,
+   "falsos_positivos_normales": 2411
+  }
+ },
+ "por_tipo_de_fp_dr25": {
+  "centroide": {
+   "n_prerregistradas": 14,
+   "n_normales": 301,
+   "mediana_q_prerregistradas": 0.3584,
+   "mediana_q_normales": 0.0014
+  },
+  "eclipse_secundario": {
+   "n_prerregistradas": 36,
+   "n_normales": 939,
+   "mediana_q_prerregistradas": 0.005,
+   "mediana_q_normales": 0.0001
+  },
+  "no_transito": {
+   "n_prerregistradas": 25,
+   "n_normales": 204,
+   "mediana_q_prerregistradas": 0.211,
+   "mediana_q_normales": 0.0006
+  },
+  "otro": {
+   "n_prerregistradas": 1,
+   "n_normales": 967,
+   "mediana_q_prerregistradas": 0.1092,
+   "mediana_q_normales": 0.0001
+  }
+ },
+ "sin_senal_clasificados_sin_senal": 0.8947,
+ "sha256_predicciones": "e30af8e3911e44ad0dac38cdb291194876b0a1837b5987166e63634fb5a124d2"
+}

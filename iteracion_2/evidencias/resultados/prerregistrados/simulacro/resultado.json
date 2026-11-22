@@ -1,0 +1,67 @@
+{
+ "es_simulacro": true,
+ "declaracion": "iteracion_2/evidencias/prerregistro_declaracion.md",
+ "configuracion": "tres_ramas",
+ "comprobacion": {
+  "ejemplos_normales_rehechos": 46,
+  "diferencia_maxima_en_entradas": 0.0,
+  "diferencia_maxima_en_probabilidad": 0.00010639429092407227,
+  "diferencia_mediana_en_probabilidad": 2.939486876130104e-09,
+  "ejemplos_con_diferencia_mayor_que_1e-4": 1,
+  "tolerancia": 0.001,
+  "supera": true
+ },
+ "n_ejemplos_prerregistrados": 60,
+ "disponibilidad": {
+  "vistas": 29,
+  "transitos": 30
+ },
+ "global": {
+  "A": {
+   "estimacion": 0.4586,
+   "ic_inf": 0.3574,
+   "ic_sup": 0.5642
+  },
+  "hipotesis_A_mayor_que_0.5": "no concluyente: el intervalo contiene 0,5",
+  "mediana_q": {
+   "prerregistradas": 0.0001,
+   "falsos_positivos_normales": 0.0002
+  },
+  "fraccion_q_mayor_que_0.5": {
+   "prerregistradas": 0.0333,
+   "falsos_positivos_normales": 0.0311
+  },
+  "n": {
+   "prerregistradas": 30,
+   "falsos_positivos_normales": 2411
+  }
+ },
+ "por_tipo_de_fp_dr25": {
+  "centroide": {
+   "n_prerregistradas": 4,
+   "n_normales": 301,
+   "mediana_q_prerregistradas": 0.0156,
+   "mediana_q_normales": 0.0014
+  },
+  "eclipse_secundario": {
+   "n_prerregistradas": 9,
+   "n_normales": 939,
+   "mediana_q_prerregistradas": 0.0001,
+   "mediana_q_normales": 0.0001
+  },
+  "no_transito": {
+   "n_prerregistradas": 3,
+   "n_normales": 204,
+   "mediana_q_prerregistradas": 0.0,
+   "mediana_q_normales": 0.0006
+  },
+  "otro": {
+   "n_prerregistradas": 14,
+   "n_normales": 967,
+   "mediana_q_prerregistradas": 0.0001,
+   "mediana_q_normales": 0.0001
+  }
+ },
+ "sin_senal_clasificados_sin_senal": 1.0,
+ "sha256_predicciones": "8df6e57e241bbc5618bbf3ba275e3cafb68299d8257cca481a32b70068189941"
+}
