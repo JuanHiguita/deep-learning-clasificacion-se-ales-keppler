@@ -41,3 +41,4 @@ iteracion_2/evidencias/resultados/busqueda/*/cfg*/modelos/
 !iteracion_2/evidencias/resultados/fusion/**/*.keras
 !iteracion_2/evidencias/resultados/fusion/**/*.npz
 !iteracion_2/evidencias/resultados/fusion_exploratoria_auc/**/*.npz
+!iteracion_2/datos/muestra_dataset.npz
