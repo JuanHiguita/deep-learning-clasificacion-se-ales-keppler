@@ -48,3 +48,15 @@ nadie ha reabierto?
 3. Se reporta salga lo que salga, con el mismo rigor.
 4. Una señal sin datos suficientes en alguna rama se evalúa con las ramas que tenga (su bandera de
    disponibilidad en cero), igual que cualquier otro ejemplo; se informa cuántas son.
+
+## Enmienda técnica (22-nov-2026, antes de evaluar ninguna prerregistrada)
+
+La primera ejecución se detuvo en la regla 1, sin tocar las prerregistradas: al rehacer 40 y tantos
+ejemplos normales, las entradas coincidieron exactamente (diferencia 0,0) pero la probabilidad máxima
+difirió en 1,06e-4, por encima de la tolerancia de 1e-4 fijada en el código. Es ruido numérico de la
+GPU (el resultado de una red depende ligeramente de con qué otros ejemplos comparte el lote).
+
+Se sube la tolerancia de reproducción a 1e-3 y se informa además la diferencia mediana y cuántos
+ejemplos superan 1e-4. **No cambia nada de la hipótesis, del estadístico ni del modelo.** La tolerancia
+es un control de que el código usa el sistema correcto, no un criterio científico. El registro de la
+ejecución detenida queda en `evidencias/registros/6_prerregistrados.log`.

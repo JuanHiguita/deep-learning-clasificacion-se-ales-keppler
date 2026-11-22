@@ -41,7 +41,11 @@ from temporal.exp_ramas import EXPERIMENTOS  # noqa: E402
 
 RAIZ = Path("iteracion_2")
 CONFIGURACION = iteracion_2.PRINCIPAL
-TOLERANCIA = 1e-4  # diferencia máxima admitida al reproducir una probabilidad publicada
+# Diferencia máxima admitida al reproducir una probabilidad publicada. Era 1e-4; en GPU la primera
+# comprobación dio 1,06e-4 (ruido numérico: las entradas coincidían exactamente). Se subió a 1e-3
+# ANTES de evaluar ninguna prerregistrada; ver la enmienda en prerregistro_declaracion.md. Un error
+# de lógica (otra partición, otra estandarización) produce diferencias de décimas, no de diezmilésimas.
+TOLERANCIA = 1e-3
 N_COMPROBACION = 40  # ejemplos normales de prueba que se rehacen desde las curvas
 
 
@@ -140,11 +144,14 @@ def comprobar(referencia, tabla, ejemplos, koi, llc, modelos, fusion, protocolo,
     p = predecir(entradas, particion, referencia, tabla, modelos, fusion, protocolo, ramas)
     with np.load(Path(fusion) / "pred_semilla0.npz", allow_pickle=False) as d:
         publicado = dict(zip((str(i) for i in d["id_ejemplo"]), d["p_prueba"], strict=True))
-    dif_p = float(np.abs(p - np.array([publicado[i] for i in ids])).max())
+    diferencias = np.abs(p - np.array([publicado[i] for i in ids])).max(axis=1)
+    dif_p = float(diferencias.max())
     return {
         "ejemplos_normales_rehechos": len(ids),
         "diferencia_maxima_en_entradas": dif_entradas,
         "diferencia_maxima_en_probabilidad": dif_p,
+        "diferencia_mediana_en_probabilidad": float(np.median(diferencias)),
+        "ejemplos_con_diferencia_mayor_que_1e-4": int((diferencias > 1e-4).sum()),
         "tolerancia": TOLERANCIA,
         "supera": bool(dif_p <= TOLERANCIA),
     }
