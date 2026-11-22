@@ -103,6 +103,21 @@
    "estimacion": -0.0064,
    "ic_inf": -0.0094,
    "ic_sup": -0.0036
+  },
+  "tres_ramas - solo_escalares (aporte de las curvas a la fusión)": {
+   "estimacion": 0.0112,
+   "ic_inf": 0.0083,
+   "ic_sup": 0.0143
+  },
+  "tres_ramas - solo_curvas (aporte de los escalares a la fusión)": {
+   "estimacion": 0.0233,
+   "ic_inf": 0.0199,
+   "ic_sup": 0.0269
+  },
+  "tres_ramas - tres_ramas_ajuste_cruzado (efecto del apilado)": {
+   "estimacion": 0.0005,
+   "ic_inf": -0.0004,
+   "ic_sup": 0.0015
   }
  },
  "criterio_declarado": {

@@ -103,6 +103,21 @@
    "estimacion": -0.0065,
    "ic_inf": -0.0094,
    "ic_sup": -0.0036
+  },
+  "tres_ramas - solo_escalares (aporte de las curvas a la fusión)": {
+   "estimacion": 0.01,
+   "ic_inf": 0.0068,
+   "ic_sup": 0.0131
+  },
+  "tres_ramas - solo_curvas (aporte de los escalares a la fusión)": {
+   "estimacion": 0.0205,
+   "ic_inf": 0.0174,
+   "ic_sup": 0.0239
+  },
+  "tres_ramas - tres_ramas_ajuste_cruzado (efecto del apilado)": {
+   "estimacion": -0.0004,
+   "ic_inf": -0.0016,
+   "ic_sup": 0.0009
   }
  },
  "caracter": "exploratorio: modelos elegidos por AUC de validación, no por NLL"

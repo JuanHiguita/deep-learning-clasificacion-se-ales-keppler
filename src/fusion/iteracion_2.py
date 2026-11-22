@@ -63,6 +63,11 @@ CONFIGURACIONES = {
     "solo_escalares": ("escalares",),
 }
 PRINCIPAL = "tres_ramas"
+APORTES = {
+    "solo_escalares": "aporte de las curvas a la fusión",
+    "solo_curvas": "aporte de los escalares a la fusión",
+    "tres_ramas_ajuste_cruzado": "efecto del apilado",
+}
 
 
 def _escribir_json(ruta: Path, contenido) -> None:
@@ -262,6 +267,12 @@ def comparar(
         for tabular in ("tabular_sin_centroide", "tabular_con_centroide"):
             resultado["diferencias"][f"{nombre} - {tabular}"] = intervalo(
                 lambda i, a=nombre, b=tabular: auc(a)(i) - auc(b)(i)
+            )
+    # Qué suma cada parte a la fusión: la fusión completa menos la fusión sin esa parte.
+    for sin_esa_parte, etiqueta in APORTES.items():
+        if PRINCIPAL in configuraciones and sin_esa_parte in configuraciones:
+            resultado["diferencias"][f"{PRINCIPAL} - {sin_esa_parte} ({etiqueta})"] = intervalo(
+                lambda i, b=sin_esa_parte: auc(PRINCIPAL)(i) - auc(b)(i)
             )
     if PRINCIPAL in configuraciones:
         decisiva = resultado["diferencias"][f"{PRINCIPAL} - tabular_sin_centroide"]
