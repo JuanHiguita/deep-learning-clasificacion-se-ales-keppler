@@ -1,0 +1,62 @@
+{
+ "rama": "escalares",
+ "version": "v1",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "particion": 0,
+   "red": "m4_escalares",
+   "configuracion": "cfg05",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9802917617211077,
+   "parametros": 2307,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg05/modelos/particion_0_semilla_0.keras",
+   "sha256_modelo_de_origen": "d6c5be090bef3bd82818177242ed0fa4d19aaa14b179305d60a8f301099cb5ae",
+   "sha256_codificador": "23abeba7b50f5115435900ba47b71adada1adce506a45e318b704274a546966f"
+  },
+  "1": {
+   "particion": 1,
+   "red": "m4_escalares",
+   "configuracion": "cfg06",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9831309362925177,
+   "parametros": 1123,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg06/modelos/particion_1_semilla_0.keras",
+   "sha256_modelo_de_origen": "a55d5bfbfdf47f97f1692d62bfcaf3964ec0dc676fb3b63af2931144c1485f48",
+   "sha256_codificador": "2aff078666bad69e74e37c9b3ae42a073a1bbe57db123cf24becb5d4ac200faa"
+  },
+  "2": {
+   "particion": 2,
+   "red": "m4_escalares",
+   "configuracion": "cfg01",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9822780597387469,
+   "parametros": 4547,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg01/modelos/particion_2_semilla_0.keras",
+   "sha256_modelo_de_origen": "d06564815b4b6055452f62b573672eddbc3300089d7b1c50dca6637e6a9e688f",
+   "sha256_codificador": "4c74d42f1886844e812e3235847e9fc9a1345b104c537a334a1e3bd3f29d5a40"
+  },
+  "3": {
+   "particion": 3,
+   "red": "m4_escalares",
+   "configuracion": "cfg01",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9896220883471619,
+   "parametros": 4547,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg01/modelos/particion_3_semilla_0.keras",
+   "sha256_modelo_de_origen": "af8663318d5b72c60449b775d8b649d3168a081ea767bb0e36a3c20fb3817def",
+   "sha256_codificador": "bb8f6089c13cbcb02711f5a345aa2fd8d39d14b2e359827970e55be21106d7b2"
+  },
+  "4": {
+   "particion": 4,
+   "red": "m4_escalares",
+   "configuracion": "cfg01",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9822389825495416,
+   "parametros": 4547,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m4_escalares/cfg01/modelos/particion_4_semilla_0.keras",
+   "sha256_modelo_de_origen": "59d387aa88c2a6b0eeb024edc919cb4749d2ad397c62c4d2ec5bfdfd4b96e22a",
+   "sha256_codificador": "7a8700b3b321b83ebaf86a372e6421dd5045fa99e99499912ed82e115fba14c4"
+  }
+ }
+}

@@ -1,0 +1,109 @@
+{
+ "n_kois": 4471,
+ "n_kois_sin_prediccion_de_la_fusion": 0,
+ "auc": {
+  "tabular_sin_centroide": {
+   "estimacion": 0.9197,
+   "ic_inf": 0.9116,
+   "ic_sup": 0.9273
+  },
+  "tabular_con_centroide": {
+   "estimacion": 0.9892,
+   "ic_inf": 0.9863,
+   "ic_sup": 0.9917
+  },
+  "tres_ramas": {
+   "estimacion": 0.9927,
+   "ic_inf": 0.9908,
+   "ic_sup": 0.9944
+  },
+  "tres_ramas_ajuste_cruzado": {
+   "estimacion": 0.993,
+   "ic_inf": 0.9912,
+   "ic_sup": 0.9948
+  },
+  "solo_curvas": {
+   "estimacion": 0.9721,
+   "ic_inf": 0.9677,
+   "ic_sup": 0.9762
+  },
+  "solo_vistas": {
+   "estimacion": 0.9602,
+   "ic_inf": 0.9546,
+   "ic_sup": 0.9654
+  },
+  "solo_transitos": {
+   "estimacion": 0.9519,
+   "ic_inf": 0.9459,
+   "ic_sup": 0.9574
+  },
+  "solo_escalares": {
+   "estimacion": 0.9827,
+   "ic_inf": 0.979,
+   "ic_sup": 0.986
+  }
+ },
+ "diferencias": {
+  "tres_ramas - tabular_sin_centroide": {
+   "estimacion": 0.073,
+   "ic_inf": 0.0655,
+   "ic_sup": 0.081
+  },
+  "tres_ramas - tabular_con_centroide": {
+   "estimacion": 0.0035,
+   "ic_inf": 0.001,
+   "ic_sup": 0.0061
+  },
+  "tres_ramas_ajuste_cruzado - tabular_sin_centroide": {
+   "estimacion": 0.0734,
+   "ic_inf": 0.0659,
+   "ic_sup": 0.0813
+  },
+  "tres_ramas_ajuste_cruzado - tabular_con_centroide": {
+   "estimacion": 0.0039,
+   "ic_inf": 0.0015,
+   "ic_sup": 0.0064
+  },
+  "solo_curvas - tabular_sin_centroide": {
+   "estimacion": 0.0525,
+   "ic_inf": 0.0452,
+   "ic_sup": 0.0604
+  },
+  "solo_curvas - tabular_con_centroide": {
+   "estimacion": -0.0171,
+   "ic_inf": -0.0217,
+   "ic_sup": -0.0124
+  },
+  "solo_vistas - tabular_sin_centroide": {
+   "estimacion": 0.0406,
+   "ic_inf": 0.033,
+   "ic_sup": 0.0487
+  },
+  "solo_vistas - tabular_con_centroide": {
+   "estimacion": -0.029,
+   "ic_inf": -0.0347,
+   "ic_sup": -0.0233
+  },
+  "solo_transitos - tabular_sin_centroide": {
+   "estimacion": 0.0322,
+   "ic_inf": 0.0245,
+   "ic_sup": 0.04
+  },
+  "solo_transitos - tabular_con_centroide": {
+   "estimacion": -0.0373,
+   "ic_inf": -0.0436,
+   "ic_sup": -0.0316
+  },
+  "solo_escalares - tabular_sin_centroide": {
+   "estimacion": 0.063,
+   "ic_inf": 0.0551,
+   "ic_sup": 0.0713
+  },
+  "solo_escalares - tabular_con_centroide": {
+   "estimacion": -0.0065,
+   "ic_inf": -0.0094,
+   "ic_sup": -0.0036
+  }
+ },
+ "caracter": "exploratorio: modelos elegidos por AUC de validación, no por NLL"
+}

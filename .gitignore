@@ -40,3 +40,4 @@ iteracion_2/evidencias/resultados/busqueda/*/cfg*/modelos/
 !iteracion_2/modelos_finales/**/*.npz
 !iteracion_2/evidencias/resultados/fusion/**/*.keras
 !iteracion_2/evidencias/resultados/fusion/**/*.npz
+!iteracion_2/evidencias/resultados/fusion_exploratoria_auc/**/*.npz

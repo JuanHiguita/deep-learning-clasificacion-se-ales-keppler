@@ -1,0 +1,62 @@
+{
+ "rama": "transitos",
+ "version": "v1",
+ "semilla": 0,
+ "particiones": {
+  "0": {
+   "particion": 0,
+   "red": "m2_atencion",
+   "configuracion": "cfg07",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9588495258360529,
+   "parametros": 22628,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_atencion/cfg07/modelos/particion_0_semilla_0.keras",
+   "sha256_modelo_de_origen": "1db4cb25950a7a5e977ce8cd50177950a8ebac63e9fe7328cb10a183b3d75041",
+   "sha256_codificador": "833184302d526c407e555a41cc1fe0e6b3e37c0c493b3776d8d181ac3a63d3cd"
+  },
+  "1": {
+   "particion": 1,
+   "red": "m2_promedio",
+   "configuracion": "cfg09",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9493071549574585,
+   "parametros": 13859,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_promedio/cfg09/modelos/particion_1_semilla_0.keras",
+   "sha256_modelo_de_origen": "736ba647fc3d893a602432691348c965a0e7594a58ad1b40dedca6992daa51f7",
+   "sha256_codificador": "a702d4cd8a384f0bd2067dc24e75d023cce1cf4200668bffe885eb8215a3e24e"
+  },
+  "2": {
+   "particion": 2,
+   "red": "m2_promedio",
+   "configuracion": "cfg11",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9444031325401447,
+   "parametros": 13859,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_promedio/cfg11/modelos/particion_2_semilla_0.keras",
+   "sha256_modelo_de_origen": "65a857497698c49e43c2905020b8a4b2ec126c141a023ad3c2077afd0eca9454",
+   "sha256_codificador": "f0ea4f8a639359c83201320506bfdbcc06c515680c90f7b31c102db60adc064c"
+  },
+  "3": {
+   "particion": 3,
+   "red": "m2_promedio",
+   "configuracion": "cfg11",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9491274770777877,
+   "parametros": 13859,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_promedio/cfg11/modelos/particion_3_semilla_0.keras",
+   "sha256_modelo_de_origen": "9004beb21996959d8d44516043d74685cd7796aeada13223ee975dc0d2648fad",
+   "sha256_codificador": "3541cdc324e4ff16636ef27459aad7ee9465c087bcd8207f27c56cd4937162b4"
+  },
+  "4": {
+   "particion": 4,
+   "red": "m2_promedio",
+   "configuracion": "cfg11",
+   "criterio": "auc",
+   "puntaje_validacion": 0.9523217982845312,
+   "parametros": 13859,
+   "modelo_de_origen": "iteracion_2/evidencias/resultados/busqueda/m2_promedio/cfg11/modelos/particion_4_semilla_0.keras",
+   "sha256_modelo_de_origen": "b8602ab3699f11c554652dd7a334919ce76c5eec762d1334b871d04017631cb8",
+   "sha256_codificador": "b49bd319b217787953eff4cb166f44662d5e182a05760417369a055db755d554"
+  }
+ }
+}
