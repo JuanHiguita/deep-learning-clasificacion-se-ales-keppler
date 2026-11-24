@@ -42,3 +42,11 @@ iteracion_2/evidencias/resultados/busqueda/*/cfg*/modelos/
 !iteracion_2/evidencias/resultados/fusion/**/*.npz
 !iteracion_2/evidencias/resultados/fusion_exploratoria_auc/**/*.npz
 !iteracion_2/datos/muestra_dataset.npz
+# Iteración 2: también se versionan los modelos del protocolo fijo, los parciales, las predicciones de la
+# búsqueda y los modelos exploratorios (≈ 76 MB). Siguen fuera: datos/llc/ (se descargan con el paso 1),
+# datos/dataset_temporal.npz (148 MB: va como adjunto de una release de GitHub) y los modelos de cada
+# configuración de la búsqueda (1,1 GB; los elegidos están en modelos_finales/).
+!iteracion_2/evidencias/**/*.keras
+!iteracion_2/evidencias/**/*.npz
+!iteracion_2/modelos_exploratorios_auc/**/*.keras
+!iteracion_2/modelos_exploratorios_auc/**/*.npz
