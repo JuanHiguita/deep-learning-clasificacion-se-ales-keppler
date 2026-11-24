@@ -113,9 +113,9 @@ def c01() -> Cuaderno:
         "¿con qué datos se entrena, cómo se preparan y cómo se evita que la red haga trampa?",
     )
     c.texto("""
-## 1. De 262 a 4.547 señales
+## 1. De 245 a 4.547 señales
 
-La iteración 1 usó 262 señales. Con tan pocas, una red no puede ser grande ni mostrar que aprende de
+La iteración 1 usó 245 señales. Con tan pocas, una red no puede ser grande ni mostrar que aprende de
 las curvas. Aquí se toman **todas** las señales de Kepler (catálogo DR25) confirmadas como planeta o
 descartadas como falso positivo, con periodo entre 1 y 30 días (así cada una tiene muchos tránsitos).
 
@@ -238,7 +238,7 @@ señal leve que viene del catálogo y que el modelo tabular con centroide ve igu
     c.texto("""
 ## Qué queda de esta fase
 
-- 17 veces más señales que en la iteración 1, con las mismas reglas.
+- 18 veces más señales que en la iteración 1, con las mismas reglas.
 - Particiones por estrella verificadas, prerregistrados apartados, columnas con fuga fuera.
 - Tres representaciones de la misma curva, una por rama. El siguiente cuaderno explica qué red lee cada una.
 """)
@@ -290,7 +290,7 @@ tamanos = pd.DataFrame(filas).set_index("red")
 display(tamanos)
 """)
     c.texto("""
-Las redes del protocolo son pequeñas a propósito (se diseñaron para 262 señales). Con 4.547 señales
+Las redes del protocolo son pequeñas a propósito (se diseñaron para 245 señales). Con 4.547 señales
 la búsqueda del cuaderno 3 prueba redes decenas de veces mayores para ver si los datos nuevos las aprovechan.
 
 ## 3. Resumen de capas (opcional)
@@ -582,7 +582,7 @@ print("  diferencia:", apoyo.con_intervalo(criterio["diferencia"], signo=True), 
 - **Solo curvas − tabular sin centroide** es la prueba de que la red aprende de la luz: sin ver ningún
   dato del catálogo, las ramas 1 y 2 superan a un modelo tabular de los parámetros del tránsito.
 - **Fusión − tabular con centroide** es la comparación exigente. La fusión gana por poco, pero de
-  forma distinguible. En la iteración 1 (262 señales) esta comparación había quedado en empate.
+  forma distinguible. En la iteración 1 (245 señales) esta comparación había quedado en empate.
 - **Las curvas solas no reemplazan al centroide:** quedan por debajo del tabular con centroide. Esa
   información espacial es la que debe aportar la rama de imagen.
 - **Aporte de las curvas a la fusión:** la fusión completa supera a la rama de escalares sola. Las
@@ -689,8 +689,8 @@ rasgos parecidos a los que ve la red. La evaluación se ejecutó una sola vez; e
 
 **Lo que los datos sostienen**
 
-1. Con 17 veces más señales, la fusión de tres ramas supera de forma distinguible al modelo tabular con
-   centroide sobre las mismas señales. Con 262 señales no lo lograba.
+1. Con 18 veces más señales, la fusión de tres ramas supera de forma distinguible al modelo tabular con
+   centroide sobre las mismas señales. Con 245 señales no lo lograba.
 2. Las ramas que leen las curvas, sin ningún dato del catálogo, superan a un modelo tabular sin centroide:
    la red aprende de la luz.
 3. Las curvas suman a la fusión algo que los escalares solos no dan.

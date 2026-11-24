@@ -1,0 +1,54 @@
+{
+ "planeta_acierto": {
+  "id": "K01908.02|transito",
+  "real": "planeta",
+  "predicho": "planeta",
+  "p": [
+   0.9979,
+   0.0021,
+   0.0
+  ],
+  "periodo_d": 24.0884178,
+  "mes": 15.767821,
+  "tipo_fp": "nan"
+ },
+ "eclipse_acierto": {
+  "id": "K03464.01|transito",
+  "real": "falso positivo",
+  "predicho": "falso positivo",
+  "p": [
+   0.1946,
+   0.8054,
+   0.0001
+  ],
+  "periodo_d": 15.9750417,
+  "mes": 27.56991,
+  "tipo_fp": "eclipse_secundario"
+ },
+ "error_fp_como_planeta": {
+  "id": "K04046.01|transito",
+  "real": "falso positivo",
+  "predicho": "planeta",
+  "p": [
+   0.6325,
+   0.367,
+   0.0005
+  ],
+  "periodo_d": 8.65312868,
+  "mes": 18.872547,
+  "tipo_fp": "otro"
+ },
+ "error_planeta_como_fp": {
+  "id": "K04510.01|transito",
+  "real": "planeta",
+  "predicho": "falso positivo",
+  "p": [
+   0.2882,
+   0.7095,
+   0.0024
+  ],
+  "periodo_d": 5.17624997,
+  "mes": 11.398058,
+  "tipo_fp": "nan"
+ }
+}
